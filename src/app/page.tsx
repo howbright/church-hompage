@@ -21,6 +21,7 @@ const content = {
     locationTitle: "Visit Us",
     locationLines: ["20 Yatap-ro, Gyeonggi-do", "Seongnam-si, Bundang-gu"],
     phoneLabel: "Phone",
+    emailLabel: "Email",
     schoolLabel: "School",
     schoolTitle: "Learn Together",
     schoolItems: [
@@ -45,6 +46,7 @@ const content = {
     locationTitle: "오시는 길",
     locationLines: ["경기도 야탑로 20", "성남시 분당구"],
     phoneLabel: "전화",
+    emailLabel: "이메일",
     schoolLabel: "학교",
     schoolTitle: "함께 배우는 말씀",
     schoolItems: ["제자 훈련", "성경 대학", "주간 성경 공부"],
@@ -187,6 +189,15 @@ export default function Home() {
                     className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
                   >
                     031-000-0000
+                  </a>
+                </p>
+                <p>
+                  {t.emailLabel} |{" "}
+                  <a
+                    href="mailto:mosesnara@hanmail.net"
+                    className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
+                  >
+                    mosesnara@hanmail.net
                   </a>
                 </p>
               </div>

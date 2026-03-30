@@ -28,11 +28,11 @@ const content = {
     youtubeCta: "Watch Online",
     locationLabel: "Location",
     locationTitle: "Find Our Location",
-    locationMessage: "For location details, please contact us by email.",
+    locationMessage: "Please contact us by email.",
     locationItems: [
       {
         title: "Location",
-        description: "For location details, please contact us by email.",
+        description: "Please contact us by email.",
       },
       {
         title: "Email",
@@ -77,11 +77,11 @@ const content = {
     youtubeCta: "온라인 예배 보기",
     locationLabel: "장소",
     locationTitle: "장소 안내",
-    locationMessage: "장소가 궁금하시면 이메일로 문의해주세요.",
+    locationMessage: "이메일로 문의해주세요.",
     locationItems: [
       {
         title: "장소 안내",
-        description: "장소가 궁금하시면 이메일로 문의해주세요.",
+        description: "이메일로 문의해주세요.",
       },
       {
         title: "이메일",
@@ -127,7 +127,7 @@ export default function Home() {
       </video>
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(236,244,243,0.2)_0%,_rgba(228,238,235,0.42)_28%,_rgba(242,238,229,0.78)_58%,_rgba(247,241,232,0.96)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(224,240,239,0.22)_0%,_rgba(205,228,227,0.5)_26%,_rgba(232,241,238,0.64)_48%,_rgba(247,241,232,0.94)_100%)]"
       />
       <div
         aria-hidden="true"
@@ -186,7 +186,7 @@ export default function Home() {
           <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
             <div
               aria-hidden="true"
-              className="absolute h-40 w-40 rounded-full bg-[radial-gradient(circle,_rgba(101,154,159,0.34)_0%,_rgba(101,154,159,0.14)_42%,_transparent_72%)] blur-2xl sm:h-52 sm:w-52"
+              className="absolute h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(74,157,163,0.42)_0%,_rgba(74,157,163,0.2)_42%,_transparent_74%)] blur-3xl sm:h-60 sm:w-60"
             />
             <div className="w-full max-w-[15rem] sm:max-w-[18rem] lg:max-w-[19rem]">
               <Image
@@ -204,9 +204,9 @@ export default function Home() {
             aria-label="Church information"
             className="grid gap-px overflow-hidden rounded-[2rem] border border-white/50 bg-[rgba(255,255,255,0.34)] shadow-[0_24px_80px_rgba(30,52,57,0.18)] backdrop-blur-xl lg:grid-cols-3"
           >
-            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.52)_0%,rgba(250,247,240,0.92)_16%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+            <article className="bg-[linear-gradient(180deg,rgba(244,252,251,0.88)_0%,rgba(250,247,240,0.94)_22%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
               <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-worship)]" />
-              <p className="inline-flex rounded-full bg-[rgba(119,165,168,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-worship-deep)]">
+              <p className="inline-flex rounded-full bg-[rgba(76,164,170,0.16)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-worship-deep)]">
                 {t.worshipLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
@@ -240,9 +240,9 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.54)_0%,rgba(241,247,246,0.94)_16%,rgba(241,247,246,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+            <article className="bg-[linear-gradient(180deg,rgba(236,250,249,0.92)_0%,rgba(229,245,243,0.94)_18%,rgba(241,247,246,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
               <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-location)]" />
-              <p className="inline-flex rounded-full bg-[rgba(94,141,138,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-location-deep)]">
+              <p className="inline-flex rounded-full bg-[rgba(55,150,147,0.16)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-location-deep)]">
                 {t.locationLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
@@ -272,7 +272,7 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.52)_0%,rgba(250,247,240,0.92)_16%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+            <article className="bg-[linear-gradient(180deg,rgba(241,251,250,0.8)_0%,rgba(250,247,240,0.92)_20%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
               <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-school)]" />
               <p className="inline-flex rounded-full bg-[rgba(174,130,92,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-school-deep)]">
                 {t.schoolLabel}

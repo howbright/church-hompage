@@ -2,17 +2,17 @@
 
 :root {
   --background: #f6f1e6;
-  --foreground: #18262a;
-  --page-deep: #13252d;
-  --page-ink: #1d2f35;
-  --page-muted: #445a60;
-  --page-soft: #2d4349;
-  --page-accent: #786042;
-  --page-accent-strong: #5d452c;
-  --card-worship: #77a5a8;
-  --card-worship-deep: #3f6c70;
-  --card-location: #5e8d8a;
-  --card-location-deep: #365d5a;
+  --foreground: #173036;
+  --page-deep: #12313a;
+  --page-ink: #1a3c44;
+  --page-muted: #406269;
+  --page-soft: #2d4f57;
+  --page-accent: #417f81;
+  --page-accent-strong: #245f61;
+  --card-worship: #4ca4aa;
+  --card-worship-deep: #236b71;
+  --card-location: #379693;
+  --card-location-deep: #1f6866;
   --card-school: #ae825c;
   --card-school-deep: #765133;
 }

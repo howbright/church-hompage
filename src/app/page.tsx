@@ -11,23 +11,47 @@ const content = {
     worshipLabel: "Worship Guide",
     worshipTitle: "Service Times",
     worshipItems: [
-      "Wednesday Worship | 7:00 PM",
-      "Saturday Service | 2:00 PM",
-      "Sunday Worship | 11:00 AM",
+      {
+        title: "Wednesday Worship",
+        description: "7:00 PM",
+      },
+      {
+        title: "Saturday Service",
+        description: "2:00 PM",
+      },
+      {
+        title: "Sunday Worship",
+        description: "11:00 AM",
+      },
     ],
     youtubeLabel: "YouTube Channel",
     youtubeCta: "Watch Online",
     locationLabel: "Location",
-    locationTitle: "Visit Us",
-    locationLines: ["20 Yatap-ro, Gyeonggi-do", "Seongnam-si, Bundang-gu"],
-    phoneLabel: "Phone",
-    emailLabel: "Email",
-    schoolLabel: "School",
-    schoolTitle: "Learn Together",
+    locationTitle: "Find Our Location",
+    locationMessage: "For location details, please contact us by email.",
+    locationItems: [
+      {
+        title: "Location",
+        description: "For location details, please contact us by email.",
+      },
+      {
+        title: "Email",
+        description: "mosesnara@hanmail.net",
+      },
+    ],
+    schoolLabel: "Ministries",
+    schoolTitle: "Counseling & Bible Training",
     schoolItems: [
-      "Discipleship Training",
-      "Bible College",
-      "Weekly Scripture Study",
+      {
+        title: "Self-Confrontation",
+        description:
+          "Biblical counseling for depression, addiction, sexual brokenness, and life struggles",
+      },
+      {
+        title: "Bible College",
+        description:
+          "In-depth study of Scripture from Genesis to Revelation",
+      },
     ],
   },
   ko: {
@@ -36,20 +60,48 @@ const content = {
     worshipLabel: "예배 안내",
     worshipTitle: "모임 시간",
     worshipItems: [
-      "수요 예배 | 오후 7:00",
-      "토요 예배 | 오후 2:00",
-      "주일 예배 | 오전 11:00",
+      {
+        title: "수요 예배",
+        description: "오후 7:00",
+      },
+      {
+        title: "토요 예배",
+        description: "오후 2:00",
+      },
+      {
+        title: "주일 예배",
+        description: "오전 11:00",
+      },
     ],
     youtubeLabel: "유튜브 채널",
     youtubeCta: "온라인 예배 보기",
     locationLabel: "장소",
-    locationTitle: "오시는 길",
-    locationLines: ["경기도 야탑로 20", "성남시 분당구"],
-    phoneLabel: "전화",
-    emailLabel: "이메일",
-    schoolLabel: "학교",
-    schoolTitle: "함께 배우는 말씀",
-    schoolItems: ["제자 훈련", "성경 대학", "주간 성경 공부"],
+    locationTitle: "장소 안내",
+    locationMessage: "장소가 궁금하시면 이메일로 문의해주세요.",
+    locationItems: [
+      {
+        title: "장소 안내",
+        description: "장소가 궁금하시면 이메일로 문의해주세요.",
+      },
+      {
+        title: "이메일",
+        description: "mosesnara@hanmail.net",
+      },
+    ],
+    schoolLabel: "사역 안내",
+    schoolTitle: "상담과 성경 훈련",
+    schoolItems: [
+      {
+        title: "자기대면",
+        description:
+          "성경적 상담을 통해 우울, 중독, 성중독, 동성애 등 삶의 문제를 말씀 안에서 다룹니다",
+      },
+      {
+        title: "성경대학",
+        description:
+          "창세기부터 요한계시록까지 성경을 심도 있게 배웁니다",
+      },
+    ],
   },
 } as const;
 
@@ -111,9 +163,11 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent)] sm:text-xs">
-              Church of Seoul
-            </p>
+            <div className="flex justify-center">
+              <p className="rounded-full border border-white/60 bg-[rgba(248,245,238,0.72)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent-strong)] shadow-[0_10px_24px_rgba(20,37,45,0.08)] backdrop-blur-md sm:text-xs">
+                Church of Seoul
+              </p>
+            </div>
             <div className="mt-4 flex justify-center">
               <Image
                 src="/logo.svg"
@@ -129,7 +183,11 @@ export default function Home() {
             </p>
           </header>
 
-          <div className="flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
+          <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
+            <div
+              aria-hidden="true"
+              className="absolute h-40 w-40 rounded-full bg-[radial-gradient(circle,_rgba(101,154,159,0.34)_0%,_rgba(101,154,159,0.14)_42%,_transparent_72%)] blur-2xl sm:h-52 sm:w-52"
+            />
             <div className="w-full max-w-[15rem] sm:max-w-[18rem] lg:max-w-[19rem]">
               <Image
                 src="/church.png"
@@ -146,73 +204,90 @@ export default function Home() {
             aria-label="Church information"
             className="grid gap-px overflow-hidden rounded-[2rem] border border-white/50 bg-[rgba(255,255,255,0.34)] shadow-[0_24px_80px_rgba(30,52,57,0.18)] backdrop-blur-xl lg:grid-cols-3"
           >
-            <article className="bg-[rgba(250,247,240,0.86)] px-6 py-6 sm:px-8 sm:py-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--page-accent)]">
+            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.52)_0%,rgba(250,247,240,0.92)_16%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+              <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-worship)]" />
+              <p className="inline-flex rounded-full bg-[rgba(119,165,168,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-worship-deep)]">
                 {t.worshipLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
                 {t.worshipTitle}
               </h2>
-              <ul className="mt-5 space-y-2.5 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
+              <ul className="mt-5 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
                 {t.worshipItems.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item.title} className="flex flex-wrap gap-x-2">
+                    <span className="text-base font-semibold text-[var(--page-deep)]">
+                      {item.title}
+                    </span>
+                    <span>{item.description}</span>
+                  </li>
                 ))}
                 <li>
-                  {t.youtubeLabel} |{" "}
-                  <a
-                    href="https://www.youtube.com/@calvarymoses"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
-                  >
-                    {t.youtubeCta}
-                  </a>
+                  <p className="inline text-base font-semibold text-[var(--page-deep)]">
+                    {t.youtubeLabel}
+                  </p>
+                  <span className="mx-2 inline">|</span>
+                  <span>
+                    <a
+                      href="https://www.youtube.com/@calvarymoses"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
+                    >
+                      {t.youtubeCta}
+                    </a>
+                  </span>
                 </li>
               </ul>
             </article>
 
-            <article className="bg-[rgba(241,247,246,0.9)] px-6 py-6 sm:px-8 sm:py-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--page-accent)]">
+            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.54)_0%,rgba(241,247,246,0.94)_16%,rgba(241,247,246,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+              <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-location)]" />
+              <p className="inline-flex rounded-full bg-[rgba(94,141,138,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-location-deep)]">
                 {t.locationLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
                 {t.locationTitle}
               </h2>
-              <div className="mt-5 space-y-2.5 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
-                {t.locationLines.map((line) => (
-                  <p key={line}>{line}</p>
+              <ul className="mt-5 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
+                {t.locationItems.map((item) => (
+                  <li key={item.title} className="flex flex-wrap gap-x-2">
+                    <span className="text-base font-semibold text-[var(--page-deep)]">
+                      {item.title}
+                    </span>
+                    <span>|</span>
+                    <span>
+                      {item.title === "Email" || item.title === "이메일" ? (
+                        <a
+                          href="mailto:mosesnara@hanmail.net"
+                          className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
+                        >
+                          {item.description}
+                        </a>
+                      ) : (
+                        item.description
+                      )}
+                    </span>
+                  </li>
                 ))}
-                <p>
-                  {t.phoneLabel} |{" "}
-                  <a
-                    href="tel:031-000-0000"
-                    className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
-                  >
-                    031-000-0000
-                  </a>
-                </p>
-                <p>
-                  {t.emailLabel} |{" "}
-                  <a
-                    href="mailto:mosesnara@hanmail.net"
-                    className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
-                  >
-                    mosesnara@hanmail.net
-                  </a>
-                </p>
-              </div>
+              </ul>
             </article>
 
-            <article className="bg-[rgba(250,247,240,0.86)] px-6 py-6 sm:px-8 sm:py-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--page-accent)]">
+            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.52)_0%,rgba(250,247,240,0.92)_16%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+              <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-school)]" />
+              <p className="inline-flex rounded-full bg-[rgba(174,130,92,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-school-deep)]">
                 {t.schoolLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
                 {t.schoolTitle}
               </h2>
-              <ul className="mt-5 space-y-2.5 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
+              <ul className="mt-5 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
                 {t.schoolItems.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item.title}>
+                    <p className="text-base font-semibold text-[var(--page-deep)]">
+                      {item.title}
+                    </p>
+                    <p className="mt-1">{item.description}</p>
+                  </li>
                 ))}
               </ul>
             </article>

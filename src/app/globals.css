@@ -9,6 +9,12 @@
   --page-soft: #2d4349;
   --page-accent: #786042;
   --page-accent-strong: #5d452c;
+  --card-worship: #77a5a8;
+  --card-worship-deep: #3f6c70;
+  --card-location: #5e8d8a;
+  --card-location-deep: #365d5a;
+  --card-school: #ae825c;
+  --card-school-deep: #765133;
 }
 
 @theme inline {

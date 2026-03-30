@@ -37,6 +37,7 @@ const content = {
       {
         title: "Email",
         description: "mosesnara@hanmail.net",
+        cta: "Write Email",
       },
     ],
     schoolLabel: "Ministries",
@@ -86,6 +87,7 @@ const content = {
       {
         title: "이메일",
         description: "mosesnara@hanmail.net",
+        cta: "메일쓰기",
       },
     ],
     schoolLabel: "사역 안내",
@@ -231,7 +233,7 @@ export default function Home() {
                       href="https://www.youtube.com/@calvarymoses"
                       target="_blank"
                       rel="noreferrer"
-                      className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
+                      className="font-semibold text-[var(--page-accent-strong)] underline decoration-2 decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-deep)]"
                     >
                       {t.youtubeCta}
                     </a>
@@ -257,12 +259,20 @@ export default function Home() {
                     <span>|</span>
                     <span>
                       {item.title === "Email" || item.title === "이메일" ? (
-                        <a
-                          href="mailto:mosesnara@hanmail.net"
-                          className="font-medium text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
-                        >
-                          {item.description}
-                        </a>
+                        <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
+                          <a
+                            href="mailto:mosesnara@hanmail.net"
+                            className="font-semibold text-[var(--page-accent-strong)] underline decoration-2 decoration-[var(--page-accent)] underline-offset-4 break-all transition hover:text-[var(--page-deep)]"
+                          >
+                            {item.description}
+                          </a>
+                          <a
+                            href="mailto:mosesnara@hanmail.net"
+                            className="text-sm font-semibold text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
+                          >
+                            {item.cta}
+                          </a>
+                        </span>
                       ) : (
                         item.description
                       )}

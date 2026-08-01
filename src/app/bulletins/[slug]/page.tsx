@@ -4,7 +4,6 @@ import { BulletinView } from "@/components/bulletin-view";
 import {
   fetchBulletinBySlug,
   fetchPublishedBulletins,
-  formatBulletinDate,
 } from "@/lib/bulletins";
 
 export const dynamic = "force-dynamic";
@@ -23,9 +22,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const dateLabel = formatBulletinDate(bulletin.service_date);
-  const title = `${dateLabel} 온라인 주보 | 갈보리채플 강남교회`;
-  const description = `${bulletin.scripture_reference} · ${bulletin.message_title} — 갈보리채플 강남교회 온라인 주보`;
+  const dateLabel = new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(bulletin.service_date));
+  const title = `${dateLabel} 주보 | 갈보리채플 강남교회`;
+  const description = `${bulletin.scripture_reference} · ${bulletin.message_title}`;
 
   return {
     title,

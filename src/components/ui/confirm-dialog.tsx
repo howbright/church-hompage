@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -12,6 +12,7 @@ type ConfirmDialogProps = {
   pending?: boolean;
   confirmDisabled?: boolean;
   danger?: boolean;
+  size?: "default" | "large";
   children?: ReactNode;
   onConfirm: () => void;
   onClose: () => void;
@@ -27,11 +28,14 @@ export function ConfirmDialog({
   pending = false,
   confirmDisabled = false,
   danger = false,
+  size = "default",
   children,
   onConfirm,
   onClose,
 }: ConfirmDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
+  const descriptionId = useId();
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -47,8 +51,8 @@ export function ConfirmDialog({
   return (
     <dialog
       ref={dialogRef}
-      aria-labelledby="confirm-dialog-title"
-      aria-describedby="confirm-dialog-description"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
       onCancel={(event) => {
         event.preventDefault();
         if (!pending) onClose();
@@ -56,17 +60,21 @@ export function ConfirmDialog({
       onClose={() => {
         if (open && !pending) onClose();
       }}
-      className="m-auto w-[min(32rem,calc(100%-2rem))] rounded-[1.75rem] border border-black/10 bg-white p-0 text-[var(--foreground)] shadow-[0_28px_90px_rgba(0,0,0,0.3)] backdrop:bg-black/45 backdrop:backdrop-blur-sm"
+      className={`m-auto rounded-[1.75rem] border border-black/10 bg-white p-0 text-[var(--foreground)] shadow-[0_28px_90px_rgba(0,0,0,0.3)] backdrop:bg-black/45 backdrop:backdrop-blur-sm ${
+        size === "large"
+          ? "w-[min(52rem,calc(100%-2rem))]"
+          : "w-[min(32rem,calc(100%-2rem))]"
+      }`}
     >
       <div className="p-6 sm:p-7">
         <h2
-          id="confirm-dialog-title"
+          id={titleId}
           className="text-xl font-semibold text-[var(--page-deep)]"
         >
           {title}
         </h2>
         <p
-          id="confirm-dialog-description"
+          id={descriptionId}
           className="mt-3 text-sm leading-6 text-[var(--page-muted)]"
         >
           {description}

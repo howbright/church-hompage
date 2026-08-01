@@ -56,6 +56,7 @@ export function AdminBulletinManager({
 }) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const columnRef = useRef<HTMLTextAreaElement>(null);
   const [selectedBulletin, setSelectedBulletin] = useState<EditableBulletin | null>(
     null,
   );
@@ -63,10 +64,22 @@ export function AdminBulletinManager({
   const [deleteState, setDeleteState] = useState<BulletinActionState>(initialState);
   const [deleteTarget, setDeleteTarget] = useState<EditableBulletin | null>(null);
   const [deletePassword, setDeletePassword] = useState("");
+  const [columnContent, setColumnContent] = useState("");
+  const [generatorOpen, setGeneratorOpen] = useState(false);
+  const [sermonAbstract, setSermonAbstract] = useState("");
+  const [generatorPassword, setGeneratorPassword] = useState("");
+  const [generatorState, setGeneratorState] =
+    useState<BulletinActionState>(initialState);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [isSavePending, startSaveTransition] = useTransition();
   const [isDeletePending, startDeleteTransition] = useTransition();
-  const activeMessage = deleteState.status !== "idle" ? deleteState : saveState;
+  const [isGeneratePending, startGenerateTransition] = useTransition();
+  const activeMessage =
+    deleteState.status !== "idle"
+      ? deleteState
+      : generatorState.status !== "idle"
+        ? generatorState
+        : saveState;
 
   const formTitle = selectedBulletin ? "주보 수정" : "새 주보 작성";
   const submitLabel = selectedBulletin ? "주보 수정하기" : "주보 게시하기";
@@ -79,6 +92,7 @@ export function AdminBulletinManager({
 
       if (result.status === "success") {
         setSelectedBulletin(null);
+        setColumnContent("");
         router.refresh();
       }
     });
@@ -87,9 +101,80 @@ export function AdminBulletinManager({
   function handleEdit(bulletin: EditableBulletin) {
     setSaveState(initialState);
     setDeleteState(initialState);
+    setGeneratorState(initialState);
     setSelectedBulletin(bulletin);
+    setColumnContent(bulletin.column_content);
     requestAnimationFrame(() => {
       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function handleNewBulletin() {
+    setSelectedBulletin(null);
+    setColumnContent("");
+    setSaveState(initialState);
+    setDeleteState(initialState);
+    setGeneratorState(initialState);
+  }
+
+  function openGeneratorDialog() {
+    setGeneratorState(initialState);
+    setGeneratorOpen(true);
+  }
+
+  function closeGeneratorDialog() {
+    if (isGeneratePending) return;
+    setGeneratorOpen(false);
+    setGeneratorPassword("");
+  }
+
+  function handleGenerateColumn() {
+    if (!sermonAbstract.trim() || !generatorPassword.trim()) return;
+
+    startGenerateTransition(async () => {
+      setSaveState(initialState);
+      setDeleteState(initialState);
+      setGeneratorState(initialState);
+
+      try {
+        const response = await fetch("/api/bulletin-column", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            abstract: sermonAbstract.trim(),
+            adminPassword: generatorPassword.trim(),
+          }),
+        });
+        const payload = (await response.json()) as {
+          column?: string;
+          message?: string;
+        };
+
+        if (!response.ok || !payload.column) {
+          throw new Error(payload.message || "컬럼을 생성하지 못했습니다.");
+        }
+
+        setColumnContent(payload.column);
+        setGeneratorState({
+          status: "success",
+          message: "생성된 글을 컬럼 입력란에 반영했습니다.",
+        });
+        setGeneratorOpen(false);
+        setSermonAbstract("");
+        setGeneratorPassword("");
+        requestAnimationFrame(() => {
+          columnRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+          columnRef.current?.focus({ preventScroll: true });
+        });
+      } catch (error) {
+        setGeneratorState({
+          status: "error",
+          message:
+            error instanceof Error
+              ? error.message
+              : "컬럼을 생성하는 중 오류가 발생했습니다.",
+        });
+      }
     });
   }
 
@@ -134,6 +219,7 @@ export function AdminBulletinManager({
   function closeToast() {
     setSaveState(initialState);
     setDeleteState(initialState);
+    setGeneratorState(initialState);
   }
 
   return (
@@ -150,7 +236,7 @@ export function AdminBulletinManager({
           {selectedBulletin ? (
             <button
               type="button"
-              onClick={() => setSelectedBulletin(null)}
+              onClick={handleNewBulletin}
               className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-[var(--page-deep)] transition hover:border-[var(--page-accent-strong)]"
             >
               새 주보 작성으로 돌아가기
@@ -211,20 +297,37 @@ export function AdminBulletinManager({
           />
         </label>
 
-        <label className="space-y-2">
-          <span className="text-sm font-semibold text-[var(--page-deep)]">
-            컬럼
-          </span>
+        <div className="space-y-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <label
+              htmlFor="column-content"
+              className="text-sm font-semibold text-[var(--page-deep)]"
+            >
+              컬럼
+            </label>
+            <button
+              type="button"
+              onClick={openGeneratorDialog}
+              className="inline-flex items-center justify-center rounded-full border border-[#8bc9ef] bg-[#edf8ff] px-4 py-2 text-sm font-bold text-[#0b689f] transition hover:border-[#3f9fe8] hover:bg-white"
+            >
+              설교 초록을 컬럼으로 바꾸기
+            </button>
+          </div>
           <textarea
+            ref={columnRef}
+            id="column-content"
             name="columnContent"
             required
             rows={10}
             placeholder="길게 들어가는 컬럼 내용을 적어주세요."
-            defaultValue={selectedBulletin?.column_content ?? ""}
-            key={`column-${selectedBulletin?.id ?? "new"}`}
+            value={columnContent}
+            onChange={(event) => setColumnContent(event.target.value)}
             className="w-full rounded-[1.5rem] border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--page-accent-strong)]"
           />
-        </label>
+          <p className="text-xs leading-5 text-[var(--page-muted)]">
+            직접 작성하거나, 설교 초록을 AI로 정리한 뒤 자유롭게 수정할 수 있습니다.
+          </p>
+        </div>
 
         <label className="space-y-2">
           <span className="text-sm font-semibold text-[var(--page-deep)]">
@@ -314,6 +417,56 @@ export function AdminBulletinManager({
           </ul>
         )}
       </section>
+
+      <ConfirmDialog
+        open={generatorOpen}
+        title="설교 초록을 컬럼으로 바꾸기"
+        description={
+          columnContent.trim()
+            ? "설교 초록을 붙여넣으면 AI가 주보용 컬럼으로 정리합니다. 생성 결과는 현재 컬럼 내용을 대체합니다."
+            : "목사님의 설교 초록을 붙여넣으면 AI가 읽기 좋은 주보용 컬럼으로 정리합니다."
+        }
+        confirmLabel="컬럼으로 바꾸기"
+        pendingLabel="컬럼 작성 중..."
+        pending={isGeneratePending}
+        confirmDisabled={!sermonAbstract.trim() || !generatorPassword.trim()}
+        size="large"
+        onConfirm={handleGenerateColumn}
+        onClose={closeGeneratorDialog}
+      >
+        <div className="space-y-5">
+          <label className="block space-y-2">
+            <span className="text-sm font-semibold text-[var(--page-deep)]">
+              설교 초록
+            </span>
+            <textarea
+              value={sermonAbstract}
+              onChange={(event) => setSermonAbstract(event.target.value)}
+              rows={14}
+              maxLength={30_000}
+              autoFocus
+              placeholder="이번 주일 설교를 위해 작성한 초록을 여기에 붙여넣어 주세요."
+              className="w-full resize-y rounded-[1.5rem] border border-black/10 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-[#3f9fe8]"
+            />
+            <span className="block text-right text-xs text-[var(--page-muted)]">
+              {sermonAbstract.length.toLocaleString()} / 30,000자
+            </span>
+          </label>
+          <label className="block space-y-2">
+            <span className="text-sm font-semibold text-[var(--page-deep)]">
+              관리자 비밀번호
+            </span>
+            <input
+              type="password"
+              value={generatorPassword}
+              onChange={(event) => setGeneratorPassword(event.target.value)}
+              autoComplete="current-password"
+              placeholder="비밀번호를 입력해주세요"
+              className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#3f9fe8]"
+            />
+          </label>
+        </div>
+      </ConfirmDialog>
 
       <ConfirmDialog
         open={deleteTarget !== null}

@@ -16,6 +16,18 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Bulletin column generator
+
+The bulletin admin page proxies sermon abstract requests to the external Church API.
+Set the full Cloud Run endpoint URL in the server environment:
+
+```bash
+API_BASE_URL=https://your-cloud-run-service.example
+```
+
+The proxy sends `POST /church/weekly-column` with `{ "draftText": "..." }` and
+expects `{ "ok": true, "column": "..." }`.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const content = {
   en: {
-    eyebrow: "Church of Seoul",
+    eyebrow: "GangNam Church",
     beliefTitle: "What We Believe and Teach",
     beliefItems: [
       {
@@ -74,6 +74,7 @@ const content = {
     ],
   },
   ko: {
+    eyebrow: "갈보리채플 강남교회",
     beliefTitle: "우리가 믿고 가르치는 것",
     beliefItems: [
       {
@@ -204,7 +205,7 @@ export default function Home() {
             </div>
             <div className="flex justify-center">
               <p className="rounded-full border border-white/80 bg-[rgba(255,255,255,0.82)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent-strong)] shadow-[0_12px_24px_rgba(0,0,0,0.06)] backdrop-blur-md sm:text-xs">
-                GangNam Church
+                {t.eyebrow}
               </p>
             </div>
             <div className="mt-4 flex justify-center">

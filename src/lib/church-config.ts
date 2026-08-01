@@ -7,11 +7,9 @@ export const churchConfig = {
   logoSrc: "/logo.svg",
   bulletinImageSrc: "/bulletin-scripture.png",
   worshipOrder: [
-    "찬양",
-    "대표기도",
-    "성경봉독",
-    "말씀선포",
-    "헌금 및 광고",
+    "찬양과 경배",
+    "믿음의 고백",
+    "말씀 강론",
     "축도",
   ],
 } as const;

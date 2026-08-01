@@ -85,7 +85,6 @@ export function getBulletinPrintMeta() {
     churchName: churchConfig.koreanName,
     englishName: churchConfig.englishName,
     email: churchConfig.contactEmail,
-    youtubeUrl: churchConfig.youtubeUrl,
     worshipOrder: churchConfig.worshipOrder,
     logoSrc: churchConfig.logoSrc,
     bulletinImageSrc: churchConfig.bulletinImageSrc,

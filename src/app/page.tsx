@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { SocialLinks } from "@/components/social-links";
 
 const content = {
   en: {
@@ -52,11 +53,6 @@ const content = {
         title: "Location",
         description: "Please contact us by email.",
       },
-      {
-        title: "Email",
-        description: "mosesnara@hanmail.net",
-        cta: "Write Email",
-      },
     ],
     schoolLabel: "Ministries",
     schoolTitle: "Counseling & Bible Training",
@@ -72,6 +68,10 @@ const content = {
           "In-depth study of Scripture from Genesis to Revelation",
       },
     ],
+    contactTitle: "Contact",
+    contactEmail: "mosesnara@hanmail.net",
+    contactCta: "Write Email",
+    instagramLabel: "Instagram",
   },
   ko: {
     eyebrow: "갈보리채플 강남교회",
@@ -118,14 +118,18 @@ const content = {
       "(8월 임시 예배처소) 서울시 송파구 동남로24길 11, B1층 소리소극장",
     locationItems: [
       {
-        title: "장소 안내",
+        title: "주일 예배",
         description:
           "(8월 임시 예배처소) 서울시 송파구 동남로24길 11, B1층 소리소극장",
       },
       {
-        title: "이메일",
-        description: "mosesnara@hanmail.net",
-        cta: "메일쓰기",
+        title: "수요 예배",
+        description:
+          "(8월 임시 예배처소) 서울 서초구 명달로11길 17-7 B01호, 홀리센터",
+      },
+      {
+        title: "토요 모임",
+        description: "이메일 문의",
       },
     ],
     schoolLabel: "사역 안내",
@@ -142,6 +146,10 @@ const content = {
           "창세기부터 요한계시록까지 성경을 심도 있게 배웁니다",
       },
     ],
+    contactTitle: "문의",
+    contactEmail: "mosesnara@hanmail.net",
+    contactCta: "메일쓰기",
+    instagramLabel: "인스타그램",
   },
 } as const;
 
@@ -281,102 +289,111 @@ export default function Home() {
 
           <section
             aria-label="Church information"
-            className="grid gap-px overflow-hidden rounded-[2rem] border border-white/80 bg-[rgba(255,255,255,0.58)] shadow-[0_24px_80px_rgba(0,0,0,0.08)] backdrop-blur-xl lg:grid-cols-3"
+            className="relative grid gap-3 overflow-hidden rounded-[2rem] border border-[#b9ddf5] bg-[linear-gradient(145deg,rgba(234,247,255,0.98)_0%,rgba(220,240,253,0.9)_52%,rgba(244,250,255,0.96)_100%)] p-3 shadow-[0_28px_80px_rgba(8,39,91,0.13)] sm:gap-4 sm:p-4 lg:grid-cols-3"
           >
-            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.97)_0%,rgba(252,252,251,0.96)_28%,rgba(247,247,245,0.92)_100%)] px-6 py-6 sm:px-8 sm:py-7">
-              <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-worship)]" />
-              <p className="inline-flex rounded-full bg-[rgba(0,0,0,0.04)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-worship-deep)]">
+            <article className="relative overflow-hidden rounded-[1.35rem] border border-white bg-[rgba(255,255,255,0.94)] px-6 py-6 shadow-[0_16px_38px_rgba(8,39,91,0.08)] sm:px-8 sm:py-8">
+              <div className="absolute inset-x-0 top-0 h-1.5 bg-[var(--card-worship)]" />
+              <p className="inline-flex rounded-full bg-[#e5f5ff] px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-[var(--card-worship-deep)]">
                 {t.worshipLabel}
               </p>
-              <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
+              <h2 className="mt-4 border-l-4 border-[var(--card-worship)] pl-3 text-2xl font-semibold text-[#08275b]">
                 {t.worshipTitle}
               </h2>
-              <ul className="mt-5 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
+              <ul className="mt-6 space-y-4 text-sm leading-6 text-[var(--page-muted)] marker:text-[var(--card-worship)] sm:text-[0.95rem]">
                 {t.worshipItems.map((item) => (
-                  <li key={item.title} className="flex flex-wrap gap-x-2">
-                    <span className="text-base font-semibold text-[var(--page-deep)]">
-                      {item.title}
+                  <li
+                    key={item.title}
+                    className="flex gap-3 before:mt-[0.6rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-[var(--card-worship)]"
+                  >
+                    <span className="flex flex-wrap gap-x-2">
+                      <span className="text-base font-semibold text-[var(--page-deep)]">
+                        {item.title}
+                      </span>
+                      <span>{item.description}</span>
                     </span>
-                    <span>{item.description}</span>
                   </li>
                 ))}
-                <li>
-                  <p className="inline text-base font-semibold text-[var(--page-deep)]">
-                    {t.youtubeLabel}
-                  </p>
-                  <span className="mx-2 inline">|</span>
-                  <span>
-                    <a
-                      href="https://www.youtube.com/@calvarymoses"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="font-semibold text-[var(--page-accent-strong)] underline decoration-2 decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-deep)]"
-                    >
-                      {t.youtubeCta}
-                    </a>
-                  </span>
-                </li>
               </ul>
+              <div className="mt-7 border-t border-[#d7e5f2] pt-6">
+                <h3 className="border-l-4 border-[var(--card-worship)] pl-3 text-xl font-semibold text-[#08275b]">
+                  SNS
+                </h3>
+                <div className="mt-4 rounded-xl bg-[#f0f8fd] px-4 py-3">
+                  <SocialLinks />
+                </div>
+              </div>
             </article>
 
-            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(251,251,250,0.95)_22%,rgba(246,246,244,0.92)_100%)] px-6 py-6 sm:px-8 sm:py-7">
-              <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-location)]" />
-              <p className="inline-flex rounded-full bg-[rgba(0,0,0,0.04)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-location-deep)]">
+            <article className="relative overflow-hidden rounded-[1.35rem] border border-white bg-[rgba(255,255,255,0.94)] px-6 py-6 shadow-[0_16px_38px_rgba(8,39,91,0.08)] sm:px-8 sm:py-8">
+              <div className="absolute inset-x-0 top-0 h-1.5 bg-[var(--card-location)]" />
+              <p className="inline-flex rounded-full bg-[#e4f2fd] px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-[var(--card-location-deep)]">
                 {t.locationLabel}
               </p>
-              <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
+              <h2 className="mt-4 border-l-4 border-[var(--card-location)] pl-3 text-2xl font-semibold text-[#08275b]">
                 {t.locationTitle}
               </h2>
-              <ul className="mt-5 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
+              <ul className="mt-6 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
                 {t.locationItems.map((item) => (
-                  <li key={item.title} className="flex flex-wrap gap-x-2">
-                    <span className="text-base font-semibold text-[var(--page-deep)]">
-                      {item.title}
-                    </span>
-                    <span>|</span>
-                    <span>
-                      {item.title === "Email" || item.title === "이메일" ? (
-                        <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <a
-                            href="mailto:mosesnara@hanmail.net"
-                            className="font-semibold text-[var(--page-accent-strong)] underline decoration-2 decoration-[var(--page-accent)] underline-offset-4 break-all transition hover:text-[var(--page-deep)]"
-                          >
-                            {item.description}
-                          </a>
-                          <a
-                            href="mailto:mosesnara@hanmail.net"
-                            className="text-sm font-semibold text-[var(--page-deep)] underline decoration-[var(--page-accent)] underline-offset-4 transition hover:text-[var(--page-accent-strong)]"
-                          >
-                            {item.cta}
-                          </a>
-                        </span>
-                      ) : (
-                        item.description
-                      )}
+                  <li
+                    key={item.title}
+                    className="flex gap-3 before:mt-[0.6rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-[var(--card-location)]"
+                  >
+                    <span className="flex flex-wrap gap-x-2">
+                      <span className="text-base font-semibold text-[var(--page-deep)]">
+                        {item.title}
+                      </span>
+                      <span>|</span>
+                      <span>{item.description}</span>
                     </span>
                   </li>
                 ))}
               </ul>
             </article>
 
-            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(252,252,251,0.94)_20%,rgba(246,246,244,0.92)_100%)] px-6 py-6 sm:px-8 sm:py-7">
-              <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-school)]" />
-              <p className="inline-flex rounded-full bg-[rgba(0,0,0,0.04)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-school-deep)]">
+            <article className="relative overflow-hidden rounded-[1.35rem] border border-white bg-[rgba(255,255,255,0.94)] px-6 py-6 shadow-[0_16px_38px_rgba(8,39,91,0.08)] sm:px-8 sm:py-8">
+              <div className="absolute inset-x-0 top-0 h-1.5 bg-[var(--card-school)]" />
+              <p className="inline-flex rounded-full bg-[#e9eef7] px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-[var(--card-school-deep)]">
                 {t.schoolLabel}
               </p>
-              <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
+              <h2 className="mt-4 border-l-4 border-[var(--card-school)] pl-3 text-2xl font-semibold text-[#08275b]">
                 {t.schoolTitle}
               </h2>
-              <ul className="mt-5 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
+              <ul className="mt-6 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
                 {t.schoolItems.map((item) => (
-                  <li key={item.title}>
-                    <p className="text-base font-semibold text-[var(--page-deep)]">
-                      {item.title}
-                    </p>
-                    <p className="mt-1">{item.description}</p>
+                  <li
+                    key={item.title}
+                    className="flex gap-3 before:mt-[0.6rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-[var(--card-school)]"
+                  >
+                    <div>
+                      <p className="text-base font-semibold text-[var(--page-deep)]">
+                        {item.title}
+                      </p>
+                      <p className="mt-1">{item.description}</p>
+                    </div>
                   </li>
                 ))}
               </ul>
+              <div className="mt-7 border-t border-[#d7e5f2] pt-6">
+                <h3 className="border-l-4 border-[var(--card-school)] pl-3 text-xl font-semibold text-[#08275b]">
+                  {t.contactTitle}
+                </h3>
+                <div className="mt-4 rounded-xl bg-[#f0f5fb] px-4 py-3 text-sm">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                    <a
+                      href="mailto:mosesnara@hanmail.net"
+                      className="break-all font-semibold text-[#075f9b] underline decoration-2 decoration-[#7fc5ef] underline-offset-4 transition hover:text-[#08275b]"
+                    >
+                      {t.contactEmail}
+                    </a>
+                    <a
+                      href="mailto:mosesnara@hanmail.net"
+                      className="font-semibold text-[#08275b] underline decoration-[#7fc5ef] underline-offset-4 transition hover:text-[#075f9b]"
+                    >
+                      {t.contactCta}
+                    </a>
+                  </div>
+                </div>
+              </div>
             </article>
           </section>
         </div>

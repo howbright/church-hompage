@@ -4,6 +4,7 @@ import {
   buildBulletinPrintPages,
   getBulletinPrintMeta,
 } from "@/lib/bulletin-print";
+import { SocialLinks } from "@/components/social-links";
 
 export function BulletinPrintDocument({
   bulletin,
@@ -77,11 +78,17 @@ export function BulletinPrintDocument({
                       </ol>
                     </SectionBox>
 
-                    <SectionBox title="문의 / 온라인 예배" compact>
-                      <div className="space-y-2 text-sm leading-6 text-[var(--page-muted)]">
-                        <p>{meta.email}</p>
-                        <p className="break-all">{meta.youtubeUrl}</p>
-                      </div>
+                    <SectionBox title="문의" compact>
+                      <a
+                        href={`mailto:${meta.email}`}
+                        className="break-all text-sm font-semibold leading-6 text-[#075f9b] underline decoration-2 decoration-[#7fc5ef] underline-offset-4"
+                      >
+                        {meta.email}
+                      </a>
+                    </SectionBox>
+
+                    <SectionBox title="SNS" compact>
+                      <SocialLinks compact />
                     </SectionBox>
 
                     <div className="border border-black/10">

@@ -4,6 +4,7 @@ export const churchConfig = {
   koreanName: "갈보리채플 강남교회",
   contactEmail: "mosesnara@hanmail.net",
   youtubeUrl: "https://www.youtube.com/@calvarymoses",
+  instagramUrl: "https://www.instagram.com/calvary_chapel_gangnam/",
   logoSrc: "/logo.svg",
   bulletinImageSrc: "/bulletin-scripture.png",
   worshipOrder: [

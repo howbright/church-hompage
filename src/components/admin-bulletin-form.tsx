@@ -57,23 +57,25 @@ export function AdminBulletinManager({
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const columnRef = useRef<HTMLTextAreaElement>(null);
+  const messageTitleRef = useRef<HTMLInputElement>(null);
   const [selectedBulletin, setSelectedBulletin] = useState<EditableBulletin | null>(
     null,
   );
   const [saveState, setSaveState] = useState<BulletinActionState>(initialState);
   const [deleteState, setDeleteState] = useState<BulletinActionState>(initialState);
+  const [isSaving, setIsSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<EditableBulletin | null>(null);
   const [deletePassword, setDeletePassword] = useState("");
+  const [messageTitle, setMessageTitle] = useState("");
   const [columnContent, setColumnContent] = useState("");
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [sermonAbstract, setSermonAbstract] = useState("");
   const [generatorPassword, setGeneratorPassword] = useState("");
+  const [isGeneratingColumn, setIsGeneratingColumn] = useState(false);
   const [generatorState, setGeneratorState] =
     useState<BulletinActionState>(initialState);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
-  const [isSavePending, startSaveTransition] = useTransition();
   const [isDeletePending, startDeleteTransition] = useTransition();
-  const [isGeneratePending, startGenerateTransition] = useTransition();
   const activeMessage =
     deleteState.status !== "idle"
       ? deleteState
@@ -85,17 +87,60 @@ export function AdminBulletinManager({
   const submitLabel = selectedBulletin ? "주보 수정하기" : "주보 게시하기";
 
   async function handleSave(formData: FormData) {
-    startSaveTransition(async () => {
-      setDeleteState(initialState);
-      const result = await saveAction(saveState, formData);
+    if (isSaving) return;
+
+    const latestMessageTitle = messageTitleRef.current?.value.trim() ?? "";
+    formData.set("messageTitle", latestMessageTitle);
+
+    setDeleteState(initialState);
+    setGeneratorState(initialState);
+    setSaveState(initialState);
+
+    const requiredFields = [
+      ["serviceDate", "주일 날짜"],
+      ["scriptureReference", "말씀 본문"],
+      ["messageTitle", "말씀제목"],
+      ["columnContent", "칼럼"],
+      ["adminPassword", "관리자 비밀번호"],
+    ] as const;
+    const missingField = requiredFields.find(
+      ([name]) => !formData.get(name)?.toString().trim(),
+    );
+
+    if (missingField) {
+      setSaveState({
+        status: "error",
+        message: `${missingField[1]}을(를) 입력해주세요.`,
+      });
+      formRef.current
+        ?.querySelector<HTMLElement>(`[name="${missingField[0]}"]`)
+        ?.focus();
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const result = await saveAction(initialState, formData);
       setSaveState(result);
 
       if (result.status === "success") {
         setSelectedBulletin(null);
+        setMessageTitle("");
         setColumnContent("");
         router.refresh();
       }
-    });
+    } catch (error) {
+      setSaveState({
+        status: "error",
+        message:
+          error instanceof Error && error.message
+            ? error.message
+            : "저장 요청을 처리하지 못했습니다. 네트워크 연결을 확인하고 다시 시도해주세요.",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   function handleEdit(bulletin: EditableBulletin) {
@@ -103,6 +148,7 @@ export function AdminBulletinManager({
     setDeleteState(initialState);
     setGeneratorState(initialState);
     setSelectedBulletin(bulletin);
+    setMessageTitle(bulletin.message_title);
     setColumnContent(bulletin.column_content);
     requestAnimationFrame(() => {
       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -111,6 +157,7 @@ export function AdminBulletinManager({
 
   function handleNewBulletin() {
     setSelectedBulletin(null);
+    setMessageTitle("");
     setColumnContent("");
     setSaveState(initialState);
     setDeleteState(initialState);
@@ -123,59 +170,66 @@ export function AdminBulletinManager({
   }
 
   function closeGeneratorDialog() {
-    if (isGeneratePending) return;
+    if (isGeneratingColumn) return;
     setGeneratorOpen(false);
     setGeneratorPassword("");
   }
 
-  function handleGenerateColumn() {
-    if (!sermonAbstract.trim() || !generatorPassword.trim()) return;
+  async function handleGenerateColumn() {
+    if (
+      isGeneratingColumn ||
+      !sermonAbstract.trim() ||
+      !generatorPassword.trim()
+    ) {
+      return;
+    }
 
-    startGenerateTransition(async () => {
-      setSaveState(initialState);
-      setDeleteState(initialState);
-      setGeneratorState(initialState);
+    setIsGeneratingColumn(true);
+    setSaveState(initialState);
+    setDeleteState(initialState);
+    setGeneratorState(initialState);
 
-      try {
-        const response = await fetch("/api/bulletin-column", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            abstract: sermonAbstract.trim(),
-            adminPassword: generatorPassword.trim(),
-          }),
-        });
-        const payload = (await response.json()) as {
-          column?: string;
-          message?: string;
-        };
+    try {
+      const response = await fetch("/api/bulletin-column", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          abstract: sermonAbstract.trim(),
+          adminPassword: generatorPassword.trim(),
+        }),
+      });
+      const payload = (await response.json()) as {
+        column?: string;
+        message?: string;
+      };
 
-        if (!response.ok || !payload.column) {
-          throw new Error(payload.message || "칼럼을 생성하지 못했습니다.");
-        }
-
-        setColumnContent(payload.column);
-        setGeneratorState({
-          status: "success",
-          message: "생성된 글을 칼럼 입력란에 반영했습니다.",
-        });
-        setGeneratorOpen(false);
-        setSermonAbstract("");
-        setGeneratorPassword("");
-        requestAnimationFrame(() => {
-          columnRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-          columnRef.current?.focus({ preventScroll: true });
-        });
-      } catch (error) {
-        setGeneratorState({
-          status: "error",
-          message:
-            error instanceof Error
-              ? error.message
-              : "칼럼을 생성하는 중 오류가 발생했습니다.",
-        });
+      if (!response.ok || !payload.column) {
+        throw new Error(payload.message || "칼럼을 생성하지 못했습니다.");
       }
-    });
+
+      setColumnContent(payload.column);
+      setGeneratorState({
+        status: "success",
+        message: "생성된 글을 칼럼 입력란에 반영했습니다.",
+      });
+      setGeneratorOpen(false);
+      setSermonAbstract("");
+      setGeneratorPassword("");
+      requestAnimationFrame(() => {
+        columnRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        columnRef.current?.focus({ preventScroll: true });
+      });
+    } catch (error) {
+      setGeneratorState({
+        status: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "칼럼을 생성하는 중 오류가 발생했습니다.",
+      });
+    } finally {
+      setIsGeneratingColumn(false);
+    }
   }
 
   function openDeleteDialog(bulletin: EditableBulletin) {
@@ -227,6 +281,7 @@ export function AdminBulletinManager({
       <form
         ref={formRef}
         action={handleSave}
+        noValidate
         className="scroll-mt-6 space-y-6 rounded-[2rem] border border-black/8 bg-[var(--surface-strong)] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.06)] backdrop-blur"
       >
         <div className="flex items-center justify-between gap-3">
@@ -287,12 +342,16 @@ export function AdminBulletinManager({
             말씀제목
           </span>
           <input
+            ref={messageTitleRef}
             type="text"
             name="messageTitle"
             required
             placeholder="예: 성령 안에서 누리는 자유"
-            defaultValue={selectedBulletin?.message_title ?? ""}
-            key={`title-${selectedBulletin?.id ?? "new"}`}
+            value={messageTitle}
+            onChange={(event) => setMessageTitle(event.target.value)}
+            onCompositionEnd={(event) =>
+              setMessageTitle(event.currentTarget.value)
+            }
             className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--page-accent-strong)]"
           />
         </label>
@@ -357,7 +416,7 @@ export function AdminBulletinManager({
         </label>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <SubmitButton label={submitLabel} pending={isSavePending} />
+          <SubmitButton label={submitLabel} pending={isSaving} />
         </div>
       </form>
 
@@ -428,7 +487,7 @@ export function AdminBulletinManager({
         }
         confirmLabel="칼럼으로 바꾸기"
         pendingLabel="칼럼 작성 중..."
-        pending={isGeneratePending}
+        pending={isGeneratingColumn}
         confirmDisabled={!sermonAbstract.trim() || !generatorPassword.trim()}
         size="large"
         onConfirm={handleGenerateColumn}
@@ -442,6 +501,7 @@ export function AdminBulletinManager({
             <textarea
               value={sermonAbstract}
               onChange={(event) => setSermonAbstract(event.target.value)}
+              disabled={isGeneratingColumn}
               rows={14}
               maxLength={30_000}
               autoFocus
@@ -460,6 +520,7 @@ export function AdminBulletinManager({
               type="password"
               value={generatorPassword}
               onChange={(event) => setGeneratorPassword(event.target.value)}
+              disabled={isGeneratingColumn}
               autoComplete="current-password"
               placeholder="비밀번호를 입력해주세요"
               className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#3f9fe8]"

@@ -7,8 +7,25 @@ import { useState } from "react";
 const content = {
   en: {
     eyebrow: "Church of Seoul",
-    description:
-      "Following Pastor Chuck Smith's verse-by-verse teaching philosophy, Calvary Chapel teaches the whole counsel of God from Genesis to Revelation.",
+    beliefTitle: "What We Believe and Teach",
+    beliefItems: [
+      {
+        title: "Jesus Christ and Grace",
+        description:
+          "We confess Jesus Christ as the head of the church and proclaim salvation through His cross and resurrection as God's gift of grace, received through faith.",
+      },
+      {
+        title: "Teaching the Whole Bible",
+        description:
+          "Relying on the Holy Spirit, we teach from Genesis to Revelation chapter by chapter and verse by verse, seeking to explain the meaning and emphasis of the biblical text itself.",
+      },
+      {
+        title: "Growing Together",
+        description:
+          "Whether opening the Bible for the first time or continuing a lifelong journey of faith, everyone is welcome to grow in God's Word and share the gospel and love of Jesus with others.",
+      },
+    ],
+    bulletinCta: "View Online Bulletin",
     worshipLabel: "Worship Guide",
     worshipTitle: "Service Times",
     worshipItems: [
@@ -57,8 +74,25 @@ const content = {
     ],
   },
   ko: {
-    description:
-      "갈보리채플 강남교회는 예수 그리스도를 교회의 머리로 고백하며, 하나님의 말씀을 신앙과 삶의 기준으로 삼고 성령의 인도하심을 의지합니다. 우리는 예수님의 십자가 죽음과 부활로 주어진 구원이 사람의 공로나 행위가 아니라 하나님의 은혜로, 믿음을 통해 받는 선물임을 전합니다. 익숙한 구절이나 특정 주제만 골라 전하기보다, 창세기부터 요한계시록까지 성경을 장별·절별로 차례대로 가르치며 본문의 흐름과 역사적 배경을 함께 살핍니다. 설교자의 생각을 본문에 덧붙이기보다 성경 자체가 말하는 의미와 강조점을 분명하게 전하여, 성령께서 말씀을 통해 예수님을 더욱 깊이 알게 하시고 우리의 삶을 사랑과 순종으로 변화시키시도록 돕습니다. 성경을 처음 접하는 분부터 오래 신앙생활을 한 분까지 누구나 함께 말씀을 배우며, 하나님의 은혜 안에서 믿음의 기초를 세우고 이웃에게 복음과 사랑을 나누는 삶으로 자라가기를 소망합니다.",
+    beliefTitle: "우리가 믿고 가르치는 것",
+    beliefItems: [
+      {
+        title: "예수 그리스도와 은혜",
+        description:
+          "갈보리채플 강남교회는 예수 그리스도를 교회의 머리로 고백하며, 하나님의 말씀을 신앙과 삶의 기준으로 삼고 성령의 인도하심을 의지합니다. 예수님의 십자가 죽음과 부활로 주어진 구원이 사람의 공로나 행위가 아니라 하나님의 은혜로, 믿음을 통해 받는 선물임을 전합니다.",
+      },
+      {
+        title: "성경을 가르치는 방식",
+        description:
+          "익숙한 구절이나 특정 주제만 골라 전하기보다, 창세기부터 요한계시록까지 성경을 장별·절별로 차례대로 가르치며 본문의 흐름과 역사적 배경을 함께 살핍니다. 설교자의 생각을 덧붙이기보다 성경 자체가 말하는 의미와 강조점을 분명하게 전합니다.",
+      },
+      {
+        title: "함께 자라는 공동체",
+        description:
+          "성령께서 말씀을 통해 예수님을 더욱 깊이 알게 하시고 우리의 삶을 사랑과 순종으로 변화시키시도록 돕습니다. 성경을 처음 접하는 분부터 오래 신앙생활을 한 분까지 누구나 함께 말씀을 배우며, 이웃에게 복음과 사랑을 나누는 삶으로 자라가기를 소망합니다.",
+      },
+    ],
+    bulletinCta: "온라인 주보 보기",
     worshipLabel: "예배 안내",
     worshipTitle: "모임 시간",
     worshipItems: [
@@ -183,15 +217,46 @@ export default function Home() {
                 className="h-auto w-[20rem] max-w-full drop-shadow-[0_8px_24px_rgba(255,255,255,0.42)] sm:w-[24rem] lg:w-[30rem]"
               />
             </div>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[var(--page-soft)] sm:text-base">
-              {t.description}
-            </p>
+            <section
+              aria-labelledby="belief-title"
+              className="mx-auto mt-5 w-full max-w-5xl rounded-[1.75rem] border border-white/90 bg-[rgba(255,255,255,0.78)] px-5 py-5 text-left shadow-[0_20px_55px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:px-7 sm:py-6"
+            >
+              <h2
+                id="belief-title"
+                className="text-center text-xs font-bold uppercase tracking-[0.28em] text-[#1678b8] sm:text-sm"
+              >
+                {t.beliefTitle}
+              </h2>
+              <div className="mt-5 grid gap-5 md:grid-cols-3 md:gap-0">
+                {t.beliefItems.map((item, index) => (
+                  <article
+                    key={item.title}
+                    className="md:px-6 md:first:pl-0 md:last:pr-0 md:[&:not(:first-child)]:border-l md:[&:not(:first-child)]:border-black/10"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span
+                        aria-hidden="true"
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#dff2ff] text-xs font-bold text-[#1678b8]"
+                      >
+                        {index + 1}
+                      </span>
+                      <h3 className="text-sm font-bold text-[var(--page-deep)] sm:text-[0.95rem]">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-[var(--page-soft)] sm:leading-7">
+                      {item.description}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </section>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/bulletins"
                 className="rounded-full border-2 border-[#63b9ef] bg-[#eaf7ff] px-6 py-3 text-sm font-bold text-[#075f9b] shadow-[0_10px_28px_rgba(63,159,232,0.28)] transition hover:-translate-y-0.5 hover:border-[#3f9fe8] hover:bg-white hover:shadow-[0_14px_34px_rgba(63,159,232,0.38)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3f9fe8]"
               >
-                온라인 주보 보기
+                {t.bulletinCta}
               </Link>
             </div>
           </header>

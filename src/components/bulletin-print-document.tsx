@@ -20,16 +20,16 @@ export function BulletinPrintDocument({
       {pages.map((page) => (
         <section
           key={page.pageNumber}
-          className="print-page mx-auto mb-8 w-full max-w-[1180px] border border-black/8 bg-white p-8 shadow-[0_24px_70px_rgba(0,0,0,0.08)] print:mb-0 print:w-[297mm] print:max-w-none print:border print:border-black/10 print:p-0 print:shadow-none"
+          className="print-page mx-auto mb-6 w-full max-w-[1180px] border border-black/8 bg-white p-0 shadow-[0_18px_50px_rgba(0,0,0,0.07)] sm:mb-8 sm:p-8 sm:shadow-[0_24px_70px_rgba(0,0,0,0.08)] print:mb-0 print:w-[297mm] print:max-w-none print:border print:border-black/10 print:p-0 print:shadow-none"
         >
-          <div className="grid min-h-[180mm] grid-rows-[auto_1fr_auto] px-6 py-6 print:min-h-0 print:px-[10mm] print:py-[10mm]">
+          <div className="grid min-h-[180mm] grid-rows-[auto_1fr_auto] px-2 py-4 sm:px-6 sm:py-6 print:min-h-0 print:px-[10mm] print:py-[10mm]">
             <header className="border-b border-black/10 pb-5">
-              <div className="flex items-start justify-between gap-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
                 <div className="space-y-3">
                   <p className="inline-flex w-fit border-l-4 border-[var(--page-highlight)] pl-3 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[var(--page-accent-strong)]">
                     주보
                   </p>
-                  <div className="w-[220px] max-w-full">
+                  <div className="w-[180px] max-w-full sm:w-[220px]">
                     <Image
                       src={meta.logoSrc}
                       alt="Church logo"
@@ -49,18 +49,18 @@ export function BulletinPrintDocument({
                   </div>
                 </div>
 
-                <div className="max-w-[280px] border border-black/10 bg-[var(--page-sky-soft)] px-4 py-3 text-right shadow-[inset_0_4px_0_0_var(--page-highlight)]">
+                <div className="w-full min-w-0 border border-black/10 bg-[var(--page-sky-soft)] px-3 py-3 text-left shadow-[inset_0_4px_0_0_var(--page-highlight)] sm:w-auto sm:max-w-[280px] sm:px-4 sm:text-right">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--page-accent-strong)]">
                     말씀 본문
                   </p>
-                  <p className="mt-2 text-lg font-semibold text-[var(--page-deep)]">
+                  <p className="mt-2 break-words text-base font-semibold leading-6 text-[var(--page-deep)] sm:text-lg">
                     {page.scriptureReference}
                   </p>
                 </div>
               </div>
             </header>
 
-            <div className="pt-6">
+            <div className="pt-4 sm:pt-6">
               {page.isFirstPage ? (
                 <div className="print-first-page-grid grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
                   <aside className="space-y-4">
@@ -86,22 +86,22 @@ export function BulletinPrintDocument({
 
                     <div className="border border-black/10">
                       <Image
-                        src={meta.mapImageSrc}
-                        alt="Church map"
-                        width={700}
-                        height={500}
-                        className="h-auto w-full"
+                        src={meta.bulletinImageSrc}
+                        alt="햇살이 비치는 교회 안의 펼쳐진 성경"
+                        width={1484}
+                        height={1060}
+                        className="aspect-[7/5] w-full object-cover"
                       />
                     </div>
                   </aside>
 
                   <div className="space-y-5">
                     <section>
-                      <div className="border-t-[10px] border-[var(--page-highlight)] bg-[var(--page-sky-soft)] px-5 py-4">
+                      <div className="border-t-[8px] border-[var(--page-highlight)] bg-[var(--page-sky-soft)] px-3 py-4 sm:border-t-[10px] sm:px-5">
                         <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--page-accent-strong)]">
                           말씀제목
                         </p>
-                        <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
+                        <h2 className="mt-3 break-words text-xl font-semibold text-[var(--page-deep)] sm:text-2xl">
                           {page.title}
                         </h2>
                       </div>
@@ -124,11 +124,11 @@ export function BulletinPrintDocument({
                 </div>
               ) : (
                 <div className="space-y-5">
-                  <div className="border-t-[10px] border-[var(--page-highlight)] bg-[var(--page-sky-soft)] px-5 py-4">
+                  <div className="border-t-[8px] border-[var(--page-highlight)] bg-[var(--page-sky-soft)] px-3 py-4 sm:border-t-[10px] sm:px-5">
                     <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--page-accent-strong)]">
                       컬럼 계속
                     </p>
-                    <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
+                    <h2 className="mt-3 break-words text-xl font-semibold text-[var(--page-deep)] sm:text-2xl">
                       {page.title}
                     </h2>
                   </div>
@@ -142,7 +142,7 @@ export function BulletinPrintDocument({
               )}
             </div>
 
-            <footer className="mt-8 flex items-center justify-between border-t border-black/10 pt-4 text-xs text-[var(--page-muted)]">
+            <footer className="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-black/10 pt-4 text-xs text-[var(--page-muted)] sm:mt-8">
               <p>{meta.englishName}</p>
               <p className="border border-black/10 bg-[var(--page-highlight-soft)] px-2 py-1 font-semibold text-[var(--page-accent-strong)]">
                 {page.pageNumber} / {page.totalPages}
@@ -169,7 +169,13 @@ function SectionBox({
       <div className="border-b border-black/10 bg-[var(--page-sky-soft)] px-4 py-3 shadow-[inset_4px_0_0_0_var(--page-highlight)]">
         <h3 className="text-sm font-semibold text-[var(--page-deep)]">{title}</h3>
       </div>
-      <div className={compact ? "px-4 py-4" : "px-5 py-5"}>{children}</div>
+      <div
+        className={
+          compact ? "px-3 py-4 sm:px-4" : "px-3 py-4 sm:px-5 sm:py-5"
+        }
+      >
+        {children}
+      </div>
     </section>
   );
 }

@@ -20,7 +20,7 @@ export function BulletinView({
       : null;
 
   return (
-    <div className="mx-auto grid w-full max-w-[1280px] gap-8 bg-white px-6 py-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:px-10">
+    <div className="mx-auto grid w-full max-w-[1280px] gap-6 bg-white px-2 py-4 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:px-10 lg:py-10">
       <div className="space-y-5">
         <div className="flex justify-end">
           <div className="flex flex-wrap gap-2">
@@ -53,7 +53,7 @@ export function BulletinView({
       </div>
 
       <aside className="w-full lg:max-w-sm">
-        <div className="border border-black/8 bg-white p-6 shadow-[0_18px_45px_rgba(0,0,0,0.06)]">
+        <div className="border border-black/8 bg-white p-4 shadow-[0_18px_45px_rgba(0,0,0,0.06)] sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <h2 className="border-l-4 border-[var(--page-highlight)] pl-3 text-xl font-semibold text-[var(--page-deep)]">
               지난 주보

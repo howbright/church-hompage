@@ -88,6 +88,6 @@ export function getBulletinPrintMeta() {
     youtubeUrl: churchConfig.youtubeUrl,
     worshipOrder: churchConfig.worshipOrder,
     logoSrc: churchConfig.logoSrc,
-    mapImageSrc: churchConfig.mapImageSrc,
+    bulletinImageSrc: churchConfig.bulletinImageSrc,
   };
 }

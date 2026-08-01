@@ -5,7 +5,7 @@ export const churchConfig = {
   contactEmail: "mosesnara@hanmail.net",
   youtubeUrl: "https://www.youtube.com/@calvarymoses",
   logoSrc: "/logo.svg",
-  mapImageSrc: "/church.png",
+  bulletinImageSrc: "/bulletin-scripture.png",
   worshipOrder: [
     "찬양",
     "대표기도",

@@ -192,7 +192,7 @@ export default function Home() {
                 온라인 주보 보기
               </Link>
               <Link
-                href="/admin/bulletins"
+                href="/admin/jubo"
                 className="rounded-full border border-black/10 bg-white/85 px-5 py-3 text-sm font-semibold text-[var(--page-deep)] transition hover:border-[var(--page-accent-strong)] hover:bg-[var(--page-accent-soft)]"
               >
                 주보 입력 페이지

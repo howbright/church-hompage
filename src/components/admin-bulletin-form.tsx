@@ -6,7 +6,7 @@ import type {
   BulletinActionState,
   deleteBulletinAction,
   saveBulletinAction,
-} from "@/app/admin/bulletins/actions";
+} from "@/app/admin/jubo/actions";
 import type { Bulletin } from "@/lib/bulletins";
 
 const initialState: BulletinActionState = {

@@ -37,7 +37,7 @@ function SetupState() {
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/admin/bulletins"
+            href="/admin/jubo"
             className="bg-[var(--page-deep)] px-5 py-3 text-sm font-semibold text-white"
           >
             관리자 입력 페이지
@@ -66,7 +66,7 @@ function EmptyState() {
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/admin/bulletins"
+            href="/admin/jubo"
             className="bg-[var(--page-deep)] px-5 py-3 text-sm font-semibold text-white"
           >
             주보 입력하러 가기

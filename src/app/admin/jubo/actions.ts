@@ -27,7 +27,7 @@ function validateAdminPassword(formData: FormData) {
 
 function revalidateBulletinPaths(slug?: string, previousSlug?: string) {
   revalidatePath("/bulletins");
-  revalidatePath("/admin/bulletins");
+  revalidatePath("/admin/jubo");
 
   if (slug) {
     revalidatePath(`/bulletins/${slug}`);

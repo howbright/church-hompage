@@ -58,7 +58,7 @@ const content = {
   },
   ko: {
     description:
-      "갈보리채플은 척 스미스 목사님의 성경 강해 철학을 따라, 창세기부터 요한계시록까지 말씀을 장절별로 가르칩니다.",
+      "갈보리채플 강남교회는 예수 그리스도를 교회의 머리로 고백하며, 하나님의 말씀을 신앙과 삶의 기준으로 삼고 성령의 인도하심을 의지합니다. 우리는 예수님의 십자가 죽음과 부활로 주어진 구원이 사람의 공로나 행위가 아니라 하나님의 은혜로, 믿음을 통해 받는 선물임을 전합니다. 익숙한 구절이나 특정 주제만 골라 전하기보다, 창세기부터 요한계시록까지 성경을 장별·절별로 차례대로 가르치며 본문의 흐름과 역사적 배경을 함께 살핍니다. 설교자의 생각을 본문에 덧붙이기보다 성경 자체가 말하는 의미와 강조점을 분명하게 전하여, 성령께서 말씀을 통해 예수님을 더욱 깊이 알게 하시고 우리의 삶을 사랑과 순종으로 변화시키시도록 돕습니다. 성경을 처음 접하는 분부터 오래 신앙생활을 한 분까지 누구나 함께 말씀을 배우며, 하나님의 은혜 안에서 믿음의 기초를 세우고 이웃에게 복음과 사랑을 나누는 삶으로 자라가기를 소망합니다.",
     worshipLabel: "예배 안내",
     worshipTitle: "모임 시간",
     worshipItems: [
@@ -79,11 +79,13 @@ const content = {
     youtubeCta: "온라인 예배 보기",
     locationLabel: "장소",
     locationTitle: "장소 안내",
-    locationMessage: "이메일로 문의해주세요.",
+    locationMessage:
+      "(8월 임시 예배처소) 서울시 송파구 동남로24길 11, B1층 소리소극장",
     locationItems: [
       {
         title: "장소 안내",
-        description: "이메일로 문의해주세요.",
+        description:
+          "(8월 임시 예배처소) 서울시 송파구 동남로24길 11, B1층 소리소극장",
       },
       {
         title: "이메일",
@@ -168,7 +170,7 @@ export default function Home() {
             </div>
             <div className="flex justify-center">
               <p className="rounded-full border border-white/80 bg-[rgba(255,255,255,0.82)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent-strong)] shadow-[0_12px_24px_rgba(0,0,0,0.06)] backdrop-blur-md sm:text-xs">
-                Church of Seoul
+                GangNam Church
               </p>
             </div>
             <div className="mt-4 flex justify-center">
@@ -187,15 +189,9 @@ export default function Home() {
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/bulletins"
-                className="rounded-full bg-[var(--page-deep)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+                className="rounded-full border-2 border-[#63b9ef] bg-[#eaf7ff] px-6 py-3 text-sm font-bold text-[#075f9b] shadow-[0_10px_28px_rgba(63,159,232,0.28)] transition hover:-translate-y-0.5 hover:border-[#3f9fe8] hover:bg-white hover:shadow-[0_14px_34px_rgba(63,159,232,0.38)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3f9fe8]"
               >
                 온라인 주보 보기
-              </Link>
-              <Link
-                href="/admin/jubo"
-                className="rounded-full border border-black/10 bg-white/85 px-5 py-3 text-sm font-semibold text-[var(--page-deep)] transition hover:border-[var(--page-accent-strong)] hover:bg-[var(--page-accent-soft)]"
-              >
-                주보 입력 페이지
               </Link>
             </div>
           </header>

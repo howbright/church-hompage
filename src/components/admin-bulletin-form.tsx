@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type {
   BulletinActionState,
@@ -8,6 +8,8 @@ import type {
   saveBulletinAction,
 } from "@/app/admin/jubo/actions";
 import type { Bulletin } from "@/lib/bulletins";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { ResultToast } from "@/components/ui/result-toast";
 
 const initialState: BulletinActionState = {
   status: "idle",
@@ -53,11 +55,14 @@ export function AdminBulletinManager({
   removeAction: typeof deleteBulletinAction;
 }) {
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
   const [selectedBulletin, setSelectedBulletin] = useState<EditableBulletin | null>(
     null,
   );
   const [saveState, setSaveState] = useState<BulletinActionState>(initialState);
   const [deleteState, setDeleteState] = useState<BulletinActionState>(initialState);
+  const [deleteTarget, setDeleteTarget] = useState<EditableBulletin | null>(null);
+  const [deletePassword, setDeletePassword] = useState("");
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [isSavePending, startSaveTransition] = useTransition();
   const [isDeletePending, startDeleteTransition] = useTransition();
@@ -79,41 +84,64 @@ export function AdminBulletinManager({
     });
   }
 
-  function handleDelete(bulletin: EditableBulletin) {
-    const adminPassword = window.prompt("관리자 비밀번호를 입력해주세요.");
-    if (!adminPassword) return;
+  function handleEdit(bulletin: EditableBulletin) {
+    setSaveState(initialState);
+    setDeleteState(initialState);
+    setSelectedBulletin(bulletin);
+    requestAnimationFrame(() => {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
-    const confirmed = window.confirm(
-      `${bulletin.service_date} 주보를 삭제하시겠습니까?`,
-    );
-    if (!confirmed) return;
+  function openDeleteDialog(bulletin: EditableBulletin) {
+    setDeleteState(initialState);
+    setDeleteTarget(bulletin);
+    setDeletePassword("");
+  }
+
+  function closeDeleteDialog() {
+    if (isDeletePending) return;
+    setDeleteTarget(null);
+    setDeletePassword("");
+  }
+
+  function handleDelete() {
+    if (!deleteTarget || !deletePassword.trim()) return;
 
     const formData = new FormData();
-    formData.set("bulletinId", bulletin.id);
-    formData.set("slug", bulletin.slug);
-    formData.set("adminPassword", adminPassword);
-    setPendingDeleteId(bulletin.id);
+    formData.set("bulletinId", deleteTarget.id);
+    formData.set("slug", deleteTarget.slug);
+    formData.set("adminPassword", deletePassword.trim());
+    setPendingDeleteId(deleteTarget.id);
 
     startDeleteTransition(async () => {
       setSaveState(initialState);
       const result = await removeAction(deleteState, formData);
       setDeleteState(result);
+      setPendingDeleteId(null);
 
       if (result.status === "success") {
-        setPendingDeleteId(null);
         setSelectedBulletin((current) =>
-          current && current.id === bulletin.id ? null : current,
+          current && current.id === deleteTarget.id ? null : current,
         );
+        setDeleteTarget(null);
+        setDeletePassword("");
         router.refresh();
       }
     });
   }
 
+  function closeToast() {
+    setSaveState(initialState);
+    setDeleteState(initialState);
+  }
+
   return (
     <div className="space-y-8">
       <form
+        ref={formRef}
         action={handleSave}
-        className="space-y-6 rounded-[2rem] border border-black/8 bg-[var(--surface-strong)] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.06)] backdrop-blur"
+        className="scroll-mt-6 space-y-6 rounded-[2rem] border border-black/8 bg-[var(--surface-strong)] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.06)] backdrop-blur"
       >
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-2xl font-semibold text-[var(--page-deep)]">
@@ -220,34 +248,13 @@ export function AdminBulletinManager({
             type="password"
             name="adminPassword"
             required
+            key={`password-${selectedBulletin?.id ?? "new"}`}
             className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--page-accent-strong)]"
           />
         </label>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <SubmitButton label={submitLabel} pending={isSavePending} />
-          {activeMessage.status !== "idle" ? (
-            <p
-              className={`text-sm ${
-                activeMessage.status === "success"
-                  ? "text-emerald-700"
-                  : "text-rose-700"
-              }`}
-            >
-              {activeMessage.message}
-              {activeMessage.slug ? (
-                <>
-                  {" "}
-                  <a
-                    href={`/bulletins/${activeMessage.slug}`}
-                    className="font-semibold underline underline-offset-4"
-                  >
-                    주보 보기
-                  </a>
-                </>
-              ) : null}
-            </p>
-          ) : null}
         </div>
       </form>
 
@@ -279,14 +286,14 @@ export function AdminBulletinManager({
                   <div className="flex flex-wrap gap-2">
                     <button
                       type="button"
-                      onClick={() => setSelectedBulletin(bulletin)}
+                      onClick={() => handleEdit(bulletin)}
                       className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-[var(--page-deep)] transition hover:border-[var(--page-accent-strong)]"
                     >
                       수정
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleDelete(bulletin)}
+                      onClick={() => openDeleteDialog(bulletin)}
                       disabled={isDeletePending && pendingDeleteId === bulletin.id}
                       className="rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700 transition hover:border-rose-300 disabled:opacity-60"
                     >
@@ -307,6 +314,56 @@ export function AdminBulletinManager({
           </ul>
         )}
       </section>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        title="주보 삭제"
+        description={
+          deleteTarget
+            ? `${deleteTarget.service_date} 주보를 삭제합니다. 삭제한 주보는 복구할 수 없습니다.`
+            : "선택한 주보를 삭제합니다."
+        }
+        confirmLabel="주보 삭제"
+        pendingLabel="삭제 중..."
+        pending={isDeletePending}
+        confirmDisabled={!deletePassword.trim()}
+        danger
+        onConfirm={handleDelete}
+        onClose={closeDeleteDialog}
+      >
+        <label className="block space-y-2">
+          <span className="text-sm font-semibold text-[var(--page-deep)]">
+            관리자 비밀번호
+          </span>
+          <input
+            type="password"
+            value={deletePassword}
+            onChange={(event) => setDeletePassword(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && deletePassword.trim()) {
+                event.preventDefault();
+                handleDelete();
+              }
+            }}
+            autoFocus
+            autoComplete="current-password"
+            placeholder="비밀번호를 입력해주세요"
+            className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-rose-400"
+          />
+        </label>
+      </ConfirmDialog>
+
+      {activeMessage.status !== "idle" ? (
+        <ResultToast
+          status={activeMessage.status}
+          message={activeMessage.message}
+          linkHref={
+            activeMessage.slug ? `/bulletins/${activeMessage.slug}` : undefined
+          }
+          linkLabel="주보 보기"
+          onClose={closeToast}
+        />
+      ) : null}
     </div>
   );
 }

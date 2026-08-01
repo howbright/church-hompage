@@ -1,20 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f1e6;
-  --foreground: #173036;
-  --page-deep: #12313a;
-  --page-ink: #1a3c44;
-  --page-muted: #406269;
-  --page-soft: #2d4f57;
-  --page-accent: #417f81;
-  --page-accent-strong: #245f61;
-  --card-worship: #4ca4aa;
-  --card-worship-deep: #236b71;
-  --card-location: #379693;
-  --card-location-deep: #1f6866;
-  --card-school: #ae825c;
-  --card-school-deep: #765133;
+  --background: #f7f7f5;
+  --foreground: #252525;
+  --page-deep: #181818;
+  --page-ink: #2a2a2a;
+  --page-muted: #666666;
+  --page-soft: #505050;
+  --page-accent: #bcbcbc;
+  --page-accent-strong: #444444;
+  --page-accent-soft: #edf6fd;
+  --page-highlight: #3f9fe8;
+  --page-highlight-soft: rgba(63, 159, 232, 0.18);
+  --page-sky-soft: rgba(63, 159, 232, 0.12);
+  --page-sky-surface: rgba(63, 159, 232, 0.09);
+  --surface: rgba(255, 255, 255, 0.84);
+  --surface-strong: rgba(255, 255, 255, 0.96);
+  --surface-tint: rgba(249, 249, 247, 0.94);
+  --card-worship: #d2d2d2;
+  --card-worship-deep: #4c4c4c;
+  --card-location: #c6c6c6;
+  --card-location-deep: #484848;
+  --card-school: #d8d8d8;
+  --card-school-deep: #4f4f4f;
 }
 
 @theme inline {
@@ -34,7 +42,7 @@ html {
 
 body {
   min-height: 100vh;
-  background: var(--background);
+  background: linear-gradient(180deg, #fbfbfa 0%, #f3f3f1 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans), "Helvetica Neue", sans-serif;
 }
@@ -53,4 +61,40 @@ a {
 img {
   display: block;
   max-width: 100%;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 10mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  .print-shell {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-page {
+    break-after: page;
+  }
+
+  .print-page:last-child {
+    break-after: auto;
+  }
+
+  .print-first-page-grid {
+    display: grid !important;
+    grid-template-columns: 72mm minmax(0, 1fr) !important;
+    gap: 6mm !important;
+    align-items: start;
+  }
 }

@@ -1,5 +1,6 @@
  "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -129,7 +130,7 @@ export default function Home() {
       </video>
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(224,240,239,0.22)_0%,_rgba(205,228,227,0.5)_26%,_rgba(232,241,238,0.64)_48%,_rgba(247,241,232,0.94)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(255,255,255,0.18)_0%,_rgba(247,247,245,0.42)_24%,_rgba(249,249,247,0.72)_48%,_rgba(252,252,251,0.95)_100%)]"
       />
       <div
         aria-hidden="true"
@@ -140,7 +141,7 @@ export default function Home() {
         <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col">
           <header className="pt-1 text-center">
             <div className="mb-4 flex justify-center lg:justify-end">
-              <div className="inline-flex items-center gap-1 rounded-full border border-white/55 bg-[rgba(248,245,238,0.68)] p-1 shadow-[0_10px_30px_rgba(20,37,45,0.08)] backdrop-blur-md">
+              <div className="inline-flex items-center gap-1 rounded-full border border-white/80 bg-[rgba(255,255,255,0.78)] p-1 shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-md">
                 <button
                   type="button"
                   onClick={() => setLanguage("en")}
@@ -166,7 +167,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex justify-center">
-              <p className="rounded-full border border-white/60 bg-[rgba(248,245,238,0.72)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent-strong)] shadow-[0_10px_24px_rgba(20,37,45,0.08)] backdrop-blur-md sm:text-xs">
+              <p className="rounded-full border border-white/80 bg-[rgba(255,255,255,0.82)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent-strong)] shadow-[0_12px_24px_rgba(0,0,0,0.06)] backdrop-blur-md sm:text-xs">
                 Church of Seoul
               </p>
             </div>
@@ -183,12 +184,26 @@ export default function Home() {
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[var(--page-soft)] sm:text-base">
               {t.description}
             </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/bulletins"
+                className="rounded-full bg-[var(--page-deep)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+              >
+                온라인 주보 보기
+              </Link>
+              <Link
+                href="/admin/bulletins"
+                className="rounded-full border border-black/10 bg-white/85 px-5 py-3 text-sm font-semibold text-[var(--page-deep)] transition hover:border-[var(--page-accent-strong)] hover:bg-[var(--page-accent-soft)]"
+              >
+                주보 입력 페이지
+              </Link>
+            </div>
           </header>
 
           <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
             <div
               aria-hidden="true"
-              className="absolute h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(74,157,163,0.42)_0%,_rgba(74,157,163,0.2)_42%,_transparent_74%)] blur-3xl sm:h-60 sm:w-60"
+              className="absolute h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(180,180,180,0.26)_0%,_rgba(180,180,180,0.14)_42%,_transparent_74%)] blur-3xl sm:h-60 sm:w-60"
             />
             <div className="w-full max-w-[15rem] sm:max-w-[18rem] lg:max-w-[19rem]">
               <Image
@@ -204,11 +219,11 @@ export default function Home() {
 
           <section
             aria-label="Church information"
-            className="grid gap-px overflow-hidden rounded-[2rem] border border-white/50 bg-[rgba(255,255,255,0.34)] shadow-[0_24px_80px_rgba(30,52,57,0.18)] backdrop-blur-xl lg:grid-cols-3"
+            className="grid gap-px overflow-hidden rounded-[2rem] border border-white/80 bg-[rgba(255,255,255,0.58)] shadow-[0_24px_80px_rgba(0,0,0,0.08)] backdrop-blur-xl lg:grid-cols-3"
           >
-            <article className="bg-[linear-gradient(180deg,rgba(244,252,251,0.88)_0%,rgba(250,247,240,0.94)_22%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.97)_0%,rgba(252,252,251,0.96)_28%,rgba(247,247,245,0.92)_100%)] px-6 py-6 sm:px-8 sm:py-7">
               <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-worship)]" />
-              <p className="inline-flex rounded-full bg-[rgba(76,164,170,0.16)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-worship-deep)]">
+              <p className="inline-flex rounded-full bg-[rgba(0,0,0,0.04)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-worship-deep)]">
                 {t.worshipLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
@@ -242,9 +257,9 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="bg-[linear-gradient(180deg,rgba(236,250,249,0.92)_0%,rgba(229,245,243,0.94)_18%,rgba(241,247,246,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(251,251,250,0.95)_22%,rgba(246,246,244,0.92)_100%)] px-6 py-6 sm:px-8 sm:py-7">
               <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-location)]" />
-              <p className="inline-flex rounded-full bg-[rgba(55,150,147,0.16)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-location-deep)]">
+              <p className="inline-flex rounded-full bg-[rgba(0,0,0,0.04)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-location-deep)]">
                 {t.locationLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">
@@ -282,9 +297,9 @@ export default function Home() {
               </ul>
             </article>
 
-            <article className="bg-[linear-gradient(180deg,rgba(241,251,250,0.8)_0%,rgba(250,247,240,0.92)_20%,rgba(250,247,240,0.9)_100%)] px-6 py-6 sm:px-8 sm:py-7">
+            <article className="bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(252,252,251,0.94)_20%,rgba(246,246,244,0.92)_100%)] px-6 py-6 sm:px-8 sm:py-7">
               <div className="mb-4 h-1.5 w-14 rounded-full bg-[var(--card-school)]" />
-              <p className="inline-flex rounded-full bg-[rgba(174,130,92,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-school-deep)]">
+              <p className="inline-flex rounded-full bg-[rgba(0,0,0,0.04)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--card-school-deep)]">
                 {t.schoolLabel}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-[var(--page-deep)]">

@@ -7,7 +7,30 @@ import { hasSupabaseEnv } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "온라인 주보 | Calvary Chapel, Church of Seoul",
+  title: "온라인 주보 | 갈보리채플 강남교회",
+  description: "갈보리채플 강남교회의 최신 온라인 주보입니다.",
+  openGraph: {
+    title: "온라인 주보 | 갈보리채플 강남교회",
+    description: "갈보리채플 강남교회의 최신 온라인 주보입니다.",
+    url: "/bulletins",
+    siteName: "갈보리채플 강남교회",
+    locale: "ko_KR",
+    type: "website",
+    images: [
+      {
+        url: "/bulletin-og-v3.png",
+        width: 1200,
+        height: 630,
+        alt: "갈보리채플 강남교회 온라인 주보",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "온라인 주보 | 갈보리채플 강남교회",
+    description: "갈보리채플 강남교회의 최신 온라인 주보입니다.",
+    images: ["/bulletin-og-v3.png"],
+  },
 };
 
 export default async function BulletinsPage() {

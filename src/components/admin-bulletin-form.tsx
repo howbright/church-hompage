@@ -151,13 +151,13 @@ export function AdminBulletinManager({
         };
 
         if (!response.ok || !payload.column) {
-          throw new Error(payload.message || "컬럼을 생성하지 못했습니다.");
+          throw new Error(payload.message || "칼럼을 생성하지 못했습니다.");
         }
 
         setColumnContent(payload.column);
         setGeneratorState({
           status: "success",
-          message: "생성된 글을 컬럼 입력란에 반영했습니다.",
+          message: "생성된 글을 칼럼 입력란에 반영했습니다.",
         });
         setGeneratorOpen(false);
         setSermonAbstract("");
@@ -172,7 +172,7 @@ export function AdminBulletinManager({
           message:
             error instanceof Error
               ? error.message
-              : "컬럼을 생성하는 중 오류가 발생했습니다.",
+              : "칼럼을 생성하는 중 오류가 발생했습니다.",
         });
       }
     });
@@ -303,14 +303,14 @@ export function AdminBulletinManager({
               htmlFor="column-content"
               className="text-sm font-semibold text-[var(--page-deep)]"
             >
-              컬럼
+              칼럼
             </label>
             <button
               type="button"
               onClick={openGeneratorDialog}
               className="inline-flex items-center justify-center rounded-full border border-[#8bc9ef] bg-[#edf8ff] px-4 py-2 text-sm font-bold text-[#0b689f] transition hover:border-[#3f9fe8] hover:bg-white"
             >
-              설교 초록을 컬럼으로 바꾸기
+              설교 초록을 칼럼으로 바꾸기
             </button>
           </div>
           <textarea
@@ -319,7 +319,7 @@ export function AdminBulletinManager({
             name="columnContent"
             required
             rows={10}
-            placeholder="길게 들어가는 컬럼 내용을 적어주세요."
+            placeholder="길게 들어가는 칼럼 내용을 적어주세요."
             value={columnContent}
             onChange={(event) => setColumnContent(event.target.value)}
             className="w-full rounded-[1.5rem] border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--page-accent-strong)]"
@@ -420,14 +420,14 @@ export function AdminBulletinManager({
 
       <ConfirmDialog
         open={generatorOpen}
-        title="설교 초록을 컬럼으로 바꾸기"
+        title="설교 초록을 칼럼으로 바꾸기"
         description={
           columnContent.trim()
-            ? "설교 초록을 붙여넣으면 AI가 주보용 컬럼으로 정리합니다. 생성 결과는 현재 컬럼 내용을 대체합니다."
-            : "목사님의 설교 초록을 붙여넣으면 AI가 읽기 좋은 주보용 컬럼으로 정리합니다."
+            ? "설교 초록을 붙여넣으면 AI가 주보용 칼럼으로 정리합니다. 생성 결과는 현재 칼럼 내용을 대체합니다."
+            : "목사님의 설교 초록을 붙여넣으면 AI가 읽기 좋은 주보용 칼럼으로 정리합니다."
         }
-        confirmLabel="컬럼으로 바꾸기"
-        pendingLabel="컬럼 작성 중..."
+        confirmLabel="칼럼으로 바꾸기"
+        pendingLabel="칼럼 작성 중..."
         pending={isGeneratePending}
         confirmDisabled={!sermonAbstract.trim() || !generatorPassword.trim()}
         size="large"

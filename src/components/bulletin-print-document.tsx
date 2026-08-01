@@ -115,7 +115,7 @@ export function BulletinPrintDocument({
                       </SectionBox>
                     ) : null}
 
-                    <SectionBox title="컬럼">
+                    <SectionBox title="칼럼">
                       <p className="whitespace-pre-line text-[15px] leading-8 text-[var(--page-muted)]">
                         {page.columnChunk}
                       </p>
@@ -126,14 +126,14 @@ export function BulletinPrintDocument({
                 <div className="space-y-5">
                   <div className="border-t-[8px] border-[var(--page-highlight)] bg-[var(--page-sky-soft)] px-3 py-4 sm:border-t-[10px] sm:px-5">
                     <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--page-accent-strong)]">
-                      컬럼 계속
+                      칼럼 계속
                     </p>
                     <h2 className="mt-3 break-words text-xl font-semibold text-[var(--page-deep)] sm:text-2xl">
                       {page.title}
                     </h2>
                   </div>
 
-                  <SectionBox title={`컬럼 ${page.pageNumber}`}>
+                  <SectionBox title={`칼럼 ${page.pageNumber}`}>
                     <p className="whitespace-pre-line text-[15px] leading-8 text-[var(--page-muted)]">
                       {page.columnChunk}
                     </p>

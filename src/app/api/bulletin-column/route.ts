@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       const message =
         typeof payload.message === "string" && payload.message.trim()
           ? payload.message
-          : "컬럼 생성에 실패했습니다.";
+          : "칼럼 생성에 실패했습니다.";
       return Response.json(
         { message },
         { status: response.ok ? 502 : response.status },
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
       typeof payload.column === "string" ? payload.column.trim() : "";
     if (!column) {
       return Response.json(
-        { message: "컬럼 생성 서버가 빈 결과를 반환했습니다." },
+        { message: "칼럼 생성 서버가 빈 결과를 반환했습니다." },
         { status: 502 },
       );
     }
@@ -103,8 +103,8 @@ export async function POST(request: Request) {
   } catch (error) {
     const message =
       error instanceof Error && error.name === "TimeoutError"
-        ? "컬럼 생성 시간이 너무 오래 걸립니다. 잠시 후 다시 시도해주세요."
-        : "컬럼 생성 서버에 연결하지 못했습니다.";
+        ? "칼럼 생성 시간이 너무 오래 걸립니다. 잠시 후 다시 시도해주세요."
+        : "칼럼 생성 서버에 연결하지 못했습니다.";
     return Response.json({ message }, { status: 502 });
   }
 }

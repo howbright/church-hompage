@@ -55,12 +55,23 @@ export async function POST(request: Request) {
     );
   }
 
+  const apiKey = process.env.CHURCH_API_KEY;
+  if (!apiKey) {
+    return Response.json(
+      { message: "CHURCH_API_KEY 환경변수를 설정해주세요." },
+      { status: 503 },
+    );
+  }
+
   try {
     const response = await fetch(
       `${apiBaseUrl.replace(/\/$/, "")}/church/weekly-column`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-church-api-key": apiKey,
+        },
         body: JSON.stringify({ draftText: abstract }),
         cache: "no-store",
         signal: AbortSignal.timeout(90_000),

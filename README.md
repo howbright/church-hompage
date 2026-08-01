@@ -23,6 +23,7 @@ Set the full Cloud Run endpoint URL in the server environment:
 
 ```bash
 API_BASE_URL=https://your-cloud-run-service.example
+CHURCH_API_KEY=your-secret-api-key
 ```
 
 The proxy sends `POST /church/weekly-column` with `{ "draftText": "..." }` and

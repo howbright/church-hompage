@@ -27,6 +27,8 @@ const content = {
       },
     ],
     bulletinCta: "View Online Bulletin",
+    historyCta: "Our Story",
+    galleryCta: "Community Gallery",
     worshipLabel: "Worship Guide",
     worshipTitle: "Service Times",
     worshipItems: [
@@ -94,6 +96,8 @@ const content = {
       },
     ],
     bulletinCta: "온라인 주보 보기",
+    historyCta: "교회 연혁",
+    galleryCta: "우리 공동체 이야기",
     worshipLabel: "예배 안내",
     worshipTitle: "모임 시간",
     worshipItems: [
@@ -266,6 +270,12 @@ export default function Home() {
                 className="rounded-full border-2 border-[#63b9ef] bg-[#eaf7ff] px-6 py-3 text-sm font-bold text-[#075f9b] shadow-[0_10px_28px_rgba(63,159,232,0.28)] transition hover:-translate-y-0.5 hover:border-[#3f9fe8] hover:bg-white hover:shadow-[0_14px_34px_rgba(63,159,232,0.38)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3f9fe8]"
               >
                 {t.bulletinCta}
+              </Link>
+              <Link
+                href="/gallery"
+                className="rounded-full border border-[#9ccfed] bg-white/85 px-6 py-3 text-sm font-bold text-[#08275b] shadow-[0_10px_28px_rgba(8,39,91,0.12)] transition hover:-translate-y-0.5 hover:border-[#3f9fe8] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3f9fe8]"
+              >
+                {t.galleryCta}
               </Link>
             </div>
           </header>

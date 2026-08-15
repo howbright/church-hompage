@@ -78,13 +78,45 @@ export function BulletinPrintDocument({
                       </ol>
                     </SectionBox>
 
-                    <SectionBox title="문의" compact>
-                      <a
-                        href={`mailto:${meta.email}`}
-                        className="break-all text-sm font-semibold leading-6 text-[#075f9b] underline decoration-2 decoration-[#7fc5ef] underline-offset-4"
-                      >
-                        {meta.email}
-                      </a>
+                    <SectionBox title="교회 안내" compact>
+                      <dl className="space-y-2 text-sm leading-6">
+                        <div>
+                          <dt className="font-semibold text-[var(--page-deep)]">
+                            담임목사
+                          </dt>
+                          <dd className="text-[var(--page-muted)]">
+                            {meta.seniorPastor}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="font-semibold text-[var(--page-deep)]">
+                            이메일
+                          </dt>
+                          <dd>
+                            <a
+                              href={`mailto:${meta.email}`}
+                              className="break-all font-semibold text-[#075f9b] underline decoration-2 decoration-[#7fc5ef] underline-offset-4"
+                            >
+                              {meta.email}
+                            </a>
+                          </dd>
+                        </div>
+                      </dl>
+                    </SectionBox>
+
+                    <SectionBox title="예배 장소 안내" compact>
+                      <dl className="space-y-3 text-sm leading-5">
+                        {meta.worshipLocations.map((item) => (
+                          <div key={item.service}>
+                            <dt className="font-semibold text-[var(--page-deep)]">
+                              {item.service}
+                            </dt>
+                            <dd className="mt-0.5 text-[var(--page-muted)]">
+                              {item.location}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
                     </SectionBox>
 
                     <SectionBox title="SNS" compact>

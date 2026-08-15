@@ -22,8 +22,44 @@ export function BulletinView({
   return (
     <div className="mx-auto grid w-full max-w-[1280px] gap-6 bg-white px-2 py-4 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:px-10 lg:py-10">
       <div className="space-y-5">
-        <div className="flex justify-end">
-          <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+          <nav
+            aria-label="교회 콘텐츠"
+            className="flex w-fit max-w-full flex-wrap items-center gap-0.5 rounded-full border border-[#d9e2e8] bg-[#f1f5f7] p-0.5"
+          >
+            <Link
+              href="/gallery"
+              className="rounded-full bg-white px-2.5 py-1.5 text-xs font-semibold text-[#405867] shadow-sm transition hover:text-[#075f9b]"
+            >
+              <span className="mr-1 text-[#7795a6]" aria-hidden="true">
+                ●
+              </span>
+              교회 갤러리
+            </Link>
+            <span
+              aria-hidden="true"
+              className="hidden h-3 w-px bg-[#ccd8df] sm:block"
+            />
+            <a
+              href="https://blog.naver.com/PostList.naver?blogId=sungsungsun"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-full px-2.5 py-1.5 text-xs font-semibold text-[#526875] transition hover:bg-white hover:text-[#314a59]"
+            >
+              <span className="mr-1 text-[#8aa0ad]" aria-hidden="true">
+                ✦
+              </span>
+              권혜성의 만화 &amp; 시집
+              <span
+                className="ml-1 inline-block text-[0.65rem] text-[#91a3ad] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              >
+                ↗
+              </span>
+            </a>
+          </nav>
+
+          <div className="flex flex-wrap gap-2 xl:justify-end">
             <Link
               href={`/bulletins/${currentSlug}/print`}
               className="border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-[var(--page-deep)] shadow-[inset_0_-2px_0_0_var(--page-highlight)] transition hover:border-[var(--page-accent-strong)]"

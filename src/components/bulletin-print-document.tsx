@@ -119,7 +119,7 @@ export function BulletinPrintDocument({
                       </dl>
                     </SectionBox>
 
-                    <SectionBox title="SNS" compact>
+                    <SectionBox title="예배 영상 및 SNS" compact>
                       <SocialLinks compact />
                     </SectionBox>
 

@@ -128,7 +128,7 @@ const content = {
       },
       {
         title: "수요 예배",
-        description: "서울 송파구 중대로 245",
+        description: "서울 송파구 중대로 245, 3층",
       },
       {
         title: "토요 모임",

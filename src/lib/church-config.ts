@@ -22,7 +22,7 @@ export const churchConfig = {
     },
     {
       service: "수요 예배",
-      location: "서울 송파구 중대로 245",
+      location: "서울 송파구 중대로 245, 3층",
     },
     {
       service: "토요 모임",

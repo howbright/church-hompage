@@ -1,17 +1,11 @@
 import { getSupabaseAdminClient, getSupabasePublicClient, hasSupabaseEnv } from "./supabase";
+import type { Database, Json } from "./database.types";
+import { sanitizeRichText, type RichTextDocument } from "./rich-text";
 
-export type Bulletin = {
-  id: string;
-  slug: string;
-  service_date: string;
-  scripture_reference: string;
-  message_title: string;
-  column_content: string;
-  weekly_notice: string | null;
-  published: boolean;
-  published_at: string;
-  created_at: string;
-  updated_at: string;
+type BulletinRow = Database["public"]["Tables"]["weekly_bulletins"]["Row"];
+
+export type Bulletin = Omit<BulletinRow, "column_content_rich"> & {
+  column_content_rich: RichTextDocument | null;
 };
 
 export type BulletinInput = {
@@ -19,6 +13,7 @@ export type BulletinInput = {
   scriptureReference: string;
   messageTitle: string;
   columnContent: string;
+  columnContentRich: RichTextDocument;
   weeklyNotice: string;
 };
 
@@ -35,6 +30,17 @@ export function buildBulletinSlug(serviceDate: string) {
   return serviceDate;
 }
 
+function toBulletin(row: BulletinRow): Bulletin {
+  return {
+    ...row,
+    column_content_rich: sanitizeRichText(row.column_content_rich),
+  };
+}
+
+function richTextToJson(document: RichTextDocument): Json {
+  return JSON.parse(JSON.stringify(document)) as Json;
+}
+
 export async function fetchLatestBulletin() {
   if (!hasSupabaseEnv()) {
     return null;
@@ -47,13 +53,13 @@ export async function fetchLatestBulletin() {
     .eq("published", true)
     .order("service_date", { ascending: false })
     .limit(1)
-    .maybeSingle<Bulletin>();
+    .maybeSingle();
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return data ? toBulletin(data) : null;
 }
 
 export async function fetchPublishedBulletins() {
@@ -66,14 +72,13 @@ export async function fetchPublishedBulletins() {
     .from("weekly_bulletins")
     .select("*")
     .eq("published", true)
-    .order("service_date", { ascending: false })
-    .returns<Bulletin[]>();
+    .order("service_date", { ascending: false });
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data ?? [];
+  return (data ?? []).map(toBulletin);
 }
 
 export async function fetchBulletinBySlug(slug: string) {
@@ -87,13 +92,13 @@ export async function fetchBulletinBySlug(slug: string) {
     .select("*")
     .eq("slug", slug)
     .eq("published", true)
-    .maybeSingle<Bulletin>();
+    .maybeSingle();
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return data ? toBulletin(data) : null;
 }
 
 export async function fetchRecentAdminBulletins() {
@@ -106,14 +111,13 @@ export async function fetchRecentAdminBulletins() {
     .from("weekly_bulletins")
     .select("*")
     .order("service_date", { ascending: false })
-    .limit(10)
-    .returns<Bulletin[]>();
+    .limit(10);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data ?? [];
+  return (data ?? []).map(toBulletin);
 }
 
 export async function insertBulletin(input: BulletinInput) {
@@ -128,17 +132,18 @@ export async function insertBulletin(input: BulletinInput) {
       scripture_reference: input.scriptureReference,
       message_title: input.messageTitle,
       column_content: input.columnContent,
+      column_content_rich: richTextToJson(input.columnContentRich),
       weekly_notice: input.weeklyNotice || null,
       published: true,
     })
     .select("*")
-    .single<Bulletin>();
+    .single();
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return toBulletin(data);
 }
 
 export async function updateBulletin(id: string, input: BulletinInput) {
@@ -153,17 +158,18 @@ export async function updateBulletin(id: string, input: BulletinInput) {
       scripture_reference: input.scriptureReference,
       message_title: input.messageTitle,
       column_content: input.columnContent,
+      column_content_rich: richTextToJson(input.columnContentRich),
       weekly_notice: input.weeklyNotice || null,
     })
     .eq("id", id)
     .select("*")
-    .single<Bulletin>();
+    .single();
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return toBulletin(data);
 }
 
 export async function deleteBulletin(id: string) {

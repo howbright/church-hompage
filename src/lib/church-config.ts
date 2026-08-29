@@ -22,8 +22,7 @@ export const churchConfig = {
     },
     {
       service: "수요 예배",
-      location:
-        "(8월 임시 예배처소) 서울 서초구 명달로11길 17-7 B01호, 홀리센터",
+      location: "서울 송파구 중대로 245",
     },
     {
       service: "토요 모임",

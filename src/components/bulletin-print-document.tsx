@@ -5,6 +5,7 @@ import {
   getBulletinPrintMeta,
 } from "@/lib/bulletin-print";
 import { SocialLinks } from "@/components/social-links";
+import { BulletinRichText } from "@/components/bulletin-rich-text";
 
 export function BulletinPrintDocument({
   bulletin,
@@ -155,9 +156,7 @@ export function BulletinPrintDocument({
                     ) : null}
 
                     <SectionBox title="칼럼">
-                      <p className="whitespace-pre-line text-[15px] leading-8 text-[var(--page-muted)]">
-                        {page.columnChunk}
-                      </p>
+                      <BulletinRichText content={page.columnRichChunk} />
                     </SectionBox>
                   </div>
                 </div>
@@ -173,9 +172,7 @@ export function BulletinPrintDocument({
                   </div>
 
                   <SectionBox title={`칼럼 ${page.pageNumber}`}>
-                    <p className="whitespace-pre-line text-[15px] leading-8 text-[var(--page-muted)]">
-                      {page.columnChunk}
-                    </p>
+                    <BulletinRichText content={page.columnRichChunk} />
                   </SectionBox>
                 </div>
               )}

@@ -1,38 +1,25 @@
 import "server-only";
 
 import { getSupabaseAdminClient, hasSupabaseEnv } from "./supabase";
+import type { Database } from "./database.types";
 
 export const GALLERY_BUCKET = "gallery-media";
 
-export type GalleryVisibility = "public" | "members" | "private";
+export type GalleryVisibility =
+  Database["public"]["Enums"]["gallery_visibility"];
 
-export type GalleryPhoto = {
-  id: string;
-  entry_id: string;
-  storage_path: string;
-  sort_order: number;
-  alt_text: string | null;
-  caption: string | null;
-  width: number;
-  height: number;
-  mime_type: string;
-  file_size: number;
-  created_at: string;
+type GalleryEntryRow =
+  Database["public"]["Tables"]["gallery_entries"]["Row"];
+type GalleryEntryInsert =
+  Database["public"]["Tables"]["gallery_entries"]["Insert"];
+type GalleryPhotoRow =
+  Database["public"]["Tables"]["gallery_photos"]["Row"];
+
+export type GalleryPhoto = GalleryPhotoRow & {
   signed_url?: string;
 };
 
-export type GalleryEntry = {
-  id: string;
-  title: string;
-  description: string | null;
-  event_date: string;
-  date_label: string | null;
-  visibility: GalleryVisibility;
-  contains_minors: boolean;
-  consent_confirmed: boolean;
-  published_at: string;
-  created_at: string;
-  updated_at: string;
+export type GalleryEntry = GalleryEntryRow & {
   gallery_photos: GalleryPhoto[];
 };
 
@@ -103,7 +90,7 @@ export async function fetchGalleryEntries(memberAccess: boolean) {
     ? query.in("visibility", ["public", "members"])
     : query.eq("visibility", "public");
 
-  const { data, error } = await query.returns<GalleryEntry[]>();
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
   return attachSignedUrls(data ?? []);
 }
@@ -115,8 +102,7 @@ export async function fetchAdminGalleryEntries() {
     .from("gallery_entries")
     .select("*, gallery_photos(*)")
     .order("event_date", { ascending: false })
-    .order("published_at", { ascending: false })
-    .returns<GalleryEntry[]>();
+    .order("published_at", { ascending: false });
 
   if (error) throw new Error(error.message);
   return attachSignedUrls(data ?? []);
@@ -124,7 +110,7 @@ export async function fetchAdminGalleryEntries() {
 
 export async function saveGalleryEntry(id: string, input: GalleryEntryInput) {
   const supabase = getSupabaseAdminClient();
-  const entryValues = {
+  const entryValues: GalleryEntryInsert = {
     title: input.title,
     description: input.description || null,
     event_date: input.eventDate,
@@ -141,8 +127,7 @@ export async function saveGalleryEntry(id: string, input: GalleryEntryInput) {
     const { data: currentPhotos, error: photoReadError } = await supabase
       .from("gallery_photos")
       .select("storage_path")
-      .eq("entry_id", entryId)
-      .returns<Array<{ storage_path: string }>>();
+      .eq("entry_id", entryId);
     if (photoReadError) throw new Error(photoReadError.message);
 
     const nextPaths = new Set(input.photos.map((photo) => photo.storage_path));
@@ -166,7 +151,7 @@ export async function saveGalleryEntry(id: string, input: GalleryEntryInput) {
       .from("gallery_entries")
       .insert(entryValues)
       .select("id")
-      .single<{ id: string }>();
+      .single();
     if (error) throw new Error(error.message);
     entryId = data.id;
   }
@@ -191,8 +176,7 @@ export async function deleteGalleryEntry(id: string) {
   const { data: photos, error: photoError } = await supabase
     .from("gallery_photos")
     .select("storage_path")
-    .eq("entry_id", id)
-    .returns<Array<{ storage_path: string }>>();
+    .eq("entry_id", id);
   if (photoError) throw new Error(photoError.message);
 
   const { error } = await supabase.from("gallery_entries").delete().eq("id", id);

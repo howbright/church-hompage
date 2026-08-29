@@ -1,6 +1,16 @@
 import { churchConfig } from "@/lib/church-config";
 import type { Bulletin } from "@/lib/bulletins";
 import { formatBulletinDate } from "@/lib/bulletins";
+import {
+  getRichTextBlocks,
+  plainTextToRichDocument,
+  richTextDocumentFromBlocks,
+  richTextToPlainText,
+  sanitizeRichText,
+  splitRichTextBlock,
+  type RichTextDocument,
+  type RichTextNode,
+} from "@/lib/rich-text";
 
 export type BulletinPrintPage = {
   pageNumber: number;
@@ -10,62 +20,52 @@ export type BulletinPrintPage = {
   dateLabel: string;
   weeklyNotice: string | null;
   columnChunk: string;
+  columnRichChunk: RichTextDocument;
   isFirstPage: boolean;
 };
 
-function splitParagraphs(content: string) {
-  return content
-    .split(/\n\s*\n/g)
-    .map((part) => part.trim())
-    .filter(Boolean);
-}
-
-function chunkParagraphs(paragraphs: string[], charLimit: number) {
-  const chunks: string[] = [];
-  let current = "";
-
-  for (const paragraph of paragraphs) {
-    const candidate = current ? `${current}\n\n${paragraph}` : paragraph;
-
-    if (current && candidate.length > charLimit) {
-      chunks.push(current);
-      current = paragraph;
-      continue;
-    }
-
-    if (!current && paragraph.length > charLimit) {
-      chunks.push(paragraph);
-      current = "";
-      continue;
-    }
-
-    current = candidate;
-  }
-
-  if (current) {
-    chunks.push(current);
-  }
-
-  return chunks;
-}
-
 export function buildBulletinPrintPages(bulletin: Bulletin): BulletinPrintPage[] {
-  const paragraphs = splitParagraphs(bulletin.column_content);
+  const richDocument =
+    sanitizeRichText(bulletin.column_content_rich) ??
+    plainTextToRichDocument(bulletin.column_content);
+  const richBlocks = getRichTextBlocks(richDocument);
   const firstPageLimit = bulletin.weekly_notice ? 1800 : 2200;
   const nextPageLimit = 2800;
+  const pageBlockChunks: RichTextNode[][] = [];
+  let currentBlocks: RichTextNode[] = [];
+  let currentLength = 0;
 
-  const firstPass = chunkParagraphs(paragraphs, firstPageLimit);
-  const pageChunks: string[] = [];
+  const pendingBlocks = [...richBlocks];
+  while (pendingBlocks.length) {
+    const block = pendingBlocks.shift();
+    if (!block) continue;
+    const blockLength = richTextToPlainText(richTextDocumentFromBlocks([block])).length;
+    const limit = pageBlockChunks.length === 0 ? firstPageLimit : nextPageLimit;
+    if (currentBlocks.length && currentLength + blockLength > limit) {
+      pageBlockChunks.push(currentBlocks);
+      currentBlocks = [];
+      currentLength = 0;
+      pendingBlocks.unshift(block);
+      continue;
+    }
 
-  if (firstPass.length <= 1) {
-    pageChunks.push(firstPass[0] ?? "");
-  } else {
-    pageChunks.push(firstPass[0]);
-    const remainder = splitParagraphs(firstPass.slice(1).join("\n\n"));
-    pageChunks.push(...chunkParagraphs(remainder, nextPageLimit));
+    if (blockLength > limit) {
+      const splitBlocks = splitRichTextBlock(block, limit);
+      if (splitBlocks.length > 1) {
+        pendingBlocks.unshift(...splitBlocks);
+        continue;
+      }
+    }
+
+    currentBlocks.push(block);
+    currentLength += blockLength;
   }
 
-  const totalPages = Math.max(pageChunks.length, 1);
+  if (currentBlocks.length || !pageBlockChunks.length) {
+    pageBlockChunks.push(currentBlocks);
+  }
+
+  const totalPages = pageBlockChunks.length;
   const dateLabel = formatBulletinDate(bulletin.service_date);
 
   return Array.from({ length: totalPages }, (_, index) => ({
@@ -75,7 +75,10 @@ export function buildBulletinPrintPages(bulletin: Bulletin): BulletinPrintPage[]
     scriptureReference: bulletin.scripture_reference,
     dateLabel,
     weeklyNotice: index === 0 ? bulletin.weekly_notice : null,
-    columnChunk: pageChunks[index] ?? "",
+    columnChunk: richTextToPlainText(
+      richTextDocumentFromBlocks(pageBlockChunks[index] ?? []),
+    ),
+    columnRichChunk: richTextDocumentFromBlocks(pageBlockChunks[index] ?? []),
     isFirstPage: index === 0,
   }));
 }

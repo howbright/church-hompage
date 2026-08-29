@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type {
   BulletinActionState,
@@ -10,6 +10,13 @@ import type {
 import type { Bulletin } from "@/lib/bulletins";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { ResultToast } from "@/components/ui/result-toast";
+import { RichTextEditor } from "@/components/rich-text-editor";
+import {
+  MAX_COLUMN_LENGTH,
+  plainTextToRichDocument,
+  sanitizeRichText,
+  type RichTextDocument,
+} from "@/lib/rich-text";
 
 const initialState: BulletinActionState = {
   status: "idle",
@@ -24,6 +31,7 @@ type EditableBulletin = Pick<
   | "scripture_reference"
   | "message_title"
   | "column_content"
+  | "column_content_rich"
   | "weekly_notice"
 >;
 
@@ -56,7 +64,7 @@ export function AdminBulletinManager({
 }) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
-  const columnRef = useRef<HTMLTextAreaElement>(null);
+  const columnRef = useRef<HTMLDivElement>(null);
   const messageTitleRef = useRef<HTMLInputElement>(null);
   const [selectedBulletin, setSelectedBulletin] = useState<EditableBulletin | null>(
     null,
@@ -68,6 +76,12 @@ export function AdminBulletinManager({
   const [deletePassword, setDeletePassword] = useState("");
   const [messageTitle, setMessageTitle] = useState("");
   const [columnContent, setColumnContent] = useState("");
+  const [columnContentRich, setColumnContentRich] =
+    useState<RichTextDocument | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const [pendingEditorChange, setPendingEditorChange] = useState<
+    { type: "new" } | { type: "edit"; bulletin: EditableBulletin } | null
+  >(null);
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [sermonAbstract, setSermonAbstract] = useState("");
   const [generatorPassword, setGeneratorPassword] = useState("");
@@ -86,11 +100,22 @@ export function AdminBulletinManager({
   const formTitle = selectedBulletin ? "주보 수정" : "새 주보 작성";
   const submitLabel = selectedBulletin ? "주보 수정하기" : "주보 게시하기";
 
+  useEffect(() => {
+    if (!isDirty) return;
+    const warnBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+    };
+    window.addEventListener("beforeunload", warnBeforeUnload);
+    return () => window.removeEventListener("beforeunload", warnBeforeUnload);
+  }, [isDirty]);
+
   async function handleSave(formData: FormData) {
     if (isSaving) return;
 
     const latestMessageTitle = messageTitleRef.current?.value.trim() ?? "";
     formData.set("messageTitle", latestMessageTitle);
+    formData.set("columnContent", columnContent);
+    formData.set("columnContentRich", JSON.stringify(columnContentRich));
 
     setDeleteState(initialState);
     setGeneratorState(initialState);
@@ -112,8 +137,25 @@ export function AdminBulletinManager({
         status: "error",
         message: `${missingField[1]}을(를) 입력해주세요.`,
       });
-      formRef.current
-        ?.querySelector<HTMLElement>(`[name="${missingField[0]}"]`)
+      if (missingField[0] === "columnContent") {
+        columnRef.current
+          ?.querySelector<HTMLElement>("[contenteditable='true']")
+          ?.focus();
+      } else {
+        formRef.current
+          ?.querySelector<HTMLElement>(`[name="${missingField[0]}"]`)
+          ?.focus();
+      }
+      return;
+    }
+
+    if (columnContent.length > MAX_COLUMN_LENGTH) {
+      setSaveState({
+        status: "error",
+        message: `칼럼은 ${MAX_COLUMN_LENGTH.toLocaleString()}자 이하로 작성해주세요.`,
+      });
+      columnRef.current
+        ?.querySelector<HTMLElement>("[contenteditable='true']")
         ?.focus();
       return;
     }
@@ -128,6 +170,8 @@ export function AdminBulletinManager({
         setSelectedBulletin(null);
         setMessageTitle("");
         setColumnContent("");
+        setColumnContentRich(null);
+        setIsDirty(false);
         router.refresh();
       }
     } catch (error) {
@@ -143,25 +187,59 @@ export function AdminBulletinManager({
     }
   }
 
-  function handleEdit(bulletin: EditableBulletin) {
+  function loadBulletinForEditing(bulletin: EditableBulletin) {
     setSaveState(initialState);
     setDeleteState(initialState);
     setGeneratorState(initialState);
     setSelectedBulletin(bulletin);
     setMessageTitle(bulletin.message_title);
     setColumnContent(bulletin.column_content);
+    setColumnContentRich(
+      sanitizeRichText(bulletin.column_content_rich) ??
+        plainTextToRichDocument(bulletin.column_content),
+    );
+    setIsDirty(false);
     requestAnimationFrame(() => {
       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
 
-  function handleNewBulletin() {
+  function resetBulletinForm() {
     setSelectedBulletin(null);
     setMessageTitle("");
     setColumnContent("");
+    setColumnContentRich(null);
+    setIsDirty(false);
     setSaveState(initialState);
     setDeleteState(initialState);
     setGeneratorState(initialState);
+  }
+
+  function requestEdit(bulletin: EditableBulletin) {
+    if (isDirty) {
+      setPendingEditorChange({ type: "edit", bulletin });
+      return;
+    }
+    loadBulletinForEditing(bulletin);
+  }
+
+  function requestNewBulletin() {
+    if (isDirty) {
+      setPendingEditorChange({ type: "new" });
+      return;
+    }
+    resetBulletinForm();
+  }
+
+  function confirmEditorChange() {
+    const pendingChange = pendingEditorChange;
+    setPendingEditorChange(null);
+    if (!pendingChange) return;
+    if (pendingChange.type === "edit") {
+      loadBulletinForEditing(pendingChange.bulletin);
+    } else {
+      resetBulletinForm();
+    }
   }
 
   function openGeneratorDialog() {
@@ -208,6 +286,8 @@ export function AdminBulletinManager({
       }
 
       setColumnContent(payload.column);
+      setColumnContentRich(plainTextToRichDocument(payload.column));
+      setIsDirty(true);
       setGeneratorState({
         status: "success",
         message: "생성된 글을 칼럼 입력란에 반영했습니다.",
@@ -217,7 +297,9 @@ export function AdminBulletinManager({
       setGeneratorPassword("");
       requestAnimationFrame(() => {
         columnRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-        columnRef.current?.focus({ preventScroll: true });
+        columnRef.current
+          ?.querySelector<HTMLElement>("[contenteditable='true']")
+          ?.focus({ preventScroll: true });
       });
     } catch (error) {
       setGeneratorState({
@@ -260,6 +342,7 @@ export function AdminBulletinManager({
       setPendingDeleteId(null);
 
       if (result.status === "success") {
+        if (selectedBulletin?.id === deleteTarget.id) setIsDirty(false);
         setSelectedBulletin((current) =>
           current && current.id === deleteTarget.id ? null : current,
         );
@@ -282,6 +365,14 @@ export function AdminBulletinManager({
         ref={formRef}
         action={handleSave}
         noValidate
+        onChange={(event) => {
+          const fieldName =
+            event.target instanceof HTMLInputElement ||
+            event.target instanceof HTMLTextAreaElement
+              ? event.target.name
+              : "";
+          if (fieldName !== "adminPassword") setIsDirty(true);
+        }}
         className="scroll-mt-6 space-y-6 rounded-[2rem] border border-black/8 bg-[var(--surface-strong)] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.06)] backdrop-blur"
       >
         <div className="flex items-center justify-between gap-3">
@@ -291,7 +382,7 @@ export function AdminBulletinManager({
           {selectedBulletin ? (
             <button
               type="button"
-              onClick={handleNewBulletin}
+              onClick={requestNewBulletin}
               className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-[var(--page-deep)] transition hover:border-[var(--page-accent-strong)]"
             >
               새 주보 작성으로 돌아가기
@@ -359,7 +450,7 @@ export function AdminBulletinManager({
         <div className="space-y-2">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <label
-              htmlFor="column-content"
+              htmlFor="column-content-editor"
               className="text-sm font-semibold text-[var(--page-deep)]"
             >
               칼럼
@@ -372,20 +463,35 @@ export function AdminBulletinManager({
               설교 초록을 칼럼으로 바꾸기
             </button>
           </div>
-          <textarea
-            ref={columnRef}
-            id="column-content"
-            name="columnContent"
-            required
-            rows={10}
-            placeholder="길게 들어가는 칼럼 내용을 적어주세요."
-            value={columnContent}
-            onChange={(event) => setColumnContent(event.target.value)}
-            className="w-full rounded-[1.5rem] border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--page-accent-strong)]"
+          <div ref={columnRef} id="column-content">
+            <RichTextEditor
+              value={columnContentRich}
+              plainText={columnContent}
+              onChange={(document, text) => {
+                setColumnContentRich(document);
+                setColumnContent(text);
+                setIsDirty(true);
+              }}
+            />
+          </div>
+          <input type="hidden" name="columnContent" value={columnContent} />
+          <input
+            type="hidden"
+            name="columnContentRich"
+            value={JSON.stringify(columnContentRich)}
           />
-          <p className="text-xs leading-5 text-[var(--page-muted)]">
-            직접 작성하거나, 설교 초록을 AI로 정리한 뒤 자유롭게 수정할 수 있습니다.
-          </p>
+          <div className="flex items-start justify-between gap-4 text-xs leading-5 text-[var(--page-muted)]">
+            <p>
+              직접 작성하거나, 설교 초록을 AI로 정리한 뒤 자유롭게 수정할 수 있습니다.
+            </p>
+            <p
+              className={`shrink-0 tabular-nums ${
+                columnContent.length > MAX_COLUMN_LENGTH ? "font-semibold text-rose-600" : ""
+              }`}
+            >
+              {columnContent.length.toLocaleString()} / {MAX_COLUMN_LENGTH.toLocaleString()}자
+            </p>
+          </div>
         </div>
 
         <label className="space-y-2">
@@ -448,7 +554,7 @@ export function AdminBulletinManager({
                   <div className="flex flex-wrap gap-2">
                     <button
                       type="button"
-                      onClick={() => handleEdit(bulletin)}
+                      onClick={() => requestEdit(bulletin)}
                       className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-[var(--page-deep)] transition hover:border-[var(--page-accent-strong)]"
                     >
                       수정
@@ -476,6 +582,17 @@ export function AdminBulletinManager({
           </ul>
         )}
       </section>
+
+      <ConfirmDialog
+        open={pendingEditorChange !== null}
+        title="작성 중인 내용을 바꿀까요?"
+        description="저장하지 않은 칼럼과 주보 내용이 사라집니다. 계속하려면 작성 중인 내용을 버려 주세요."
+        confirmLabel="내용 버리고 계속"
+        cancelLabel="계속 작성"
+        danger
+        onConfirm={confirmEditorChange}
+        onClose={() => setPendingEditorChange(null)}
+      />
 
       <ConfirmDialog
         open={generatorOpen}

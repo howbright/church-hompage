@@ -7,12 +7,16 @@ create table if not exists public.weekly_bulletins (
   scripture_reference text not null,
   message_title text not null,
   column_content text not null,
+  column_content_rich jsonb,
   weekly_notice text,
   published boolean not null default true,
   published_at timestamptz not null default now(),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.weekly_bulletins
+  add column if not exists column_content_rich jsonb;
 
 create index if not exists weekly_bulletins_service_date_idx
   on public.weekly_bulletins (service_date desc);

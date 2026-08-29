@@ -3,6 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { deleteBulletin, insertBulletin, updateBulletin } from "@/lib/bulletins";
 import { hasSupabaseEnv } from "@/lib/supabase";
+import {
+  MAX_COLUMN_LENGTH,
+  plainTextToRichDocument,
+  richTextToPlainText,
+  sanitizeRichText,
+} from "@/lib/rich-text";
 
 export type BulletinActionState = {
   status: "idle" | "success" | "error";
@@ -67,8 +73,28 @@ export async function saveBulletinAction(
   const scriptureReference =
     formData.get("scriptureReference")?.toString().trim() ?? "";
   const messageTitle = formData.get("messageTitle")?.toString().trim() ?? "";
-  const columnContent =
+  const submittedColumnContent =
     formData.get("columnContent")?.toString().trim() ?? "";
+  const submittedRichContent = formData.get("columnContentRich")?.toString() ?? "";
+  if (
+    submittedColumnContent.length > MAX_COLUMN_LENGTH ||
+    submittedRichContent.length > MAX_COLUMN_LENGTH * 10
+  ) {
+    return {
+      status: "error",
+      message: `칼럼은 ${MAX_COLUMN_LENGTH.toLocaleString()}자 이하로 작성해주세요.`,
+      action: bulletinId ? "update" : "create",
+    };
+  }
+  let columnContentRich = null;
+  try {
+    columnContentRich = sanitizeRichText(JSON.parse(submittedRichContent));
+  } catch {
+    columnContentRich = null;
+  }
+  const normalizedRichContent =
+    columnContentRich ?? plainTextToRichDocument(submittedColumnContent);
+  const columnContent = richTextToPlainText(normalizedRichContent);
   const weeklyNotice = formData.get("weeklyNotice")?.toString().trim() ?? "";
 
   if (!serviceDate || !scriptureReference || !messageTitle || !columnContent) {
@@ -85,6 +111,7 @@ export async function saveBulletinAction(
       scriptureReference,
       messageTitle,
       columnContent,
+      columnContentRich: normalizedRichContent,
       weeklyNotice,
     };
 

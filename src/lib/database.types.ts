@@ -1,0 +1,2755 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
+  public: {
+    Tables: {
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          created_at: string
+          excerpt: string
+          id: string
+          image_url: string
+          locale: string
+          markdown: string
+          published_at: string | null
+          seo_keywords: string[]
+          slug: string
+          status: string
+          title: string
+          translation_group_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          created_at?: string
+          excerpt?: string
+          id?: string
+          image_url?: string
+          locale: string
+          markdown?: string
+          published_at?: string | null
+          seo_keywords?: string[]
+          slug: string
+          status?: string
+          title: string
+          translation_group_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          created_at?: string
+          excerpt?: string
+          id?: string
+          image_url?: string
+          locale?: string
+          markdown?: string
+          published_at?: string | null
+          seo_keywords?: string[]
+          slug?: string
+          status?: string
+          title?: string
+          translation_group_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          is_active: boolean
+          name: string
+          store_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name: string
+          store_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          store_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_clip_device_purchases: {
+        Row: {
+          device_id: string
+          id: string
+          linked_at: string
+          purchase_id: string
+        }
+        Insert: {
+          device_id: string
+          id?: string
+          linked_at?: string
+          purchase_id: string
+        }
+        Update: {
+          device_id?: string
+          id?: string
+          linked_at?: string
+          purchase_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_clip_device_purchases_device_fk"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_clip_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_clip_device_purchases_purchase_fk"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_clip_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_clip_devices: {
+        Row: {
+          active_purchase_id: string | null
+          created_at: string
+          entitlement_status: string
+          id: string
+          last_seen_at: string | null
+          last_verified_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          active_purchase_id?: string | null
+          created_at?: string
+          entitlement_status?: string
+          id: string
+          last_seen_at?: string | null
+          last_verified_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active_purchase_id?: string | null
+          created_at?: string
+          entitlement_status?: string
+          id?: string
+          last_seen_at?: string | null
+          last_verified_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_clip_devices_active_purchase_fk"
+            columns: ["active_purchase_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_clip_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_clip_entitlement_audits: {
+        Row: {
+          action: string
+          created_at: string
+          device_id: string | null
+          id: string
+          metadata: Json | null
+          purchase_id: string | null
+          reason: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          purchase_id?: string | null
+          reason?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          purchase_id?: string | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_clip_entitlement_audits_device_fk"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_clip_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_clip_entitlement_audits_purchase_fk"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_clip_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_clip_pro_usage_events: {
+        Row: {
+          created_at: string
+          device_id: string
+          event_type: Database["public"]["Enums"]["challenge_clip_pro_usage_event_type"]
+          id: string
+          metadata: Json | null
+          purchase_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          event_type: Database["public"]["Enums"]["challenge_clip_pro_usage_event_type"]
+          id?: string
+          metadata?: Json | null
+          purchase_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          event_type?: Database["public"]["Enums"]["challenge_clip_pro_usage_event_type"]
+          id?: string
+          metadata?: Json | null
+          purchase_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_clip_pro_usage_events_device_fk"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_clip_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_clip_pro_usage_events_purchase_fk"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_clip_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_clip_purchases: {
+        Row: {
+          acknowledgement_state: number | null
+          consumption_state: number | null
+          created_at: string
+          id: string
+          order_id: string | null
+          product_id: string
+          purchase_state: number | null
+          purchase_time_millis: string | null
+          purchase_token_hash: string
+          raw_google_payload: Json | null
+          refund_type: number | null
+          status: string
+          updated_at: string
+          voided_at: string | null
+          voided_reason: number | null
+        }
+        Insert: {
+          acknowledgement_state?: number | null
+          consumption_state?: number | null
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          product_id: string
+          purchase_state?: number | null
+          purchase_time_millis?: string | null
+          purchase_token_hash: string
+          raw_google_payload?: Json | null
+          refund_type?: number | null
+          status?: string
+          updated_at?: string
+          voided_at?: string | null
+          voided_reason?: number | null
+        }
+        Update: {
+          acknowledgement_state?: number | null
+          consumption_state?: number | null
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          product_id?: string
+          purchase_state?: number | null
+          purchase_time_millis?: string | null
+          purchase_token_hash?: string
+          raw_google_payload?: Json | null
+          refund_type?: number | null
+          status?: string
+          updated_at?: string
+          voided_at?: string | null
+          voided_reason?: number | null
+        }
+        Relationships: []
+      }
+      challenge_clip_void_sync_state: {
+        Row: {
+          id: string
+          last_sync_time_millis: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          last_sync_time_millis?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          last_sync_time_millis?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      credit_lot_consumptions: {
+        Row: {
+          created_at: string
+          credit_transaction_id: string
+          id: string
+          lot_id: string
+          metadata: Json
+          reference_id: string | null
+          reference_table: string | null
+          usage_type: Database["public"]["Enums"]["credit_usage_type"]
+          used_credits: number
+        }
+        Insert: {
+          created_at?: string
+          credit_transaction_id: string
+          id?: string
+          lot_id: string
+          metadata?: Json
+          reference_id?: string | null
+          reference_table?: string | null
+          usage_type: Database["public"]["Enums"]["credit_usage_type"]
+          used_credits: number
+        }
+        Update: {
+          created_at?: string
+          credit_transaction_id?: string
+          id?: string
+          lot_id?: string
+          metadata?: Json
+          reference_id?: string | null
+          reference_table?: string | null
+          usage_type?: Database["public"]["Enums"]["credit_usage_type"]
+          used_credits?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_lot_consumptions_credit_transaction_id_fkey"
+            columns: ["credit_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "credit_transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credit_lot_consumptions_lot_id_fkey"
+            columns: ["lot_id"]
+            isOneToOne: false
+            referencedRelation: "credit_lots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      credit_lots: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          original_credits: number
+          payment_id: string
+          remaining_credits: number
+          source: Database["public"]["Enums"]["credit_transaction_source"]
+          status: Database["public"]["Enums"]["credit_lot_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          original_credits: number
+          payment_id: string
+          remaining_credits: number
+          source: Database["public"]["Enums"]["credit_transaction_source"]
+          status?: Database["public"]["Enums"]["credit_lot_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          original_credits?: number
+          payment_id?: string
+          remaining_credits?: number
+          source?: Database["public"]["Enums"]["credit_transaction_source"]
+          status?: Database["public"]["Enums"]["credit_lot_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_lots_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: true
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credit_lots_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      credit_packs: {
+        Row: {
+          created_at: string
+          credits: number
+          currency: Database["public"]["Enums"]["currency_code"]
+          display_name: string
+          id: string
+          is_active: boolean
+          lemon_variant_id: string | null
+          price: number
+          toss_price_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          credits: number
+          currency: Database["public"]["Enums"]["currency_code"]
+          display_name: string
+          id: string
+          is_active?: boolean
+          lemon_variant_id?: string | null
+          price: number
+          toss_price_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          credits?: number
+          currency?: Database["public"]["Enums"]["currency_code"]
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          lemon_variant_id?: string | null
+          price?: number
+          toss_price_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      credit_transactions: {
+        Row: {
+          balance_free_after: number
+          balance_paid_after: number
+          balance_total_after: number
+          created_at: string
+          delta_free: number
+          delta_paid: number
+          delta_total: number
+          id: string
+          map_id: string | null
+          payment_id: string | null
+          reason: string | null
+          source: Database["public"]["Enums"]["credit_transaction_source"]
+          tx_type: Database["public"]["Enums"]["credit_transaction_type"]
+          user_id: string
+        }
+        Insert: {
+          balance_free_after: number
+          balance_paid_after: number
+          balance_total_after: number
+          created_at?: string
+          delta_free?: number
+          delta_paid?: number
+          delta_total: number
+          id?: string
+          map_id?: string | null
+          payment_id?: string | null
+          reason?: string | null
+          source: Database["public"]["Enums"]["credit_transaction_source"]
+          tx_type: Database["public"]["Enums"]["credit_transaction_type"]
+          user_id: string
+        }
+        Update: {
+          balance_free_after?: number
+          balance_paid_after?: number
+          balance_total_after?: number
+          created_at?: string
+          delta_free?: number
+          delta_paid?: number
+          delta_total?: number
+          id?: string
+          map_id?: string | null
+          payment_id?: string | null
+          reason?: string | null
+          source?: Database["public"]["Enums"]["credit_transaction_source"]
+          tx_type?: Database["public"]["Enums"]["credit_transaction_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_transactions_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credit_transactions_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gallery_entries: {
+        Row: {
+          consent_confirmed: boolean
+          contains_minors: boolean
+          created_at: string
+          date_label: string | null
+          description: string | null
+          event_date: string
+          id: string
+          published_at: string
+          title: string
+          updated_at: string
+          visibility: Database["public"]["Enums"]["gallery_visibility"]
+        }
+        Insert: {
+          consent_confirmed?: boolean
+          contains_minors?: boolean
+          created_at?: string
+          date_label?: string | null
+          description?: string | null
+          event_date: string
+          id?: string
+          published_at?: string
+          title: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["gallery_visibility"]
+        }
+        Update: {
+          consent_confirmed?: boolean
+          contains_minors?: boolean
+          created_at?: string
+          date_label?: string | null
+          description?: string | null
+          event_date?: string
+          id?: string
+          published_at?: string
+          title?: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["gallery_visibility"]
+        }
+        Relationships: []
+      }
+      gallery_photos: {
+        Row: {
+          alt_text: string | null
+          caption: string | null
+          created_at: string
+          entry_id: string
+          file_size: number
+          height: number
+          id: string
+          mime_type: string
+          sort_order: number
+          storage_path: string
+          width: number
+        }
+        Insert: {
+          alt_text?: string | null
+          caption?: string | null
+          created_at?: string
+          entry_id: string
+          file_size: number
+          height: number
+          id?: string
+          mime_type: string
+          sort_order?: number
+          storage_path: string
+          width: number
+        }
+        Update: {
+          alt_text?: string | null
+          caption?: string | null
+          created_at?: string
+          entry_id?: string
+          file_size?: number
+          height?: number
+          id?: string
+          mime_type?: string
+          sort_order?: number
+          storage_path?: string
+          width?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gallery_photos_entry_id_fkey"
+            columns: ["entry_id"]
+            isOneToOne: false
+            referencedRelation: "gallery_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      keywords: {
+        Row: {
+          id: number
+          lang: string
+          name: string
+        }
+        Insert: {
+          id?: number
+          lang?: string
+          name: string
+        }
+        Update: {
+          id?: number
+          lang?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      map_generation_chunks: {
+        Row: {
+          char_count: number
+          chunk_count: number
+          chunk_index: number
+          chunk_map_id: string | null
+          chunk_text: string
+          completed_at: string | null
+          created_at: string
+          end_char: number
+          error_message: string | null
+          id: string
+          job_id: string
+          overlap_end_char: number | null
+          overlap_start_char: number | null
+          start_char: number
+          started_at: string | null
+          status: Database["public"]["Enums"]["map_generation_chunk_status"]
+          structure_result: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          char_count?: number
+          chunk_count: number
+          chunk_index: number
+          chunk_map_id?: string | null
+          chunk_text: string
+          completed_at?: string | null
+          created_at?: string
+          end_char?: number
+          error_message?: string | null
+          id?: string
+          job_id: string
+          overlap_end_char?: number | null
+          overlap_start_char?: number | null
+          start_char?: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["map_generation_chunk_status"]
+          structure_result?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          char_count?: number
+          chunk_count?: number
+          chunk_index?: number
+          chunk_map_id?: string | null
+          chunk_text?: string
+          completed_at?: string | null
+          created_at?: string
+          end_char?: number
+          error_message?: string | null
+          id?: string
+          job_id?: string
+          overlap_end_char?: number | null
+          overlap_start_char?: number | null
+          start_char?: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["map_generation_chunk_status"]
+          structure_result?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_generation_chunks_chunk_map_id_fkey"
+            columns: ["chunk_map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "map_generation_chunks_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "map_generation_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      map_generation_jobs: {
+        Row: {
+          channel_name: string | null
+          charged_credits: number
+          chunk_count: number
+          completed_at: string | null
+          created_at: string
+          current_step: string | null
+          description: string | null
+          error_message: string | null
+          extracted_text: string
+          final_map_id: string | null
+          id: string
+          output_language: string | null
+          overlap_chars: number
+          required_credits: number
+          source_type: string
+          source_url: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["map_generation_job_status"]
+          tags: string[]
+          target_chunk_chars: number
+          thumbnail_url: string | null
+          title: string | null
+          total_char_count: number
+          updated_at: string
+          user_id: string
+          youtube_title: string | null
+        }
+        Insert: {
+          channel_name?: string | null
+          charged_credits?: number
+          chunk_count?: number
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string | null
+          description?: string | null
+          error_message?: string | null
+          extracted_text: string
+          final_map_id?: string | null
+          id?: string
+          output_language?: string | null
+          overlap_chars?: number
+          required_credits?: number
+          source_type?: string
+          source_url?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["map_generation_job_status"]
+          tags?: string[]
+          target_chunk_chars?: number
+          thumbnail_url?: string | null
+          title?: string | null
+          total_char_count?: number
+          updated_at?: string
+          user_id: string
+          youtube_title?: string | null
+        }
+        Update: {
+          channel_name?: string | null
+          charged_credits?: number
+          chunk_count?: number
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string | null
+          description?: string | null
+          error_message?: string | null
+          extracted_text?: string
+          final_map_id?: string | null
+          id?: string
+          output_language?: string | null
+          overlap_chars?: number
+          required_credits?: number
+          source_type?: string
+          source_url?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["map_generation_job_status"]
+          tags?: string[]
+          target_chunk_chars?: number
+          thumbnail_url?: string | null
+          title?: string | null
+          total_char_count?: number
+          updated_at?: string
+          user_id?: string
+          youtube_title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_generation_jobs_final_map_id_fkey"
+            columns: ["final_map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      map_node_expansions: {
+        Row: {
+          attempt_count: number
+          children_json: Json | null
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          map_id: string
+          mode: Database["public"]["Enums"]["map_node_expansion_mode"]
+          node_id: string
+          queue_job_id: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["map_node_expansion_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempt_count?: number
+          children_json?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          map_id: string
+          mode?: Database["public"]["Enums"]["map_node_expansion_mode"]
+          node_id: string
+          queue_job_id?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["map_node_expansion_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempt_count?: number
+          children_json?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          map_id?: string
+          mode?: Database["public"]["Enums"]["map_node_expansion_mode"]
+          node_id?: string
+          queue_job_id?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["map_node_expansion_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_node_expansions_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      map_notes: {
+        Row: {
+          created_at: string
+          id: string
+          map_id: string
+          text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          map_id: string
+          text: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          map_id?: string
+          text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_notes_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      map_open_events: {
+        Row: {
+          access_mode: Database["public"]["Enums"]["map_open_access_mode"]
+          created_at: string
+          id: string
+          locale: string | null
+          map_id: string
+          opened_at: string
+          referrer: string | null
+          session_key: string | null
+          user_agent_hash: string | null
+          user_id: string | null
+        }
+        Insert: {
+          access_mode?: Database["public"]["Enums"]["map_open_access_mode"]
+          created_at?: string
+          id?: string
+          locale?: string | null
+          map_id: string
+          opened_at?: string
+          referrer?: string | null
+          session_key?: string | null
+          user_agent_hash?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_mode?: Database["public"]["Enums"]["map_open_access_mode"]
+          created_at?: string
+          id?: string
+          locale?: string | null
+          map_id?: string
+          opened_at?: string
+          referrer?: string | null
+          session_key?: string | null
+          user_agent_hash?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_open_events_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "map_open_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      map_ops_snapshots: {
+        Row: {
+          avg_ai_processing_ms_24h: number | null
+          backlog: number
+          captured_at: string
+          current_done: number
+          current_failed: number
+          current_processing: number
+          current_queued: number
+          failure_rate_24h: number
+          id: string
+          max_ai_processing_ms_24h: number | null
+          p95_ai_processing_ms_24h: number | null
+          queue_active: number
+          queue_completed: number
+          queue_delayed: number
+          queue_failed: number
+          queue_paused: number
+          queue_prioritized: number
+          queue_waiting: number
+          recent_done: number
+          recent_failed: number
+          recent_in_progress: number
+          recent_total: number
+        }
+        Insert: {
+          avg_ai_processing_ms_24h?: number | null
+          backlog?: number
+          captured_at?: string
+          current_done?: number
+          current_failed?: number
+          current_processing?: number
+          current_queued?: number
+          failure_rate_24h?: number
+          id?: string
+          max_ai_processing_ms_24h?: number | null
+          p95_ai_processing_ms_24h?: number | null
+          queue_active?: number
+          queue_completed?: number
+          queue_delayed?: number
+          queue_failed?: number
+          queue_paused?: number
+          queue_prioritized?: number
+          queue_waiting?: number
+          recent_done?: number
+          recent_failed?: number
+          recent_in_progress?: number
+          recent_total?: number
+        }
+        Update: {
+          avg_ai_processing_ms_24h?: number | null
+          backlog?: number
+          captured_at?: string
+          current_done?: number
+          current_failed?: number
+          current_processing?: number
+          current_queued?: number
+          failure_rate_24h?: number
+          id?: string
+          max_ai_processing_ms_24h?: number | null
+          p95_ai_processing_ms_24h?: number | null
+          queue_active?: number
+          queue_completed?: number
+          queue_delayed?: number
+          queue_failed?: number
+          queue_paused?: number
+          queue_prioritized?: number
+          queue_waiting?: number
+          recent_done?: number
+          recent_failed?: number
+          recent_in_progress?: number
+          recent_total?: number
+        }
+        Relationships: []
+      }
+      map_term_requests: {
+        Row: {
+          created_at: string
+          error: string | null
+          id: string
+          job_id: string | null
+          map_id: string
+          mode: Database["public"]["Enums"]["map_term_request_kind"]
+          status: Database["public"]["Enums"]["map_term_request_status"]
+          terms_csv: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error?: string | null
+          id?: string
+          job_id?: string | null
+          map_id: string
+          mode: Database["public"]["Enums"]["map_term_request_kind"]
+          status?: Database["public"]["Enums"]["map_term_request_status"]
+          terms_csv?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error?: string | null
+          id?: string
+          job_id?: string | null
+          map_id?: string
+          mode?: Database["public"]["Enums"]["map_term_request_kind"]
+          status?: Database["public"]["Enums"]["map_term_request_status"]
+          terms_csv?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_term_requests_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "map_term_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      map_terms: {
+        Row: {
+          created_at: string
+          id: string
+          lang: string | null
+          map_id: string
+          meaning: string
+          request_id: string
+          term: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lang?: string | null
+          map_id: string
+          meaning: string
+          request_id: string
+          term: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lang?: string | null
+          map_id?: string
+          meaning?: string
+          request_id?: string
+          term?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_terms_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "map_terms_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "map_term_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      map_user_states: {
+        Row: {
+          created_at: string
+          last_viewed_at: string | null
+          map_id: string
+          progress_percent: number
+          read_status: Database["public"]["Enums"]["map_read_status"]
+          starred: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          last_viewed_at?: string | null
+          map_id: string
+          progress_percent?: number
+          read_status?: Database["public"]["Enums"]["map_read_status"]
+          starred?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          last_viewed_at?: string | null
+          map_id?: string
+          progress_percent?: number
+          read_status?: Database["public"]["Enums"]["map_read_status"]
+          starred?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_user_states_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maps: {
+        Row: {
+          ai_processing_ms: number | null
+          channel_name: string | null
+          created_at: string
+          credits_charged: number
+          credits_charged_at: string | null
+          description: string | null
+          extract_error: string | null
+          extract_job_id: string | null
+          extract_status: Database["public"]["Enums"]["map_extract_status"]
+          extracted_text: string | null
+          id: string
+          map_status: Database["public"]["Enums"]["map_status"]
+          mind_elixir: Json | null
+          mind_elixir_draft: Json | null
+          mind_theme_override: string | null
+          notes_count: number
+          output_language: string | null
+          required_credits: number
+          schema_version: number
+          share_enabled: boolean
+          share_token: string | null
+          short_title: string | null
+          source_char_count: number | null
+          source_expires_at: string | null
+          source_retention_hours: number
+          source_type: Database["public"]["Enums"]["map_source_type"]
+          source_url: string | null
+          structure_phase:
+            | Database["public"]["Enums"]["map_structure_phase"]
+            | null
+          summary: string | null
+          tags: string[]
+          terms_count: number
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          youtube_title: string | null
+        }
+        Insert: {
+          ai_processing_ms?: number | null
+          channel_name?: string | null
+          created_at?: string
+          credits_charged?: number
+          credits_charged_at?: string | null
+          description?: string | null
+          extract_error?: string | null
+          extract_job_id?: string | null
+          extract_status?: Database["public"]["Enums"]["map_extract_status"]
+          extracted_text?: string | null
+          id?: string
+          map_status?: Database["public"]["Enums"]["map_status"]
+          mind_elixir?: Json | null
+          mind_elixir_draft?: Json | null
+          mind_theme_override?: string | null
+          notes_count?: number
+          output_language?: string | null
+          required_credits?: number
+          schema_version?: number
+          share_enabled?: boolean
+          share_token?: string | null
+          short_title?: string | null
+          source_char_count?: number | null
+          source_expires_at?: string | null
+          source_retention_hours?: number
+          source_type?: Database["public"]["Enums"]["map_source_type"]
+          source_url?: string | null
+          structure_phase?:
+            | Database["public"]["Enums"]["map_structure_phase"]
+            | null
+          summary?: string | null
+          tags?: string[]
+          terms_count?: number
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          youtube_title?: string | null
+        }
+        Update: {
+          ai_processing_ms?: number | null
+          channel_name?: string | null
+          created_at?: string
+          credits_charged?: number
+          credits_charged_at?: string | null
+          description?: string | null
+          extract_error?: string | null
+          extract_job_id?: string | null
+          extract_status?: Database["public"]["Enums"]["map_extract_status"]
+          extracted_text?: string | null
+          id?: string
+          map_status?: Database["public"]["Enums"]["map_status"]
+          mind_elixir?: Json | null
+          mind_elixir_draft?: Json | null
+          mind_theme_override?: string | null
+          notes_count?: number
+          output_language?: string | null
+          required_credits?: number
+          schema_version?: number
+          share_enabled?: boolean
+          share_token?: string | null
+          short_title?: string | null
+          source_char_count?: number | null
+          source_expires_at?: string | null
+          source_retention_hours?: number
+          source_type?: Database["public"]["Enums"]["map_source_type"]
+          source_url?: string | null
+          structure_phase?:
+            | Database["public"]["Enums"]["map_structure_phase"]
+            | null
+          summary?: string | null
+          tags?: string[]
+          terms_count?: number
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          youtube_title?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          category: Database["public"]["Enums"]["notification_category"]
+          created_at: string
+          dedupe_key: string | null
+          delta_credits: number
+          entity_id: string | null
+          event_type: Database["public"]["Enums"]["notification_event_type"]
+          id: string
+          is_read: boolean
+          message_key: string
+          params: Json
+          read_at: string | null
+          source: string | null
+          status: Database["public"]["Enums"]["notification_status"]
+          title_key: string
+          user_id: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["notification_category"]
+          created_at?: string
+          dedupe_key?: string | null
+          delta_credits?: number
+          entity_id?: string | null
+          event_type: Database["public"]["Enums"]["notification_event_type"]
+          id?: string
+          is_read?: boolean
+          message_key: string
+          params?: Json
+          read_at?: string | null
+          source?: string | null
+          status: Database["public"]["Enums"]["notification_status"]
+          title_key: string
+          user_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["notification_category"]
+          created_at?: string
+          dedupe_key?: string | null
+          delta_credits?: number
+          entity_id?: string | null
+          event_type?: Database["public"]["Enums"]["notification_event_type"]
+          id?: string
+          is_read?: boolean
+          message_key?: string
+          params?: Json
+          read_at?: string | null
+          source?: string | null
+          status?: Database["public"]["Enums"]["notification_status"]
+          title_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          line_total: number | null
+          order_id: string
+          product_id: string | null
+          product_name: string
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          line_total?: number | null
+          order_id: string
+          product_id?: string | null
+          product_name: string
+          quantity: number
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          line_total?: number | null
+          order_id?: string
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_status_events: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: Database["public"]["Enums"]["order_status"]
+          note: string | null
+          order_id: string
+          previous_status: Database["public"]["Enums"]["order_status"] | null
+          store_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: Database["public"]["Enums"]["order_status"]
+          note?: string | null
+          order_id: string
+          previous_status?: Database["public"]["Enums"]["order_status"] | null
+          store_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: Database["public"]["Enums"]["order_status"]
+          note?: string | null
+          order_id?: string
+          previous_status?: Database["public"]["Enums"]["order_status"] | null
+          store_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_status_events_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          alarm_acknowledged_at: string | null
+          alarm_acknowledged_by: string | null
+          bank_depositor_name: string | null
+          cancel_reason: string | null
+          confirmed_at: string | null
+          confirmed_by: string | null
+          created_at: string
+          customer_name: string
+          customer_note: string | null
+          customer_phone: string
+          delivery_address: string | null
+          delivery_address_detail: string | null
+          delivery_fee: number
+          fulfillment_type: Database["public"]["Enums"]["order_fulfillment_type"]
+          id: string
+          lookup_token: string
+          order_code: string
+          payment_method: string
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          postal_code: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          store_id: string
+          subtotal_amount: number
+          total_amount: number
+          transferred_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          alarm_acknowledged_at?: string | null
+          alarm_acknowledged_by?: string | null
+          bank_depositor_name?: string | null
+          cancel_reason?: string | null
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          created_at?: string
+          customer_name: string
+          customer_note?: string | null
+          customer_phone: string
+          delivery_address?: string | null
+          delivery_address_detail?: string | null
+          delivery_fee?: number
+          fulfillment_type?: Database["public"]["Enums"]["order_fulfillment_type"]
+          id?: string
+          lookup_token?: string
+          order_code?: string
+          payment_method?: string
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          postal_code?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          store_id: string
+          subtotal_amount?: number
+          total_amount?: number
+          transferred_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          alarm_acknowledged_at?: string | null
+          alarm_acknowledged_by?: string | null
+          bank_depositor_name?: string | null
+          cancel_reason?: string | null
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          created_at?: string
+          customer_name?: string
+          customer_note?: string | null
+          customer_phone?: string
+          delivery_address?: string | null
+          delivery_address_detail?: string | null
+          delivery_fee?: number
+          fulfillment_type?: Database["public"]["Enums"]["order_fulfillment_type"]
+          id?: string
+          lookup_token?: string
+          order_code?: string
+          payment_method?: string
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          postal_code?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          store_id?: string
+          subtotal_amount?: number
+          total_amount?: number
+          transferred_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_webhook_logs: {
+        Row: {
+          event_type: string
+          id: string
+          payload: Json
+          provider: Database["public"]["Enums"]["payment_provider"]
+          received_at: string
+        }
+        Insert: {
+          event_type: string
+          id?: string
+          payload: Json
+          provider: Database["public"]["Enums"]["payment_provider"]
+          received_at?: string
+        }
+        Update: {
+          event_type?: string
+          id?: string
+          payload?: Json
+          provider?: Database["public"]["Enums"]["payment_provider"]
+          received_at?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          credit_pack_id: string | null
+          credits: number
+          currency: Database["public"]["Enums"]["currency_code"]
+          id: string
+          paid_at: string | null
+          provider: Database["public"]["Enums"]["payment_provider"]
+          provider_customer_id: string | null
+          provider_order_id: string
+          provider_payment_key: string | null
+          raw_payload: Json | null
+          receipt_url: string | null
+          refunded_at: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          credit_pack_id?: string | null
+          credits?: number
+          currency: Database["public"]["Enums"]["currency_code"]
+          id?: string
+          paid_at?: string | null
+          provider: Database["public"]["Enums"]["payment_provider"]
+          provider_customer_id?: string | null
+          provider_order_id: string
+          provider_payment_key?: string | null
+          raw_payload?: Json | null
+          receipt_url?: string | null
+          refunded_at?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          credit_pack_id?: string | null
+          credits?: number
+          currency?: Database["public"]["Enums"]["currency_code"]
+          id?: string
+          paid_at?: string | null
+          provider?: Database["public"]["Enums"]["payment_provider"]
+          provider_customer_id?: string | null
+          provider_order_id?: string
+          provider_payment_key?: string | null
+          raw_payload?: Json | null
+          receipt_url?: string | null
+          refunded_at?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_credit_pack_id_fkey"
+            columns: ["credit_pack_id"]
+            isOneToOne: false
+            referencedRelation: "credit_packs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          image_url: string | null
+          is_active: boolean
+          is_sold_out: boolean
+          name: string
+          price: number
+          sku: string | null
+          store_id: string
+          unit: string | null
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_sold_out?: boolean
+          name: string
+          price: number
+          sku?: string | null
+          store_id: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_sold_out?: boolean
+          name?: string
+          price?: number
+          sku?: string | null
+          store_id?: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          credits_free: number
+          credits_paid: number
+          email: string | null
+          id: string
+          locale: string | null
+          mind_theme_preference: string | null
+          role: Database["public"]["Enums"]["profile_role"]
+          terms_accepted: boolean
+        }
+        Insert: {
+          created_at?: string | null
+          credits_free?: number
+          credits_paid?: number
+          email?: string | null
+          id: string
+          locale?: string | null
+          mind_theme_preference?: string | null
+          role?: Database["public"]["Enums"]["profile_role"]
+          terms_accepted?: boolean
+        }
+        Update: {
+          created_at?: string | null
+          credits_free?: number
+          credits_paid?: number
+          email?: string | null
+          id?: string
+          locale?: string | null
+          mind_theme_preference?: string | null
+          role?: Database["public"]["Enums"]["profile_role"]
+          terms_accepted?: boolean
+        }
+        Relationships: []
+      }
+      store_admins: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          role: Database["public"]["Enums"]["store_admin_role"]
+          store_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          role?: Database["public"]["Enums"]["store_admin_role"]
+          store_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          role?: Database["public"]["Enums"]["store_admin_role"]
+          store_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_admins_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stores: {
+        Row: {
+          address_detail: string | null
+          address_road: string | null
+          bank_account_holder: string
+          bank_account_number: string
+          bank_name: string
+          business_registration_number: string | null
+          created_at: string
+          delivery_enabled: boolean
+          delivery_fee: number
+          description: string | null
+          id: string
+          is_active: boolean
+          min_order_amount: number
+          name: string
+          phone: string | null
+          pickup_enabled: boolean
+          postal_code: string | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          address_detail?: string | null
+          address_road?: string | null
+          bank_account_holder: string
+          bank_account_number: string
+          bank_name: string
+          business_registration_number?: string | null
+          created_at?: string
+          delivery_enabled?: boolean
+          delivery_fee?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          min_order_amount?: number
+          name: string
+          phone?: string | null
+          pickup_enabled?: boolean
+          postal_code?: string | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          address_detail?: string | null
+          address_road?: string | null
+          bank_account_holder?: string
+          bank_account_number?: string
+          bank_name?: string
+          business_registration_number?: string | null
+          created_at?: string
+          delivery_enabled?: boolean
+          delivery_fee?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          min_order_amount?: number
+          name?: string
+          phone?: string | null
+          pickup_enabled?: boolean
+          postal_code?: string | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      summaries: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          detailed_summary_text: string | null
+          diagram_json: Json | null
+          error_message: string | null
+          id: string
+          is_public: boolean | null
+          lang: string | null
+          original_expire_at: string | null
+          original_text: string | null
+          public_comment: string | null
+          source_title: string | null
+          source_type: string
+          source_url: string | null
+          status: string
+          summary_text: string | null
+          temp_diagram_json: Json | null
+          temp_summary_text: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          detailed_summary_text?: string | null
+          diagram_json?: Json | null
+          error_message?: string | null
+          id?: string
+          is_public?: boolean | null
+          lang?: string | null
+          original_expire_at?: string | null
+          original_text?: string | null
+          public_comment?: string | null
+          source_title?: string | null
+          source_type?: string
+          source_url?: string | null
+          status?: string
+          summary_text?: string | null
+          temp_diagram_json?: Json | null
+          temp_summary_text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          detailed_summary_text?: string | null
+          diagram_json?: Json | null
+          error_message?: string | null
+          id?: string
+          is_public?: boolean | null
+          lang?: string | null
+          original_expire_at?: string | null
+          original_text?: string | null
+          public_comment?: string | null
+          source_title?: string | null
+          source_type?: string
+          source_url?: string | null
+          status?: string
+          summary_text?: string | null
+          temp_diagram_json?: Json | null
+          temp_summary_text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      summary_keywords: {
+        Row: {
+          keyword_id: number
+          summary_id: string
+        }
+        Insert: {
+          keyword_id: number
+          summary_id: string
+        }
+        Update: {
+          keyword_id?: number
+          summary_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "summary_keywords_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "summary_keywords_summary_id_fkey"
+            columns: ["summary_id"]
+            isOneToOne: false
+            referencedRelation: "summaries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      summary_questions: {
+        Row: {
+          answer: string | null
+          created_at: string | null
+          id: string
+          question: string
+          summary_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string | null
+          id?: string
+          question: string
+          summary_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string | null
+          id?: string
+          question?: string
+          summary_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "summary_questions_summary_id_fkey"
+            columns: ["summary_id"]
+            isOneToOne: false
+            referencedRelation: "summaries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          category: string
+          created_at: string
+          email: string | null
+          id: number
+          message: string
+          meta: Json | null
+          needs_reply: boolean
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          email?: string | null
+          id?: number
+          message: string
+          meta?: Json | null
+          needs_reply?: boolean
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          email?: string | null
+          id?: number
+          message?: string
+          meta?: Json | null
+          needs_reply?: boolean
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      terminologies: {
+        Row: {
+          definition: string | null
+          id: number
+          summary_id: string | null
+          term: string
+        }
+        Insert: {
+          definition?: string | null
+          id?: number
+          summary_id?: string | null
+          term: string
+        }
+        Update: {
+          definition?: string | null
+          id?: number
+          summary_id?: string | null
+          term?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "terminologies_summary_id_fkey"
+            columns: ["summary_id"]
+            isOneToOne: false
+            referencedRelation: "summaries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transfer_reports: {
+        Row: {
+          created_at: string
+          depositor_name: string
+          depositor_phone: string | null
+          id: string
+          note: string | null
+          order_id: string
+          review_note: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["transfer_report_status"]
+          transferred_amount: number
+          transferred_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          depositor_name: string
+          depositor_phone?: string | null
+          id?: string
+          note?: string | null
+          order_id: string
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["transfer_report_status"]
+          transferred_amount: number
+          transferred_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          depositor_name?: string
+          depositor_phone?: string | null
+          id?: string
+          note?: string | null
+          order_id?: string
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["transfer_report_status"]
+          transferred_amount?: number
+          transferred_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transfer_reports_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weekly_bulletins: {
+        Row: {
+          column_content: string
+          column_content_rich: Json | null
+          created_at: string
+          id: string
+          message_title: string
+          published: boolean
+          published_at: string
+          scripture_reference: string
+          service_date: string
+          slug: string
+          updated_at: string
+          weekly_notice: string | null
+        }
+        Insert: {
+          column_content: string
+          column_content_rich?: Json | null
+          created_at?: string
+          id?: string
+          message_title: string
+          published?: boolean
+          published_at?: string
+          scripture_reference: string
+          service_date: string
+          slug: string
+          updated_at?: string
+          weekly_notice?: string | null
+        }
+        Update: {
+          column_content?: string
+          column_content_rich?: Json | null
+          created_at?: string
+          id?: string
+          message_title?: string
+          published?: boolean
+          published_at?: string
+          scripture_reference?: string
+          service_date?: string
+          slug?: string
+          updated_at?: string
+          weekly_notice?: string | null
+        }
+        Relationships: []
+      }
+      youtube_reservations: {
+        Row: {
+          admin_alert_acknowledged_at: string | null
+          admin_alert_acknowledged_by: string | null
+          admin_failure_email_error: string | null
+          admin_failure_email_sent_at: string | null
+          admin_notes: string | null
+          admin_request_email_error: string | null
+          admin_request_email_sent_at: string | null
+          charged_credits: number | null
+          created_at: string
+          credit_snapshot: number
+          id: string
+          manual_email_error: string | null
+          manual_email_sent_at: string | null
+          output_language: string | null
+          processed_at: string | null
+          refund_error: string | null
+          refunded_at: string | null
+          refunded_credits: number
+          requester_email: string | null
+          required_credits: number | null
+          result_map_id: string | null
+          status: Database["public"]["Enums"]["youtube_reservation_status"]
+          status_reason: string | null
+          updated_at: string
+          url: string
+          user_email_error: string | null
+          user_email_sent_at: string | null
+          user_id: string
+          video_id: string | null
+        }
+        Insert: {
+          admin_alert_acknowledged_at?: string | null
+          admin_alert_acknowledged_by?: string | null
+          admin_failure_email_error?: string | null
+          admin_failure_email_sent_at?: string | null
+          admin_notes?: string | null
+          admin_request_email_error?: string | null
+          admin_request_email_sent_at?: string | null
+          charged_credits?: number | null
+          created_at?: string
+          credit_snapshot?: number
+          id?: string
+          manual_email_error?: string | null
+          manual_email_sent_at?: string | null
+          output_language?: string | null
+          processed_at?: string | null
+          refund_error?: string | null
+          refunded_at?: string | null
+          refunded_credits?: number
+          requester_email?: string | null
+          required_credits?: number | null
+          result_map_id?: string | null
+          status?: Database["public"]["Enums"]["youtube_reservation_status"]
+          status_reason?: string | null
+          updated_at?: string
+          url: string
+          user_email_error?: string | null
+          user_email_sent_at?: string | null
+          user_id: string
+          video_id?: string | null
+        }
+        Update: {
+          admin_alert_acknowledged_at?: string | null
+          admin_alert_acknowledged_by?: string | null
+          admin_failure_email_error?: string | null
+          admin_failure_email_sent_at?: string | null
+          admin_notes?: string | null
+          admin_request_email_error?: string | null
+          admin_request_email_sent_at?: string | null
+          charged_credits?: number | null
+          created_at?: string
+          credit_snapshot?: number
+          id?: string
+          manual_email_error?: string | null
+          manual_email_sent_at?: string | null
+          output_language?: string | null
+          processed_at?: string | null
+          refund_error?: string | null
+          refunded_at?: string | null
+          refunded_credits?: number
+          requester_email?: string | null
+          required_credits?: number | null
+          result_map_id?: string | null
+          status?: Database["public"]["Enums"]["youtube_reservation_status"]
+          status_reason?: string | null
+          updated_at?: string
+          url?: string
+          user_email_error?: string | null
+          user_email_sent_at?: string | null
+          user_id?: string
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "youtube_reservations_result_map_id_fkey"
+            columns: ["result_map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      youtube_scripts: {
+        Row: {
+          channel_name: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          language: string | null
+          script_raw: string | null
+          status: string
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string
+          url: string
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          channel_name?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          language?: string | null
+          script_raw?: string | null
+          status?: string
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string
+          url: string
+          user_id: string
+          video_id: string
+        }
+        Update: {
+          channel_name?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          language?: string | null
+          script_raw?: string | null
+          status?: string
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string
+          url?: string
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      generate_order_code: { Args: never; Returns: string }
+      get_order_tracking: {
+        Args: { p_customer_phone: string; p_lookup_token: string }
+        Returns: {
+          created_at: string
+          order_code: string
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          status: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at: string
+        }[]
+      }
+      grant_signup_reward_once: {
+        Args: { p_reward?: number; p_user_id: string }
+        Returns: {
+          already_granted: boolean
+          balance_free_after: number
+          balance_paid_after: number
+          balance_total_after: number
+          granted: number
+        }[]
+      }
+      is_order_store_admin: { Args: { p_order_id: string }; Returns: boolean }
+      is_store_admin: { Args: { p_store_id: string }; Returns: boolean }
+    }
+    Enums: {
+      challenge_clip_pro_usage_event_type:
+        | "created_extra_challenge"
+        | "created_extra_clip"
+      credit_lot_status: "active" | "depleted" | "expired" | "refunded"
+      credit_transaction_source:
+        | "lemon_squeezy"
+        | "toss"
+        | "system"
+        | "admin"
+        | "migration"
+      credit_transaction_type:
+        | "purchase"
+        | "spend"
+        | "bonus"
+        | "refund"
+        | "adjustment"
+        | "expire"
+      credit_usage_type:
+        | "map_generation"
+        | "summary_generation"
+        | "export"
+        | "feature_access"
+        | "admin_adjustment"
+        | "system_deduction"
+      currency_code: "krw" | "usd"
+      gallery_visibility: "public" | "members" | "private"
+      map_extract_status:
+        | "idle"
+        | "queued"
+        | "processing"
+        | "cached"
+        | "completed"
+        | "failed"
+        | "error"
+        | "not_found"
+      map_generation_chunk_status:
+        | "queued"
+        | "processing"
+        | "retrying"
+        | "done"
+        | "merged"
+        | "failed"
+        | "cancelled"
+      map_generation_job_status:
+        | "queued"
+        | "analyzing"
+        | "splitting"
+        | "processing_chunks"
+        | "merging"
+        | "done"
+        | "failed"
+        | "cancelled"
+      map_node_expansion_mode: "expand"
+      map_node_expansion_status: "queued" | "processing" | "done" | "failed"
+      map_open_access_mode: "owner" | "shared" | "admin"
+      map_read_status: "unread" | "in_progress" | "read"
+      map_source_type: "youtube" | "website" | "file" | "manual"
+      map_status:
+        | "queued"
+        | "processing_structure"
+        | "processing_metadata"
+        | "done"
+        | "failed"
+        | "idle"
+        | "retrying"
+      map_structure_phase: "outline" | "expanding" | "partial" | "complete"
+      map_term_request_kind: "auto" | "custom"
+      map_term_request_status:
+        | "processing"
+        | "done"
+        | "failed"
+        | "idle"
+        | "queued"
+      map_term_session_status: "active" | "exhausted" | "cancelled"
+      notification_category: "mission" | "billing" | "system"
+      notification_event_type:
+        | "signup_bonus"
+        | "mission_approved"
+        | "mission_rejected"
+        | "payment_completed"
+        | "payment_failed"
+        | "refund_completed"
+        | "credit_insufficient"
+        | "system_info"
+        | "admin_gift_credits"
+      notification_status:
+        | "approved"
+        | "rejected"
+        | "completed"
+        | "failed"
+        | "refunded"
+        | "insufficient"
+        | "info"
+      order_fulfillment_type: "delivery" | "pickup"
+      order_status:
+        | "pending"
+        | "payment_confirmed"
+        | "preparing"
+        | "delivering"
+        | "completed"
+        | "canceled"
+      payment_provider: "lemon_squeezy" | "toss"
+      payment_status:
+        | "waiting_transfer"
+        | "transfer_submitted"
+        | "confirmed"
+        | "rejected"
+        | "not_ready"
+        | "pending"
+        | "paid"
+        | "failed"
+        | "refunded"
+        | "part_refunded"
+        | "canceled"
+      profile_role: "ADMIN" | "USER"
+      store_admin_role: "owner" | "manager" | "staff"
+      transfer_report_status: "submitted" | "verified" | "rejected"
+      youtube_reservation_status:
+        | "requested"
+        | "checking"
+        | "ready"
+        | "needs_credits"
+        | "processing"
+        | "done"
+        | "failed"
+        | "cancelled"
+        | "unsupported"
+        | "retry_requested"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      challenge_clip_pro_usage_event_type: [
+        "created_extra_challenge",
+        "created_extra_clip",
+      ],
+      credit_lot_status: ["active", "depleted", "expired", "refunded"],
+      credit_transaction_source: [
+        "lemon_squeezy",
+        "toss",
+        "system",
+        "admin",
+        "migration",
+      ],
+      credit_transaction_type: [
+        "purchase",
+        "spend",
+        "bonus",
+        "refund",
+        "adjustment",
+        "expire",
+      ],
+      credit_usage_type: [
+        "map_generation",
+        "summary_generation",
+        "export",
+        "feature_access",
+        "admin_adjustment",
+        "system_deduction",
+      ],
+      currency_code: ["krw", "usd"],
+      gallery_visibility: ["public", "members", "private"],
+      map_extract_status: [
+        "idle",
+        "queued",
+        "processing",
+        "cached",
+        "completed",
+        "failed",
+        "error",
+        "not_found",
+      ],
+      map_generation_chunk_status: [
+        "queued",
+        "processing",
+        "retrying",
+        "done",
+        "merged",
+        "failed",
+        "cancelled",
+      ],
+      map_generation_job_status: [
+        "queued",
+        "analyzing",
+        "splitting",
+        "processing_chunks",
+        "merging",
+        "done",
+        "failed",
+        "cancelled",
+      ],
+      map_node_expansion_mode: ["expand"],
+      map_node_expansion_status: ["queued", "processing", "done", "failed"],
+      map_open_access_mode: ["owner", "shared", "admin"],
+      map_read_status: ["unread", "in_progress", "read"],
+      map_source_type: ["youtube", "website", "file", "manual"],
+      map_status: [
+        "queued",
+        "processing_structure",
+        "processing_metadata",
+        "done",
+        "failed",
+        "idle",
+        "retrying",
+      ],
+      map_structure_phase: ["outline", "expanding", "partial", "complete"],
+      map_term_request_kind: ["auto", "custom"],
+      map_term_request_status: [
+        "processing",
+        "done",
+        "failed",
+        "idle",
+        "queued",
+      ],
+      map_term_session_status: ["active", "exhausted", "cancelled"],
+      notification_category: ["mission", "billing", "system"],
+      notification_event_type: [
+        "signup_bonus",
+        "mission_approved",
+        "mission_rejected",
+        "payment_completed",
+        "payment_failed",
+        "refund_completed",
+        "credit_insufficient",
+        "system_info",
+        "admin_gift_credits",
+      ],
+      notification_status: [
+        "approved",
+        "rejected",
+        "completed",
+        "failed",
+        "refunded",
+        "insufficient",
+        "info",
+      ],
+      order_fulfillment_type: ["delivery", "pickup"],
+      order_status: [
+        "pending",
+        "payment_confirmed",
+        "preparing",
+        "delivering",
+        "completed",
+        "canceled",
+      ],
+      payment_provider: ["lemon_squeezy", "toss"],
+      payment_status: [
+        "waiting_transfer",
+        "transfer_submitted",
+        "confirmed",
+        "rejected",
+        "not_ready",
+        "pending",
+        "paid",
+        "failed",
+        "refunded",
+        "part_refunded",
+        "canceled",
+      ],
+      profile_role: ["ADMIN", "USER"],
+      store_admin_role: ["owner", "manager", "staff"],
+      transfer_report_status: ["submitted", "verified", "rejected"],
+      youtube_reservation_status: [
+        "requested",
+        "checking",
+        "ready",
+        "needs_credits",
+        "processing",
+        "done",
+        "failed",
+        "cancelled",
+        "unsupported",
+        "retry_requested",
+      ],
+    },
+  },
+} as const

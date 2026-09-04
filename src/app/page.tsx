@@ -49,11 +49,11 @@ const content = {
     youtubeCta: "Watch Online",
     locationLabel: "Location",
     locationTitle: "Find Our Location",
-    locationMessage: "Please contact us by email.",
+    locationMessage: "3F, 245 Jungdae-ro, Songpa-gu, Seoul",
     locationItems: [
       {
         title: "Location",
-        description: "Please contact us by email.",
+        description: "3F, 245 Jungdae-ro, Songpa-gu, Seoul",
       },
     ],
     schoolLabel: "Ministries",
@@ -70,6 +70,7 @@ const content = {
           "In-depth study of Scripture from Genesis to Revelation",
       },
     ],
+    bibleCollegeCta: "Explore Bible College",
     contactTitle: "Contact",
     contactEmail: "mosesnara@hanmail.net",
     contactCta: "Write Email",
@@ -118,13 +119,11 @@ const content = {
     youtubeCta: "온라인 예배 보기",
     locationLabel: "장소",
     locationTitle: "장소 안내",
-    locationMessage:
-      "(8월 임시 예배처소) 서울시 송파구 동남로24길 11, B1층 소리소극장",
+    locationMessage: "서울 송파구 중대로 245, 3층",
     locationItems: [
       {
         title: "주일 예배",
-        description:
-          "(8월 임시 예배처소) 서울시 송파구 동남로24길 11, B1층 소리소극장",
+        description: "서울 송파구 중대로 245, 3층",
       },
       {
         title: "수요 예배",
@@ -149,6 +148,7 @@ const content = {
           "창세기부터 요한계시록까지 성경을 심도 있게 배웁니다",
       },
     ],
+    bibleCollegeCta: "성경대학교 자세히 보기",
     contactTitle: "문의",
     contactEmail: "mosesnara@hanmail.net",
     contactCta: "메일쓰기",
@@ -276,6 +276,12 @@ export default function Home() {
               >
                 {t.galleryCta}
               </Link>
+              <Link
+                href="/bible-college"
+                className="rounded-full border border-[#9fb9af] bg-[#f3f7f5]/90 px-6 py-3 text-sm font-bold text-[#294f43] shadow-[0_10px_28px_rgba(41,79,67,0.12)] transition hover:-translate-y-0.5 hover:border-[#648d7e] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#648d7e]"
+              >
+                {t.bibleCollegeCta}
+              </Link>
             </div>
           </header>
 
@@ -382,6 +388,13 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
+              <Link
+                href="/bible-college"
+                className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#aebed2] bg-[#f7f9fc] px-4 py-2.5 text-sm font-semibold text-[#294b73] transition hover:-translate-y-0.5 hover:border-[#7894b4] hover:bg-white"
+              >
+                {t.bibleCollegeCta}
+                <span aria-hidden="true">→</span>
+              </Link>
               <div className="mt-7 border-t border-[#d7e5f2] pt-6">
                 <h3 className="border-l-4 border-[var(--card-school)] pl-3 text-xl font-semibold text-[#08275b]">
                   {t.contactTitle}

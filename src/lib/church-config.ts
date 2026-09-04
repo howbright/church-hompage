@@ -4,6 +4,7 @@ export const churchConfig = {
   koreanName: "갈보리채플 강남교회",
   seniorPastor: "최모세 목사",
   contactEmail: "mosesnara@hanmail.net",
+  address: "서울 송파구 중대로 245, 3층",
   youtubeUrl: "https://www.youtube.com/@calvarymoses",
   instagramUrl: "https://www.instagram.com/calvary_chapel_gangnam/",
   logoSrc: "/logo.svg",
@@ -17,8 +18,7 @@ export const churchConfig = {
   worshipLocations: [
     {
       service: "주일 예배",
-      location:
-        "(8월 임시 예배처소) 서울시 송파구 동남로24길 11, B1층 소리소극장",
+      location: "서울 송파구 중대로 245, 3층",
     },
     {
       service: "수요 예배",

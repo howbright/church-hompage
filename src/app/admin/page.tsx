@@ -22,6 +22,14 @@ const adminMenus = [
     accent: "bg-[#126fbd]",
     number: "02",
   },
+  {
+    href: "/admin/bible-college",
+    eyebrow: "Bible College",
+    title: "성경대학교 관리",
+    description: "소개, 강사진, 커리큘럼, 공지사항과 학사 일정을 관리합니다.",
+    accent: "bg-[#527a6c]",
+    number: "03",
+  },
 ] as const;
 
 export default function AdminPage() {
@@ -51,7 +59,7 @@ export default function AdminPage() {
 
         <section
           aria-label="관리자 기능"
-          className="mt-9 grid gap-5 md:grid-cols-2"
+          className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-3"
         >
           {adminMenus.map((menu) => (
             <Link
@@ -105,6 +113,12 @@ export default function AdminPage() {
             className="rounded-full bg-[#edf8ff] px-4 py-2 text-sm font-bold text-[#075f9b] transition hover:bg-[#dff2ff]"
           >
             공개 갤러리
+          </Link>
+          <Link
+            href="/bible-college"
+            className="rounded-full bg-[#edf5f1] px-4 py-2 text-sm font-bold text-[#33594d] transition hover:bg-[#dfece6]"
+          >
+            성경대학교
           </Link>
         </nav>
       </div>

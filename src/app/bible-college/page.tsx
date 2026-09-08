@@ -27,13 +27,14 @@ export default async function BibleCollegePage() {
   return (
     <main className="min-h-screen bg-[#f5f7f6] text-[#1e302b]">
       <header className="border-b border-[#dce5e1] bg-white/95 px-5 py-4 backdrop-blur sm:px-8">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
-          <Link href="/" className="text-sm font-bold tracking-[0.14em] text-[#33594d]">
-            CALVARY CHAPEL GANGNAM
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 sm:gap-4">
+          <Link href="/" className="min-w-0 text-[0.65rem] font-bold tracking-[0.1em] text-[#33594d] sm:text-sm sm:tracking-[0.14em]">
+            <span className="sm:hidden">CALVARY CHAPEL</span>
+            <span className="hidden sm:inline">CALVARY CHAPEL GANGNAM</span>
           </Link>
-          <nav className="flex items-center gap-2 text-sm font-semibold">
-            <Link href="/bulletins" className="rounded-full px-3 py-2 text-[#62766f] hover:bg-[#f1f5f3]">주보</Link>
-            <Link href="/" className="rounded-full border border-[#ccd9d4] px-4 py-2 text-[#33594d] hover:bg-[#f1f5f3]">교회 홈</Link>
+          <nav className="flex shrink-0 items-center gap-1 text-xs font-semibold sm:gap-2 sm:text-sm">
+            <Link href="/bulletins" className="whitespace-nowrap rounded-full px-2.5 py-2 text-[#62766f] hover:bg-[#f1f5f3] sm:px-3">주보</Link>
+            <Link href="/" className="whitespace-nowrap rounded-full border border-[#ccd9d4] px-3 py-2 text-[#33594d] hover:bg-[#f1f5f3] sm:px-4">교회 홈</Link>
           </nav>
         </div>
       </header>
@@ -143,7 +144,13 @@ export default async function BibleCollegePage() {
       <footer className="bg-[#1d4035] px-5 py-10 text-white sm:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div><p className="font-bold">갈보리채플 강남교회 성경대학교</p><p className="mt-1 text-sm text-white/65">{content.address}</p></div>
-          <a href={`mailto:${content.inquiry_email}`} className="w-fit rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#1d4035]">성경대학 문의하기</a>
+          <a
+            href={`mailto:${content.inquiry_email}`}
+            className="w-fit rounded-full border border-white/70 px-5 py-2.5 text-sm font-bold shadow-[0_10px_28px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:border-white"
+            style={{ backgroundColor: "#ffffff", color: "#173b31" }}
+          >
+            성경대학 문의하기
+          </a>
         </div>
       </footer>
     </main>

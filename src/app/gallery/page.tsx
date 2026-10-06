@@ -13,6 +13,14 @@ export const metadata: Metadata = {
   title: "우리 공동체 이야기 | 갈보리채플 강남교회",
   description:
     "예배하고 배우며 함께 걸어온 갈보리채플 강남교회 공동체의 순간들을 기록합니다.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
   openGraph: {
     title: "우리 공동체 이야기 | 갈보리채플 강남교회",
     description: "예배하고 배우며 함께 걸어온 공동체의 순간들",

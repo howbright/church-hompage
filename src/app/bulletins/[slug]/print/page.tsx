@@ -18,11 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!bulletin) {
     return {
       title: "주보 인쇄 | Calvary Chapel, Church of Seoul",
+      robots: { index: false, follow: false },
     };
   }
 
   return {
     title: `${formatBulletinDate(bulletin.service_date)} 주보 인쇄 | Calvary Chapel, Church of Seoul`,
+    robots: { index: false, follow: false },
   };
 }
 

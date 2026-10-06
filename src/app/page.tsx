@@ -1,425 +1,57 @@
- "use client";
+import type { Metadata } from "next";
+import { HomePage } from "@/components/home-page";
 
-import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
-import { SocialLinks } from "@/components/social-links";
+const description =
+  "서울 송파구에 위치한 갈보리채플 강남교회입니다. 창세기부터 요한계시록까지 성경을 장별·절별로 가르치며, 성경대학교와 각종 중독, 삶의 문제에 대한 성경적 상담을 제공합니다.";
 
-const content = {
-  en: {
-    eyebrow: "GangNam Church",
-    beliefTitle: "What We Believe and Teach",
-    beliefItems: [
-      {
-        title: "Jesus Christ and Grace",
-        description:
-          "We confess Jesus Christ as the head of the church and proclaim salvation through His cross and resurrection as God's gift of grace, received through faith.",
-      },
-      {
-        title: "Teaching the Whole Bible",
-        description:
-          "Relying on the Holy Spirit, we teach from Genesis to Revelation chapter by chapter and verse by verse, seeking to explain the meaning and emphasis of the biblical text itself.",
-      },
-      {
-        title: "Growing Together",
-        description:
-          "Whether opening the Bible for the first time or continuing a lifelong journey of faith, everyone is welcome to grow in God's Word and share the gospel and love of Jesus with others.",
-      },
-    ],
-    bulletinCta: "View Online Bulletin",
-    historyCta: "Our Story",
-    galleryCta: "Community Gallery",
-    worshipLabel: "Worship Guide",
-    worshipTitle: "Service Times",
-    worshipItems: [
-      {
-        title: "Wednesday Worship",
-        description: "7:00 PM",
-      },
-      {
-        title: "Saturday Service",
-        description: "2:00 PM",
-      },
-      {
-        title: "Sunday Worship",
-        description: "11:00 AM",
-      },
-    ],
-    youtubeLabel: "YouTube Channel",
-    youtubeCta: "Watch Online",
-    locationLabel: "Location",
-    locationTitle: "Find Our Location",
-    locationMessage: "3F, 245 Jungdae-ro, Songpa-gu, Seoul",
-    locationItems: [
-      {
-        title: "Location",
-        description: "3F, 245 Jungdae-ro, Songpa-gu, Seoul",
-      },
-    ],
-    schoolLabel: "Ministries",
-    schoolTitle: "Counseling & Bible Training",
-    schoolItems: [
-      {
-        title: "Self-Confrontation",
-        description:
-          "Biblical counseling for depression, addiction, sexual brokenness, and life struggles",
-      },
-      {
-        title: "Bible College",
-        description:
-          "In-depth study of Scripture from Genesis to Revelation",
-      },
-    ],
-    bibleCollegeCta: "Explore Bible College",
-    contactTitle: "Contact",
-    contactEmail: "mosesnara@hanmail.net",
-    contactCta: "Write Email",
-    instagramLabel: "Instagram",
+export const metadata: Metadata = {
+  title: "갈보리채플 강남교회 | 서울 송파구 성경 중심 교회",
+  description,
+  keywords: [
+    "갈보리채플 강남교회",
+    "송파구 교회",
+    "서울 교회",
+    "성경 중심 교회",
+    "성경대학교",
+    "성경적 상담",
+    "장별 절별 성경 강해",
+  ],
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
-  ko: {
-    eyebrow: "갈보리채플 강남교회",
-    beliefTitle: "우리가 믿고 가르치는 것",
-    beliefItems: [
+  openGraph: {
+    title: "갈보리채플 강남교회 | 서울 송파구 성경 중심 교회",
+    description,
+    url: "/",
+    siteName: "갈보리채플 강남교회",
+    locale: "ko_KR",
+    type: "website",
+    images: [
       {
-        title: "예수 그리스도와 은혜",
-        description:
-          "갈보리채플 강남교회는 예수 그리스도를 교회의 머리로 고백하며, 하나님의 말씀을 신앙과 삶의 기준으로 삼고 성령의 인도하심을 의지합니다. 예수님의 십자가 죽음과 부활로 주어진 구원이 사람의 공로나 행위가 아니라 하나님의 은혜로, 믿음을 통해 받는 선물임을 전합니다.",
-      },
-      {
-        title: "성경을 가르치는 방식",
-        description:
-          "익숙한 구절이나 특정 주제만 골라 전하기보다, 창세기부터 요한계시록까지 성경을 장별·절별로 차례대로 가르치며 본문의 흐름과 역사적 배경을 함께 살핍니다. 설교자의 생각을 덧붙이기보다 성경 자체가 말하는 의미와 강조점을 분명하게 전합니다.",
-      },
-      {
-        title: "함께 자라는 공동체",
-        description:
-          "성령께서 말씀을 통해 예수님을 더욱 깊이 알게 하시고 우리의 삶을 사랑과 순종으로 변화시키시도록 돕습니다. 성경을 처음 접하는 분부터 오래 신앙생활을 한 분까지 누구나 함께 말씀을 배우며, 이웃에게 복음과 사랑을 나누는 삶으로 자라가기를 소망합니다.",
+        url: "/sns.png",
+        width: 1200,
+        height: 630,
+        alt: "갈보리채플 강남교회",
       },
     ],
-    bulletinCta: "온라인 주보 보기",
-    historyCta: "교회 연혁",
-    galleryCta: "우리 공동체 이야기",
-    worshipLabel: "예배 안내",
-    worshipTitle: "모임 시간",
-    worshipItems: [
-      {
-        title: "수요 예배",
-        description: "오후 7:00",
-      },
-      {
-        title: "토요 예배",
-        description: "오후 2:00",
-      },
-      {
-        title: "주일 예배",
-        description: "오전 11:00",
-      },
-    ],
-    youtubeLabel: "유튜브 채널",
-    youtubeCta: "온라인 예배 보기",
-    locationLabel: "장소",
-    locationTitle: "장소 안내",
-    locationMessage: "서울 송파구 중대로 245, 3층",
-    locationItems: [
-      {
-        title: "주일 예배",
-        description: "서울 송파구 중대로 245, 3층",
-      },
-      {
-        title: "수요 예배",
-        description: "서울 송파구 중대로 245, 3층",
-      },
-      {
-        title: "토요 모임",
-        description: "이메일 문의",
-      },
-    ],
-    schoolLabel: "사역 안내",
-    schoolTitle: "상담과 성경 훈련",
-    schoolItems: [
-      {
-        title: "자기대면",
-        description:
-          "성경적 상담을 통해 우울, 중독, 성중독, 동성애 등 삶의 문제를 말씀 안에서 다룹니다",
-      },
-      {
-        title: "성경대학",
-        description:
-          "창세기부터 요한계시록까지 성경을 심도 있게 배웁니다",
-      },
-    ],
-    bibleCollegeCta: "성경대학교 자세히 보기",
-    contactTitle: "문의",
-    contactEmail: "mosesnara@hanmail.net",
-    contactCta: "메일쓰기",
-    instagramLabel: "인스타그램",
   },
-} as const;
+  twitter: {
+    card: "summary_large_image",
+    title: "갈보리채플 강남교회 | 서울 송파구 성경 중심 교회",
+    description,
+    images: ["/sns.png"],
+  },
+};
 
-export default function Home() {
-  const [language, setLanguage] = useState<"en" | "ko">("ko");
-  const t = content[language];
-
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-[var(--page-deep)] text-[var(--page-ink)]">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"
-      />
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster="/bg.png"
-      >
-        <source src="/bgvideo.mp4" type="video/mp4" />
-      </video>
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(255,255,255,0.18)_0%,_rgba(247,247,245,0.42)_24%,_rgba(249,249,247,0.72)_48%,_rgba(252,252,251,0.95)_100%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-[48vh] bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.68),_rgba(255,255,255,0.18)_42%,_transparent_78%)]"
-      />
-
-      <section className="relative z-10 flex min-h-screen flex-col px-6 py-6 sm:px-10 lg:px-16 lg:py-8">
-        <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col">
-          <header className="pt-1 text-center">
-            <div className="mb-4 flex justify-center lg:justify-end">
-              <div className="inline-flex items-center gap-1 rounded-full border border-white/80 bg-[rgba(255,255,255,0.78)] p-1 shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-md">
-                <button
-                  type="button"
-                  onClick={() => setLanguage("en")}
-                  className={`rounded-full px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] transition ${
-                    language === "en"
-                      ? "bg-[var(--page-deep)] text-white"
-                      : "text-[var(--page-soft)] hover:bg-white/60"
-                  }`}
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLanguage("ko")}
-                  className={`rounded-full px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] transition ${
-                    language === "ko"
-                      ? "bg-[var(--page-deep)] text-white"
-                      : "text-[var(--page-soft)] hover:bg-white/60"
-                  }`}
-                >
-                  KO
-                </button>
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <p className="rounded-full border border-white/80 bg-[rgba(255,255,255,0.82)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent-strong)] shadow-[0_12px_24px_rgba(0,0,0,0.06)] backdrop-blur-md sm:text-xs">
-                {t.eyebrow}
-              </p>
-            </div>
-            <div className="mt-4 flex justify-center">
-              <Image
-                src="/logo.svg"
-                alt="Calvary Chapel logo"
-                width={2400}
-                height={500}
-                priority
-                className="h-auto w-[20rem] max-w-full drop-shadow-[0_8px_24px_rgba(255,255,255,0.42)] sm:w-[24rem] lg:w-[30rem]"
-              />
-            </div>
-            <section
-              aria-labelledby="belief-title"
-              className="mx-auto mt-5 w-full max-w-5xl rounded-[1.75rem] border border-white/90 bg-[rgba(255,255,255,0.78)] px-5 py-5 text-left shadow-[0_20px_55px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:px-7 sm:py-6"
-            >
-              <h2
-                id="belief-title"
-                className="text-center text-xs font-bold uppercase tracking-[0.28em] text-[#1678b8] sm:text-sm"
-              >
-                {t.beliefTitle}
-              </h2>
-              <div className="mt-5 grid gap-5 md:grid-cols-3 md:gap-0">
-                {t.beliefItems.map((item, index) => (
-                  <article
-                    key={item.title}
-                    className="md:px-6 md:first:pl-0 md:last:pr-0 md:[&:not(:first-child)]:border-l md:[&:not(:first-child)]:border-black/10"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        aria-hidden="true"
-                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#dff2ff] text-xs font-bold text-[#1678b8]"
-                      >
-                        {index + 1}
-                      </span>
-                      <h3 className="text-sm font-bold text-[var(--page-deep)] sm:text-[0.95rem]">
-                        {item.title}
-                      </h3>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-[var(--page-soft)] sm:leading-7">
-                      {item.description}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </section>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href="/bulletins"
-                className="rounded-full border-2 border-[#63b9ef] bg-[#eaf7ff] px-6 py-3 text-sm font-bold text-[#075f9b] shadow-[0_10px_28px_rgba(63,159,232,0.28)] transition hover:-translate-y-0.5 hover:border-[#3f9fe8] hover:bg-white hover:shadow-[0_14px_34px_rgba(63,159,232,0.38)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3f9fe8]"
-              >
-                {t.bulletinCta}
-              </Link>
-              <Link
-                href="/gallery"
-                className="rounded-full border border-[#9ccfed] bg-white/85 px-6 py-3 text-sm font-bold text-[#08275b] shadow-[0_10px_28px_rgba(8,39,91,0.12)] transition hover:-translate-y-0.5 hover:border-[#3f9fe8] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3f9fe8]"
-              >
-                {t.galleryCta}
-              </Link>
-              <Link
-                href="/bible-college"
-                className="rounded-full border border-[#9fb9af] bg-[#f3f7f5]/90 px-6 py-3 text-sm font-bold text-[#294f43] shadow-[0_10px_28px_rgba(41,79,67,0.12)] transition hover:-translate-y-0.5 hover:border-[#648d7e] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#648d7e]"
-              >
-                {t.bibleCollegeCta}
-              </Link>
-            </div>
-          </header>
-
-          <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
-            <div
-              aria-hidden="true"
-              className="absolute h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(180,180,180,0.26)_0%,_rgba(180,180,180,0.14)_42%,_transparent_74%)] blur-3xl sm:h-60 sm:w-60"
-            />
-            <div className="w-full max-w-[15rem] sm:max-w-[18rem] lg:max-w-[19rem]">
-              <Image
-                src="/church.png"
-                alt="Silhouette illustration of a church on a hill"
-                className="h-auto w-full drop-shadow-[0_24px_40px_rgba(0,0,0,0.28)]"
-                width={700}
-                height={500}
-                priority
-              />
-            </div>
-          </div>
-
-          <section
-            aria-label="Church information"
-            className="relative grid gap-3 overflow-hidden rounded-[2rem] border border-[#b9ddf5] bg-[linear-gradient(145deg,rgba(234,247,255,0.98)_0%,rgba(220,240,253,0.9)_52%,rgba(244,250,255,0.96)_100%)] p-3 shadow-[0_28px_80px_rgba(8,39,91,0.13)] sm:gap-4 sm:p-4 lg:grid-cols-3"
-          >
-            <article className="relative overflow-hidden rounded-[1.35rem] border border-white bg-[rgba(255,255,255,0.94)] px-6 py-6 shadow-[0_16px_38px_rgba(8,39,91,0.08)] sm:px-8 sm:py-8">
-              <div className="absolute inset-x-0 top-0 h-1.5 bg-[var(--card-worship)]" />
-              <p className="inline-flex rounded-full bg-[#e5f5ff] px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-[var(--card-worship-deep)]">
-                {t.worshipLabel}
-              </p>
-              <h2 className="mt-4 border-l-4 border-[var(--card-worship)] pl-3 text-2xl font-semibold text-[#08275b]">
-                {t.worshipTitle}
-              </h2>
-              <ul className="mt-6 space-y-4 text-sm leading-6 text-[var(--page-muted)] marker:text-[var(--card-worship)] sm:text-[0.95rem]">
-                {t.worshipItems.map((item) => (
-                  <li
-                    key={item.title}
-                    className="flex gap-3 before:mt-[0.6rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-[var(--card-worship)]"
-                  >
-                    <span className="flex flex-wrap gap-x-2">
-                      <span className="text-base font-semibold text-[var(--page-deep)]">
-                        {item.title}
-                      </span>
-                      <span>{item.description}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-7 border-t border-[#d7e5f2] pt-6">
-                <h3 className="border-l-4 border-[var(--card-worship)] pl-3 text-xl font-semibold text-[#08275b]">
-                  SNS
-                </h3>
-                <div className="mt-4 rounded-xl bg-[#f0f8fd] px-4 py-3">
-                  <SocialLinks />
-                </div>
-              </div>
-            </article>
-
-            <article className="relative overflow-hidden rounded-[1.35rem] border border-white bg-[rgba(255,255,255,0.94)] px-6 py-6 shadow-[0_16px_38px_rgba(8,39,91,0.08)] sm:px-8 sm:py-8">
-              <div className="absolute inset-x-0 top-0 h-1.5 bg-[var(--card-location)]" />
-              <p className="inline-flex rounded-full bg-[#e4f2fd] px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-[var(--card-location-deep)]">
-                {t.locationLabel}
-              </p>
-              <h2 className="mt-4 border-l-4 border-[var(--card-location)] pl-3 text-2xl font-semibold text-[#08275b]">
-                {t.locationTitle}
-              </h2>
-              <ul className="mt-6 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
-                {t.locationItems.map((item) => (
-                  <li
-                    key={item.title}
-                    className="flex gap-3 before:mt-[0.6rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-[var(--card-location)]"
-                  >
-                    <span className="flex flex-wrap gap-x-2">
-                      <span className="text-base font-semibold text-[var(--page-deep)]">
-                        {item.title}
-                      </span>
-                      <span>|</span>
-                      <span>{item.description}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-
-            <article className="relative overflow-hidden rounded-[1.35rem] border border-white bg-[rgba(255,255,255,0.94)] px-6 py-6 shadow-[0_16px_38px_rgba(8,39,91,0.08)] sm:px-8 sm:py-8">
-              <div className="absolute inset-x-0 top-0 h-1.5 bg-[var(--card-school)]" />
-              <p className="inline-flex rounded-full bg-[#e9eef7] px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-[var(--card-school-deep)]">
-                {t.schoolLabel}
-              </p>
-              <h2 className="mt-4 border-l-4 border-[var(--card-school)] pl-3 text-2xl font-semibold text-[#08275b]">
-                {t.schoolTitle}
-              </h2>
-              <ul className="mt-6 space-y-4 text-sm leading-6 text-[var(--page-muted)] sm:text-[0.95rem]">
-                {t.schoolItems.map((item) => (
-                  <li
-                    key={item.title}
-                    className="flex gap-3 before:mt-[0.6rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-[var(--card-school)]"
-                  >
-                    <div>
-                      <p className="text-base font-semibold text-[var(--page-deep)]">
-                        {item.title}
-                      </p>
-                      <p className="mt-1">{item.description}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/bible-college"
-                className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#aebed2] bg-[#f7f9fc] px-4 py-2.5 text-sm font-semibold text-[#294b73] transition hover:-translate-y-0.5 hover:border-[#7894b4] hover:bg-white"
-              >
-                {t.bibleCollegeCta}
-                <span aria-hidden="true">→</span>
-              </Link>
-              <div className="mt-7 border-t border-[#d7e5f2] pt-6">
-                <h3 className="border-l-4 border-[var(--card-school)] pl-3 text-xl font-semibold text-[#08275b]">
-                  {t.contactTitle}
-                </h3>
-                <div className="mt-4 rounded-xl bg-[#f0f5fb] px-4 py-3 text-sm">
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                    <a
-                      href="mailto:mosesnara@hanmail.net"
-                      className="break-all font-semibold text-[#075f9b] underline decoration-2 decoration-[#7fc5ef] underline-offset-4 transition hover:text-[#08275b]"
-                    >
-                      {t.contactEmail}
-                    </a>
-                    <a
-                      href="mailto:mosesnara@hanmail.net"
-                      className="font-semibold text-[#08275b] underline decoration-[#7fc5ef] underline-offset-4 transition hover:text-[#075f9b]"
-                    >
-                      {t.contactCta}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </section>
-        </div>
-      </section>
-    </main>
-  );
+export default function Page() {
+  return <HomePage />;
 }

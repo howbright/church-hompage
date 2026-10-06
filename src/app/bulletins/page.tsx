@@ -9,6 +9,11 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "온라인 주보 | 갈보리채플 강남교회",
   description: "갈보리채플 강남교회의 최신 온라인 주보입니다.",
+  alternates: { canonical: "/bulletins" },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "온라인 주보 | 갈보리채플 강남교회",
     description: "갈보리채플 강남교회의 최신 온라인 주보입니다.",

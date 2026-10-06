@@ -6,6 +6,14 @@ export const metadata: Metadata = {
   title: "교회 연혁 | 갈보리채플 강남교회",
   description:
     "고 이요나 목사의 사역에서 최모세 담임목사로 이어진 갈보리채플 강남교회의 신앙적 뿌리와 여정을 소개합니다.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
   openGraph: {
     title: "교회 연혁 | 갈보리채플 강남교회",
     description:

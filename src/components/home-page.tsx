@@ -203,9 +203,10 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
                   href="/en"
                   hrefLang="en"
                   aria-current={language === "en" ? "page" : undefined}
+                  style={language === "en" ? { backgroundColor: "#181818", color: "#ffffff" } : undefined}
                   className={`rounded-full px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] transition ${
                     language === "en"
-                      ? "bg-[var(--page-deep)] text-white"
+                      ? ""
                       : "text-[var(--page-soft)] hover:bg-white/60"
                   }`}
                 >
@@ -215,9 +216,10 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
                   href="/"
                   hrefLang="ko"
                   aria-current={language === "ko" ? "page" : undefined}
+                  style={language === "ko" ? { backgroundColor: "#181818", color: "#ffffff" } : undefined}
                   className={`rounded-full px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] transition ${
                     language === "ko"
-                      ? "bg-[var(--page-deep)] text-white"
+                      ? ""
                       : "text-[var(--page-soft)] hover:bg-white/60"
                   }`}
                 >
@@ -274,7 +276,7 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
                 ))}
               </div>
             </section>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            {language === "ko" ? <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/bulletins"
                 className="rounded-full border-2 border-[#63b9ef] bg-[#eaf7ff] px-6 py-3 text-sm font-bold text-[#075f9b] shadow-[0_10px_28px_rgba(63,159,232,0.28)] transition hover:-translate-y-0.5 hover:border-[#3f9fe8] hover:bg-white hover:shadow-[0_14px_34px_rgba(63,159,232,0.38)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3f9fe8]"
@@ -293,7 +295,7 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
               >
                 {t.bibleCollegeCta}
               </Link>
-            </div>
+            </div> : null}
           </header>
 
           <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
@@ -399,13 +401,15 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
                   </li>
                 ))}
               </ul>
-              <Link
-                href="/bible-college"
-                className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#aebed2] bg-[#f7f9fc] px-4 py-2.5 text-sm font-semibold text-[#294b73] transition hover:-translate-y-0.5 hover:border-[#7894b4] hover:bg-white"
-              >
-                {t.bibleCollegeCta}
-                <span aria-hidden="true">→</span>
-              </Link>
+              {language === "ko" ? (
+                <Link
+                  href="/bible-college"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#aebed2] bg-[#f7f9fc] px-4 py-2.5 text-sm font-semibold text-[#294b73] transition hover:-translate-y-0.5 hover:border-[#7894b4] hover:bg-white"
+                >
+                  {t.bibleCollegeCta}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              ) : null}
               <div className="mt-7 border-t border-[#d7e5f2] pt-6">
                 <h3 className="border-l-4 border-[var(--card-school)] pl-3 text-xl font-semibold text-[#08275b]">
                   {t.contactTitle}

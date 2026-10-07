@@ -5,7 +5,7 @@ const description =
   "서울 송파구 갈보리채플 강남교회는 성경 전체를 장별·절별로 가르치며 성경대학과 삶의 문제를 위한 성경적 상담을 제공합니다.";
 
 export const metadata: Metadata = {
-  title: "갈보리채플 강남교회 | 서울 송파구 성경 중심 교회",
+  title: "갈보리채플 강남교회",
   description,
   keywords: [
     "갈보리채플 강남교회",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "갈보리채플 강남교회 | 서울 송파구 성경 중심 교회",
+    title: "갈보리채플 강남교회",
     description,
     url: "/",
     siteName: "갈보리채플 강남교회",
@@ -46,12 +46,30 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "갈보리채플 강남교회 | 서울 송파구 성경 중심 교회",
+    title: "갈보리채플 강남교회",
     description,
     images: ["/sns.png"],
   },
 };
 
+const websiteStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "갈보리채플 강남교회",
+  alternateName: ["Calvary Chapel Gangnam", "calvarygangnam.com"],
+  url: "https://www.calvarygangnam.com/",
+};
+
 export default function Page() {
-  return <HomePage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteStructuredData).replace(/</g, "\\u003c"),
+        }}
+      />
+      <HomePage />
+    </>
+  );
 }

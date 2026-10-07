@@ -222,7 +222,7 @@ export function HomePage() {
             <div className="mt-4 flex justify-center">
               <Image
                 src="/logo.svg"
-                alt="Calvary Chapel logo"
+                alt="갈보리채플 강남교회"
                 width={2400}
                 height={500}
                 priority

@@ -16,6 +16,7 @@ const siteUrl = "https://www.calvarygangnam.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  applicationName: "갈보리채플 강남교회",
   title: "갈보리채플 강남교회",
   description:
     "서울 송파구 갈보리채플 강남교회는 성경 전체를 장별·절별로 가르치며 성경대학과 삶의 문제를 위한 성경적 상담을 제공합니다.",

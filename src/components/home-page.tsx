@@ -2,18 +2,17 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { SocialLinks } from "@/components/social-links";
 
 const content = {
   en: {
-    eyebrow: "GangNam Church",
+    eyebrow: "Calvary Chapel Gangnam",
     beliefTitle: "What We Believe and Teach",
     beliefItems: [
       {
         title: "Jesus Christ and Grace",
         description:
-          "Calvary Chapel Gangnam confesses Jesus Christ as the head of the church, receives God's Word as the foundation for faith and life, and depends on the leading of the Holy Spirit. We proclaim that salvation, given through the death and resurrection of Jesus Christ, is not earned by human merit or works but is God's gift of grace, received through faith.",
+          "Calvary Chapel Gangnam is a Bible-teaching church in Songpa-gu, Seoul, South Korea. We confess Jesus Christ as the head of the church, receive God's Word as the foundation for faith and life, and depend on the leading of the Holy Spirit. We proclaim that salvation, given through the death and resurrection of Jesus Christ, is not earned by human merit or works but is God's gift of grace, received through faith.",
       },
       {
         title: "We Teach the Whole Bible",
@@ -52,8 +51,16 @@ const content = {
     locationMessage: "3F, 245 Jungdae-ro, Songpa-gu, Seoul",
     locationItems: [
       {
-        title: "Location",
+        title: "Sunday Worship",
         description: "3F, 245 Jungdae-ro, Songpa-gu, Seoul",
+      },
+      {
+        title: "Wednesday Worship",
+        description: "3F, 245 Jungdae-ro, Songpa-gu, Seoul",
+      },
+      {
+        title: "Saturday Gathering",
+        description: "Please contact us by email",
       },
     ],
     schoolLabel: "Ministries",
@@ -156,12 +163,14 @@ const content = {
   },
 } as const;
 
-export function HomePage() {
-  const [language, setLanguage] = useState<"en" | "ko">("ko");
+export function HomePage({ language }: { language: "en" | "ko" }) {
   const t = content[language];
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[var(--page-deep)] text-[var(--page-ink)]">
+    <main
+      lang={language}
+      className="relative min-h-screen overflow-hidden bg-[var(--page-deep)] text-[var(--page-ink)]"
+    >
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"
@@ -190,9 +199,10 @@ export function HomePage() {
           <header className="pt-1 text-center">
             <div className="mb-4 flex justify-center lg:justify-end">
               <div className="inline-flex items-center gap-1 rounded-full border border-white/80 bg-[rgba(255,255,255,0.78)] p-1 shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-md">
-                <button
-                  type="button"
-                  onClick={() => setLanguage("en")}
+                <Link
+                  href="/en"
+                  hrefLang="en"
+                  aria-current={language === "en" ? "page" : undefined}
                   className={`rounded-full px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] transition ${
                     language === "en"
                       ? "bg-[var(--page-deep)] text-white"
@@ -200,10 +210,11 @@ export function HomePage() {
                   }`}
                 >
                   EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLanguage("ko")}
+                </Link>
+                <Link
+                  href="/"
+                  hrefLang="ko"
+                  aria-current={language === "ko" ? "page" : undefined}
                   className={`rounded-full px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] transition ${
                     language === "ko"
                       ? "bg-[var(--page-deep)] text-white"
@@ -211,7 +222,7 @@ export function HomePage() {
                   }`}
                 >
                   KO
-                </button>
+                </Link>
               </div>
             </div>
             <div className="flex justify-center">
@@ -222,7 +233,7 @@ export function HomePage() {
             <div className="mt-4 flex justify-center">
               <Image
                 src="/logo.svg"
-                alt="갈보리채플 강남교회"
+                alt={language === "en" ? "Calvary Chapel Gangnam" : "갈보리채플 강남교회"}
                 width={2400}
                 height={500}
                 priority
@@ -293,7 +304,7 @@ export function HomePage() {
             <div className="w-full max-w-[15rem] sm:max-w-[18rem] lg:max-w-[19rem]">
               <Image
                 src="/church.png"
-                alt="Silhouette illustration of a church on a hill"
+                alt={language === "en" ? "Church on a hill" : "언덕 위 교회 실루엣"}
                 className="h-auto w-full drop-shadow-[0_24px_40px_rgba(0,0,0,0.28)]"
                 width={700}
                 height={500}

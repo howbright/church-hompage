@@ -2,23 +2,24 @@ import type { Metadata } from "next";
 import { HomePage } from "@/components/home-page";
 import { churchSiteStructuredData } from "@/lib/church-structured-data";
 
+const title = "Calvary Chapel Gangnam | Church in Seoul, South Korea";
 const description =
-  "서울 송파구 갈보리채플 강남교회는 성경 전체를 장별·절별로 가르치며 성경대학과 삶의 문제를 위한 성경적 상담을 제공합니다.";
+  "Calvary Chapel Gangnam is a Bible-teaching church in Seoul, South Korea, teaching Scripture chapter by chapter and verse by verse.";
 
 export const metadata: Metadata = {
-  title: "갈보리채플 강남교회",
+  applicationName: "Calvary Chapel Gangnam",
+  title,
   description,
   keywords: [
-    "갈보리채플 강남교회",
-    "송파구 교회",
-    "서울 교회",
-    "성경 중심 교회",
-    "성경대학교",
-    "성경적 상담",
-    "장별 절별 성경 강해",
+    "Calvary Chapel in Korea",
+    "Calvary Chapel in South Korea",
+    "Calvary Chapel in Seoul",
+    "Bible-teaching church in Seoul",
+    "verse-by-verse Bible teaching",
+    "church in Songpa-gu Seoul",
   ],
   alternates: {
-    canonical: "/",
+    canonical: "/en",
     languages: {
       "ko-KR": "/",
       en: "/en",
@@ -37,30 +38,31 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "갈보리채플 강남교회",
+    title,
     description,
-    url: "/",
-    siteName: "갈보리채플 강남교회",
-    locale: "ko_KR",
+    url: "/en",
+    siteName: "Calvary Chapel Gangnam",
+    locale: "en_US",
+    alternateLocale: ["ko_KR"],
     type: "website",
     images: [
       {
         url: "/sns.png",
         width: 1200,
         height: 630,
-        alt: "갈보리채플 강남교회",
+        alt: "Calvary Chapel Gangnam in Seoul, South Korea",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "갈보리채플 강남교회",
+    title,
     description,
     images: ["/sns.png"],
   },
 };
 
-export default function Page() {
+export default function EnglishHomePage() {
   return (
     <>
       <script
@@ -69,7 +71,7 @@ export default function Page() {
           __html: JSON.stringify(churchSiteStructuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <HomePage language="ko" />
+      <HomePage language="en" />
     </>
   );
 }

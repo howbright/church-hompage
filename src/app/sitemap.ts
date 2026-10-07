@@ -3,7 +3,7 @@ import { fetchPublishedBulletins } from "@/lib/bulletins";
 
 const siteUrl = "https://www.calvarygangnam.com";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let bulletins: Awaited<ReturnType<typeof fetchPublishedBulletins>> = [];
@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: siteUrl,
+      url: `${siteUrl}/`,
       changeFrequency: "monthly",
       priority: 1,
     },

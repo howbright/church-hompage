@@ -16,7 +16,7 @@ type Claim = {
   status: ClaimStatus;
   detail: string;
   receipts: number;
-  userId?: string;
+  userId?: string | null;
 };
 
 const MAX_RECEIPT_BYTES = 10 * 1024 * 1024;
@@ -39,7 +39,7 @@ async function prepareReceiptFile(file: File) {
   return new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
 }
 
-function mapDatabaseClaims(rows: Array<{ id: string; claim_number: string; category: string; amount: number; used_at: string | null; created_at?: string; description: string; user_id?: string; claimant?: string; claimant_name?: string; status: "under_review" | "needs_revision" | "paid" }>, receiptCounts = new Map<string, number>()): Claim[] {
+function mapDatabaseClaims(rows: Array<{ id: string; claim_number: string; category: string; amount: number; used_at: string | null; created_at?: string; description: string; user_id?: string | null; claimant?: string; claimant_name?: string | null; status: "under_review" | "needs_revision" | "paid" }>, receiptCounts = new Map<string, number>()): Claim[] {
   const statusMap = { under_review: "검토 중", needs_revision: "보완 요청", paid: "정산 완료" } as const;
   return rows.map((row) => ({ id: row.claim_number, claimant: row.claimant_name ? `대리 · ${row.claimant_name}` : (row.claimant ?? "내 청구"), date: row.used_at ?? row.created_at?.slice(0, 10) ?? "", title: row.category, amount: `${Number(row.amount).toLocaleString("ko-KR")}원`, status: statusMap[row.status], detail: row.description, receipts: receiptCounts.get(row.id) ?? 0, userId: row.user_id }));
 }
@@ -115,9 +115,10 @@ export function ClaimsPrototype() {
   const [editExistingReceiptUrls, setEditExistingReceiptUrls] = useState<Array<{ id: string; name: string; path: string; url: string }>>([]);
   useEffect(() => {
     if (!editClaimId) return;
+    const claimId = editClaimId;
     async function loadEditReceipts() {
       const supabase = getSupabasePublicClient();
-      const { data: claim } = await supabase.schema("church").from("claims").select("id").eq("claim_number", editClaimId).maybeSingle();
+      const { data: claim } = await supabase.schema("church").from("claims").select("id").eq("claim_number", claimId).maybeSingle();
       if (!claim) return;
       const { data: receipts } = await supabase.schema("church").from("claim_receipts").select("id, original_file_name, storage_path").eq("claim_id", claim.id);
       const urls = await Promise.all((receipts ?? []).map(async (receipt) => {
@@ -367,9 +368,10 @@ export function ClaimsAdminPrototype() {
 
   useEffect(() => {
     if (!editClaimId) return;
+    const claimId = editClaimId;
     async function loadAdminEditReceipts() {
       const supabase = getSupabasePublicClient();
-      const { data: claim } = await supabase.schema("church").from("claims").select("id").eq("claim_number", editClaimId).maybeSingle();
+      const { data: claim } = await supabase.schema("church").from("claims").select("id").eq("claim_number", claimId).maybeSingle();
       if (!claim) return;
       const { data } = await supabase.schema("church").from("claim_receipts").select("id, original_file_name, storage_path").eq("claim_id", claim.id);
       const urls = await Promise.all((data ?? []).map(async (r) => { const { data: signed } = await supabase.storage.from("claim-receipts").createSignedUrl(r.storage_path, 300); return signed?.signedUrl ? { id: r.id, name: r.original_file_name, path: r.storage_path, url: signed.signedUrl } : null; }));
@@ -393,7 +395,7 @@ export function ClaimsAdminPrototype() {
         const { data: receipts } = await supabase.schema("church").from("claim_receipts").select("claim_id");
         const counts = new Map<string, number>();
         for (const receipt of receipts ?? []) counts.set(receipt.claim_id, (counts.get(receipt.claim_id) ?? 0) + 1);
-        const userIds = [...new Set(rows.map((row) => row.user_id).filter(Boolean))];
+        const userIds = [...new Set(rows.map((row) => row.user_id).filter((id): id is string => Boolean(id)))];
         const { data: profiles } = userIds.length ? await supabase.schema("church").from("profiles").select("id, full_name").in("id", userIds) : { data: [] };
         const names = new Map((profiles ?? []).map((profile) => [profile.id, profile.full_name]));
         const mapped = mapDatabaseClaims(rows.map((row) => ({ ...row, claimant: row.user_id ? (names.get(row.user_id) ?? "이름 미등록") : "이름 미등록" })), counts);

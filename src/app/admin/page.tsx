@@ -30,6 +30,14 @@ const adminMenus = [
     accent: "bg-[#527a6c]",
     number: "03",
   },
+  {
+    href: "/admin/claims",
+    eyebrow: "Settlement",
+    title: "청구·정산 관리",
+    description: "회원이 제출한 청구서와 증빙자료를 확인하고 정산 상태를 관리합니다.",
+    accent: "bg-[#527a6c]",
+    number: "04",
+  },
 ] as const;
 
 export default function AdminPage() {

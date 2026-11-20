@@ -10,7 +10,399 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "12.2.3"
+  }
+  church: {
+    Tables: {
+      claim_amount_history: {
+        Row: {
+          change_reason: string
+          changed_by: string
+          claim_id: string
+          created_at: string
+          id: string
+          new_amount: number
+          previous_amount: number
+        }
+        Insert: {
+          change_reason?: string
+          changed_by: string
+          claim_id: string
+          created_at?: string
+          id?: string
+          new_amount: number
+          previous_amount: number
+        }
+        Update: {
+          change_reason?: string
+          changed_by?: string
+          claim_id?: string
+          created_at?: string
+          id?: string
+          new_amount?: number
+          previous_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_amount_history_changed_by_fkey"
+            columns: ["changed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claim_amount_history_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claim_invites: {
+        Row: {
+          accepted_at: string | null
+          accepted_user_id: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string
+          status: string
+          token_hash: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          invited_by: string
+          status?: string
+          token_hash: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string
+          status?: string
+          token_hash?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_invites_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claim_payments: {
+        Row: {
+          claim_id: string
+          created_at: string
+          id: string
+          note: string
+          paid_amount: number
+          paid_at: string
+          paid_by: string
+          payment_method: string | null
+          payment_reference: string | null
+        }
+        Insert: {
+          claim_id: string
+          created_at?: string
+          id?: string
+          note?: string
+          paid_amount: number
+          paid_at?: string
+          paid_by: string
+          payment_method?: string | null
+          payment_reference?: string | null
+        }
+        Update: {
+          claim_id?: string
+          created_at?: string
+          id?: string
+          note?: string
+          paid_amount?: number
+          paid_at?: string
+          paid_by?: string
+          payment_method?: string | null
+          payment_reference?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_payments_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: true
+            referencedRelation: "claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claim_payments_paid_by_fkey"
+            columns: ["paid_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claim_receipts: {
+        Row: {
+          claim_id: string
+          created_at: string
+          file_size: number
+          id: string
+          mime_type: string
+          original_file_name: string
+          storage_path: string
+        }
+        Insert: {
+          claim_id: string
+          created_at?: string
+          file_size: number
+          id?: string
+          mime_type: string
+          original_file_name: string
+          storage_path: string
+        }
+        Update: {
+          claim_id?: string
+          created_at?: string
+          file_size?: number
+          id?: string
+          mime_type?: string
+          original_file_name?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_receipts_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claim_status_history: {
+        Row: {
+          changed_by: string
+          claim_id: string
+          created_at: string
+          from_status: Database["church"]["Enums"]["claim_status"] | null
+          id: string
+          note: string
+          to_status: Database["church"]["Enums"]["claim_status"]
+        }
+        Insert: {
+          changed_by: string
+          claim_id: string
+          created_at?: string
+          from_status?: Database["church"]["Enums"]["claim_status"] | null
+          id?: string
+          note?: string
+          to_status: Database["church"]["Enums"]["claim_status"]
+        }
+        Update: {
+          changed_by?: string
+          claim_id?: string
+          created_at?: string
+          from_status?: Database["church"]["Enums"]["claim_status"] | null
+          id?: string
+          note?: string
+          to_status?: Database["church"]["Enums"]["claim_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claim_status_history_changed_by_fkey"
+            columns: ["changed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claim_status_history_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "claims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      claims: {
+        Row: {
+          accounting_memo: string | null
+          accounting_note: string
+          amount: number
+          category: string
+          claim_number: string
+          claimant_name: string | null
+          claimant_type: string
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          paid_at: string | null
+          reviewed_at: string | null
+          status: Database["church"]["Enums"]["claim_status"]
+          submitted_at: string | null
+          updated_at: string
+          used_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          accounting_memo?: string | null
+          accounting_note?: string
+          amount: number
+          category: string
+          claim_number: string
+          claimant_name?: string | null
+          claimant_type?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          paid_at?: string | null
+          reviewed_at?: string | null
+          status?: Database["church"]["Enums"]["claim_status"]
+          submitted_at?: string | null
+          updated_at?: string
+          used_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          accounting_memo?: string | null
+          accounting_note?: string
+          amount?: number
+          category?: string
+          claim_number?: string
+          claimant_name?: string | null
+          claimant_type?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          paid_at?: string | null
+          reviewed_at?: string | null
+          status?: Database["church"]["Enums"]["claim_status"]
+          submitted_at?: string | null
+          updated_at?: string
+          used_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claims_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claims_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payout_accounts: {
+        Row: {
+          account_holder_name: string
+          account_number: string
+          bank_name: string
+          created_at: string
+          id: string
+          is_primary: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_holder_name: string
+          account_number: string
+          bank_name: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_holder_name?: string
+          account_number?: string
+          bank_name?: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_accounts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          role: Database["church"]["Enums"]["member_role"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id: string
+          role?: Database["church"]["Enums"]["member_role"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          role?: Database["church"]["Enums"]["member_role"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      has_role: {
+        Args: { requested_roles: Database["church"]["Enums"]["member_role"][] }
+        Returns: boolean
+      }
+    }
+    Enums: {
+      claim_status: "under_review" | "needs_revision" | "paid"
+      member_role: "member" | "accountant" | "admin"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
@@ -1105,6 +1497,79 @@ export type Database = {
           recent_total?: number
         }
         Relationships: []
+      }
+      map_recovery_notices: {
+        Row: {
+          admin_user_id: string | null
+          compensation_credits: number
+          created_at: string
+          email: string
+          error_message: string | null
+          id: string
+          locale: string | null
+          map_id: string
+          map_url: string
+          refunded_credits: number
+          sent_at: string | null
+          status: Database["public"]["Enums"]["map_recovery_notice_status"]
+          subject: string
+          user_id: string
+        }
+        Insert: {
+          admin_user_id?: string | null
+          compensation_credits?: number
+          created_at?: string
+          email: string
+          error_message?: string | null
+          id?: string
+          locale?: string | null
+          map_id: string
+          map_url: string
+          refunded_credits?: number
+          sent_at?: string | null
+          status: Database["public"]["Enums"]["map_recovery_notice_status"]
+          subject: string
+          user_id: string
+        }
+        Update: {
+          admin_user_id?: string | null
+          compensation_credits?: number
+          created_at?: string
+          email?: string
+          error_message?: string | null
+          id?: string
+          locale?: string | null
+          map_id?: string
+          map_url?: string
+          refunded_credits?: number
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["map_recovery_notice_status"]
+          subject?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "map_recovery_notices_admin_user_id_fkey"
+            columns: ["admin_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "map_recovery_notices_map_id_fkey"
+            columns: ["map_id"]
+            isOneToOne: false
+            referencedRelation: "maps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "map_recovery_notices_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       map_term_requests: {
         Row: {
@@ -2460,6 +2925,7 @@ export type Database = {
       map_node_expansion_status: "queued" | "processing" | "done" | "failed"
       map_open_access_mode: "owner" | "shared" | "admin"
       map_read_status: "unread" | "in_progress" | "read"
+      map_recovery_notice_status: "sent" | "failed"
       map_source_type: "youtube" | "website" | "file" | "manual"
       map_status:
         | "queued"
@@ -2657,6 +3123,12 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  church: {
+    Enums: {
+      claim_status: ["under_review", "needs_revision", "paid"],
+      member_role: ["member", "accountant", "admin"],
+    },
+  },
   public: {
     Enums: {
       challenge_clip_pro_usage_event_type: [
@@ -2722,6 +3194,7 @@ export const Constants = {
       map_node_expansion_status: ["queued", "processing", "done", "failed"],
       map_open_access_mode: ["owner", "shared", "admin"],
       map_read_status: ["unread", "in_progress", "read"],
+      map_recovery_notice_status: ["sent", "failed"],
       map_source_type: ["youtube", "website", "file", "manual"],
       map_status: [
         "queued",

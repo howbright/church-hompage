@@ -66,7 +66,17 @@ console.log(`Supabase 프로젝트 ${projectId}의 타입을 생성합니다...`
 
 const result = spawnSync(
   cliPath,
-  ["gen", "types", "typescript", "--project-id", projectId, "--schema", "public"],
+  [
+    "gen",
+    "types",
+    "typescript",
+    "--project-id",
+    projectId,
+    "--schema",
+    "public",
+    "--schema",
+    "church",
+  ],
   {
     cwd: projectRoot,
     encoding: "utf8",

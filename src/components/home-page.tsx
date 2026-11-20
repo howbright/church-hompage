@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { SocialLinks } from "@/components/social-links";
+import { getSupabasePublicClient } from "@/lib/supabase";
 
 const content = {
   en: {
@@ -164,6 +166,29 @@ const content = {
 } as const;
 
 export function HomePage({ language }: { language: "en" | "ko" }) {
+  const [isMember, setIsMember] = useState(false);
+  const [memberRole, setMemberRole] = useState<"member" | "accountant" | "admin">("member");
+  const [memberMenuOpen, setMemberMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const supabase = getSupabasePublicClient();
+    async function checkSession() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: profile } = await supabase.schema("church").from("profiles").select("id, role").eq("id", user.id).maybeSingle();
+      setIsMember(Boolean(profile));
+      if (profile?.role) setMemberRole(profile.role);
+    }
+    void checkSession();
+    const { data: listener } = supabase.auth.onAuthStateChange(() => { void checkSession(); });
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  async function signOutMember() {
+    await getSupabasePublicClient().auth.signOut();
+    setIsMember(false);
+    setMemberMenuOpen(false);
+  }
   const t = content[language];
 
   return (
@@ -197,7 +222,7 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
       <section className="relative z-10 flex min-h-screen flex-col px-6 py-6 sm:px-10 lg:px-16 lg:py-8">
         <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col">
           <header className="pt-1 text-center">
-            <div className="mb-4 flex justify-center lg:justify-end">
+            <div className="mb-4 flex items-center justify-center gap-2 lg:justify-end">
               <div className="inline-flex items-center gap-1 rounded-full border border-white/80 bg-[rgba(255,255,255,0.78)] p-1 shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-md">
                 <Link
                   href="/en"
@@ -226,6 +251,18 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
                   KO
                 </Link>
               </div>
+              {language === "ko" && (isMember ? (
+                <div className="relative">
+                  <button type="button" onClick={() => setMemberMenuOpen((open) => !open)} className="rounded-lg border border-[#b9c7c3] bg-white/85 px-3 py-2 text-xs font-bold text-[#0b6b52] shadow-[0_8px_20px_rgba(0,0,0,0.05)] transition hover:border-[#0b6b52] hover:bg-[#effaf3]">
+                    MY <span className="ml-1">▾</span>
+                  </button>
+                  {memberMenuOpen && <div className="absolute right-0 top-full z-30 mt-2 w-44 rounded-lg border border-[#b9c7c3] bg-white p-1.5 text-sm shadow-[0_12px_30px_rgba(9,43,58,0.16)]"><Link href="/claims" onClick={() => setMemberMenuOpen(false)} className="block rounded-md px-3 py-2 hover:bg-[#effaf3]"><span className="mr-2 inline-flex" aria-hidden="true"><svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M15 3.5v4h3M9 12h6M9 15.5h6"/></svg></span>내 청구</Link>{(memberRole === "accountant" || memberRole === "admin") && <Link href="/admin/claims" onClick={() => setMemberMenuOpen(false)} className="block rounded-md px-3 py-2 hover:bg-[#effaf3]"><span className="mr-2 inline-flex" aria-hidden="true"><svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 19.5V10M10 19.5V5M16 19.5v-7M22 19.5V8"/><path d="M2 19.5h21"/></svg></span>청구관리</Link>}<button type="button" onClick={signOutMember} className="mt-1 block w-full border-t border-[#e1e9e6] px-3 py-2 text-left font-bold text-[#a52a2a] hover:bg-[#fff3f3]">로그아웃</button></div>}
+                </div>
+              ) : (
+                <Link href="/claims/login" className="rounded-lg border border-[#b9c7c3] bg-white/85 px-3 py-2 text-xs font-bold text-[#0b6b52] shadow-[0_8px_20px_rgba(0,0,0,0.05)] transition hover:border-[#0b6b52] hover:bg-[#effaf3]">
+                  교인 로그인
+                </Link>
+              ))}
             </div>
             <div className="flex justify-center">
               <h1 className="rounded-full border border-white/80 bg-[rgba(255,255,255,0.82)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.5em] text-[var(--page-accent-strong)] shadow-[0_12px_24px_rgba(0,0,0,0.06)] backdrop-blur-md sm:text-xs">

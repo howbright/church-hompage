@@ -39,7 +39,7 @@ async function prepareReceiptFile(file: File) {
   return new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
 }
 
-function mapDatabaseClaims(rows: Array<{ id: string; claim_number: string; category: string; amount: number; used_at: string | null; created_at?: string; description: string; user_id?: string; claimant_name?: string; status: "under_review" | "needs_revision" | "paid" }>, receiptCounts = new Map<string, number>()): Claim[] {
+function mapDatabaseClaims(rows: Array<{ id: string; claim_number: string; category: string; amount: number; used_at: string | null; created_at?: string; description: string; user_id?: string; claimant?: string; claimant_name?: string; status: "under_review" | "needs_revision" | "paid" }>, receiptCounts = new Map<string, number>()): Claim[] {
   const statusMap = { under_review: "검토 중", needs_revision: "보완 요청", paid: "정산 완료" } as const;
   return rows.map((row) => ({ id: row.claim_number, claimant: row.claimant_name ? `대리 · ${row.claimant_name}` : (row.claimant ?? "내 청구"), date: row.used_at ?? row.created_at?.slice(0, 10) ?? "", title: row.category, amount: `${Number(row.amount).toLocaleString("ko-KR")}원`, status: statusMap[row.status], detail: row.description, receipts: receiptCounts.get(row.id) ?? 0, userId: row.user_id }));
 }

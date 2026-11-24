@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabasePublicClient } from "@/lib/supabase";
 
@@ -20,6 +20,18 @@ export default function ClaimsSignupPage() {
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    async function resumeInvite() {
+      const { data: { session } } = await getSupabasePublicClient().auth.getSession();
+      if (!session?.user?.email) return;
+      setEmail(session.user.email);
+      setIsVerified(true);
+      setStep(2);
+      setNotice("초대 이메일 인증이 완료되었습니다. 실명과 정산 계좌를 등록해 주세요.");
+    }
+    void resumeInvite();
+  }, []);
 
   async function requestCode(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

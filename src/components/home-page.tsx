@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SocialLinks } from "@/components/social-links";
+import { YouTubeLatest } from "@/components/youtube-latest";
 import { getSupabasePublicClient } from "@/lib/supabase";
 
 const content = {
@@ -169,8 +170,11 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
   const [isMember, setIsMember] = useState(false);
   const [memberRole, setMemberRole] = useState<"member" | "accountant" | "admin">("member");
   const [memberMenuOpen, setMemberMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("intro");
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    setIsHydrated(true);
     const supabase = getSupabasePublicClient();
     async function checkSession() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -182,6 +186,21 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
     void checkSession();
     const { data: listener } = supabase.auth.onAuthStateChange(() => { void checkSession(); });
     return () => listener.subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const sections = ["intro", "church-info", "youtube-feed"]
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.35, 0.6] },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   async function signOutMember() {
@@ -221,7 +240,7 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
 
       <section className="relative z-10 flex min-h-screen flex-col px-6 py-6 sm:px-10 lg:px-16 lg:py-8">
         <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col">
-          <header className="pt-1 text-center">
+          <header id="intro" className="scroll-mt-24 pt-1 text-center">
             <div className="mb-4 flex items-center justify-center gap-2 lg:justify-end">
               <div className="inline-flex items-center gap-1 rounded-full border border-white/80 bg-[rgba(255,255,255,0.78)] p-1 shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-md">
                 <Link
@@ -335,6 +354,20 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
             </div> : null}
           </header>
 
+          {isHydrated ? <nav aria-label={language === "ko" ? "페이지 섹션" : "Page sections"} className="fixed right-4 top-1/2 z-30 -translate-y-1/2 sm:right-7">
+            <div className="flex flex-col items-end gap-2">
+              {[
+                ["intro", language === "ko" ? "소개" : "Intro"],
+                ["church-info", language === "ko" ? "예배 · 장소 · 사역" : "Church Info"],
+                ["youtube-feed", language === "ko" ? "최근 설교" : "Sermons"],
+              ].map(([id, label], index) => (
+                <a key={id} href={`#${id}`} onClick={() => setActiveSection(id)} aria-label={label} title={label} className={`block rounded-full transition-all ${activeSection === id ? "h-14 w-2 bg-[#08275b]" : "h-9 w-1.5 bg-[#9bb3ca] hover:h-12 hover:bg-[#3f9fe8]"}`}>
+                  <span className="sr-only">{`0${index + 1}. ${label}`}</span>
+                </a>
+              ))}
+            </div>
+          </nav> : null}
+
           <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
             <div
               aria-hidden="true"
@@ -350,11 +383,19 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
                 priority
               />
             </div>
+            <a
+              href="#youtube-feed"
+              aria-label={language === "ko" ? "아래 콘텐츠 보기" : "View content below"}
+              className="group absolute bottom-16 right-4 flex h-12 w-12 items-center justify-center rounded-full border border-black bg-black !text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] transition hover:translate-y-0.5 hover:bg-[#1f1f1f] sm:right-8"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7 animate-bounce transition-transform group-hover:scale-110" fill="none" stroke="#ffffff" strokeWidth="4.5">
+                <path d="M5 8.5 12 15.5l7-7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
           </div>
 
-          <section
+          <section id="church-info" className="scroll-mt-24 relative grid gap-3 overflow-hidden rounded-[2rem] border border-[#b9ddf5] bg-[linear-gradient(145deg,rgba(234,247,255,0.98)_0%,rgba(220,240,253,0.9)_52%,rgba(244,250,255,0.96)_100%)] p-3 shadow-[0_28px_80px_rgba(8,39,91,0.13)] sm:gap-4 sm:p-4 lg:grid-cols-3"
             aria-label="Church information"
-            className="relative grid gap-3 overflow-hidden rounded-[2rem] border border-[#b9ddf5] bg-[linear-gradient(145deg,rgba(234,247,255,0.98)_0%,rgba(220,240,253,0.9)_52%,rgba(244,250,255,0.96)_100%)] p-3 shadow-[0_28px_80px_rgba(8,39,91,0.13)] sm:gap-4 sm:p-4 lg:grid-cols-3"
           >
             <article className="relative overflow-hidden rounded-[1.35rem] border border-white bg-[rgba(255,255,255,0.94)] px-6 py-6 shadow-[0_16px_38px_rgba(8,39,91,0.08)] sm:px-8 sm:py-8">
               <div className="absolute inset-x-0 top-0 h-1.5 bg-[var(--card-worship)]" />
@@ -470,6 +511,10 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
               </div>
             </article>
           </section>
+
+          <div id="youtube-feed" className="scroll-mt-6">
+            <YouTubeLatest language={language} />
+          </div>
         </div>
       </section>
     </main>

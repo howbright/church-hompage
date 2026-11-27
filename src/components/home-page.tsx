@@ -189,7 +189,7 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
   }, []);
 
   useEffect(() => {
-    const sections = ["intro", "church-info", "youtube-feed"]
+    const sections = ["intro", "youtube-feed", "church-info"]
       .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
     const observer = new IntersectionObserver(
@@ -202,6 +202,18 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    const ids = ["intro", "youtube-feed", "church-info"];
+    const timer = window.setInterval(() => {
+      const nextIndex = (ids.indexOf(activeSection) + 1) % ids.length;
+      const nextId = ids[nextIndex];
+      setActiveSection(nextId);
+      document.getElementById(nextId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [activeSection, isHydrated]);
 
   async function signOutMember() {
     await getSupabasePublicClient().auth.signOut();
@@ -358,40 +370,18 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
             <div className="flex flex-col items-end gap-2">
               {[
                 ["intro", language === "ko" ? "소개" : "Intro"],
-                ["church-info", language === "ko" ? "예배 · 장소 · 사역" : "Church Info"],
                 ["youtube-feed", language === "ko" ? "최근 설교" : "Sermons"],
+                ["church-info", language === "ko" ? "예배 · 장소 · 사역" : "Church Info"],
               ].map(([id, label], index) => (
-                <a key={id} href={`#${id}`} onClick={() => setActiveSection(id)} aria-label={label} title={label} className={`block rounded-full transition-all ${activeSection === id ? "h-14 w-2 bg-[#08275b]" : "h-9 w-1.5 bg-[#9bb3ca] hover:h-12 hover:bg-[#3f9fe8]"}`}>
+                <a key={id} href={`#${id}`} onClick={() => setActiveSection(id)} aria-label={label} title={label} className={`block rounded-full shadow-[0_2px_8px_rgba(8,39,91,0.2)] transition-all ${activeSection === id ? "h-14 w-2 bg-[#ff6b35] shadow-[0_0_12px_rgba(255,107,53,0.65)]" : "h-9 w-1.5 bg-[#49b6e9] hover:h-12 hover:bg-[#ff9f68]"}`}>
                   <span className="sr-only">{`0${index + 1}. ${label}`}</span>
                 </a>
               ))}
             </div>
           </nav> : null}
 
-          <div className="relative flex flex-1 items-center justify-center py-8 sm:py-10 lg:py-8">
-            <div
-              aria-hidden="true"
-              className="absolute h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(180,180,180,0.26)_0%,_rgba(180,180,180,0.14)_42%,_transparent_74%)] blur-3xl sm:h-60 sm:w-60"
-            />
-            <div className="w-full max-w-[15rem] sm:max-w-[18rem] lg:max-w-[19rem]">
-              <Image
-                src="/church.png"
-                alt={language === "en" ? "Church on a hill" : "언덕 위 교회 실루엣"}
-                className="h-auto w-full drop-shadow-[0_24px_40px_rgba(0,0,0,0.28)]"
-                width={700}
-                height={500}
-                priority
-              />
-            </div>
-            <a
-              href="#youtube-feed"
-              aria-label={language === "ko" ? "아래 콘텐츠 보기" : "View content below"}
-              className="group absolute bottom-16 right-4 flex h-12 w-12 items-center justify-center rounded-full border border-black bg-black !text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] transition hover:translate-y-0.5 hover:bg-[#1f1f1f] sm:right-8"
-            >
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7 animate-bounce transition-transform group-hover:scale-110" fill="none" stroke="#ffffff" strokeWidth="4.5">
-                <path d="M5 8.5 12 15.5l7-7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
+          <div id="youtube-feed" className="scroll-mt-6">
+            <YouTubeLatest language={language} />
           </div>
 
           <section id="church-info" className="scroll-mt-24 relative grid gap-3 overflow-hidden rounded-[2rem] border border-[#b9ddf5] bg-[linear-gradient(145deg,rgba(234,247,255,0.98)_0%,rgba(220,240,253,0.9)_52%,rgba(244,250,255,0.96)_100%)] p-3 shadow-[0_28px_80px_rgba(8,39,91,0.13)] sm:gap-4 sm:p-4 lg:grid-cols-3"
@@ -512,9 +502,6 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
             </article>
           </section>
 
-          <div id="youtube-feed" className="scroll-mt-6">
-            <YouTubeLatest language={language} />
-          </div>
         </div>
       </section>
     </main>

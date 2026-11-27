@@ -302,10 +302,10 @@ export function HomePage({ language }: { language: "en" | "ko" }) {
             </div>
             <div className="mt-4 flex justify-center">
               <Image
-                src="/logo.svg"
+                src="/logo-new.png"
                 alt={language === "en" ? "Calvary Chapel Gangnam" : "갈보리채플 강남교회"}
-                width={2400}
-                height={500}
+                width={1500}
+                height={150}
                 priority
                 className="h-auto w-[20rem] max-w-full drop-shadow-[0_8px_24px_rgba(255,255,255,0.42)] sm:w-[24rem] lg:w-[30rem]"
               />

@@ -34,7 +34,7 @@ export async function GET() {
     channelUrl.searchParams.set("part", "id,contentDetails");
     channelUrl.searchParams.set("forHandle", "@calvarymoses");
     channelUrl.searchParams.set("key", apiKey);
-    const channelResponse = await fetch(channelUrl, { next: { revalidate: 1800 } });
+    const channelResponse = await fetch(channelUrl, { next: { revalidate: 21600 } });
     const channelData = (await channelResponse.json()) as YouTubeResponse & {
       items?: Array<{ id?: string; contentDetails?: { relatedPlaylists?: { uploads?: string } } }>;
     };
@@ -48,7 +48,7 @@ export async function GET() {
     playlistUrl.searchParams.set("playlistId", uploadsPlaylist);
     playlistUrl.searchParams.set("maxResults", "50");
     playlistUrl.searchParams.set("key", apiKey);
-    const playlistResponse = await fetch(playlistUrl, { next: { revalidate: 1800 } });
+    const playlistResponse = await fetch(playlistUrl, { next: { revalidate: 21600 } });
     const playlistData = (await playlistResponse.json()) as YouTubeResponse;
     if (!playlistResponse.ok) {
       return NextResponse.json({ ok: false, message: "유튜브 영상을 불러오지 못했습니다." }, { status: 502 });
@@ -61,7 +61,7 @@ export async function GET() {
     detailsUrl.searchParams.set("part", "contentDetails");
     detailsUrl.searchParams.set("id", videoIds.join(","));
     detailsUrl.searchParams.set("key", apiKey);
-    const detailsResponse = await fetch(detailsUrl, { next: { revalidate: 1800 } });
+    const detailsResponse = await fetch(detailsUrl, { next: { revalidate: 21600 } });
     const detailsData = (await detailsResponse.json()) as VideoDetailsResponse;
     const durationById = new Map((detailsData.items ?? []).map((item) => [item.id, durationSeconds(item.contentDetails?.duration)]));
 
@@ -79,7 +79,7 @@ export async function GET() {
       })
       .filter(Boolean);
 
-    return NextResponse.json({ ok: true, videos }, { headers: { "Cache-Control": "public, s-maxage=1800, stale-while-revalidate=3600" } });
+    return NextResponse.json({ ok: true, videos }, { headers: { "Cache-Control": "public, s-maxage=21600, stale-while-revalidate=43200" } });
   } catch {
     return NextResponse.json({ ok: false, message: "유튜브 영상을 불러오는 중 오류가 발생했습니다." }, { status: 500 });
   }
